@@ -1,0 +1,34 @@
+# File: A222.stubtech_retirement.csv
+# Title: USA refining technology retirement info
+# Units: years
+# Column types: cccccininnn
+# ----------
+region,supplysector,subsector,technology,year,lifetime,shutdown.rate,half.life,steepness,median.shutdown.point,profit.shutdown.steepness
+USA,ethanol,cellulosic ethanol,cellulosic ethanol (no constraint),final-calibration-year,-1,,5,0.2,-0.5,50
+USA,ethanol,corn ethanol,corn ethanol (no constraint),final-calibration-year,-1,,5,0.2,-0.5,50
+USA,ethanol,cellulosic ethanol,cellulosic ethanol (no constraint),initial-future-year,-1,,5,0.3,-0.5,50
+USA,ethanol,corn ethanol,corn ethanol (no constraint),initial-future-year,-1,,5,0.3,-0.5,50
+USA,ethanol,cellulosic ethanol,cellulosic ethanol,final-calibration-year,-1,,5,0.2,-0.5,50
+USA,ethanol,corn ethanol,corn ethanol,final-calibration-year,-1,,5,0.2,-0.5,50
+USA,ethanol,cellulosic ethanol,cellulosic ethanol,initial-future-year,-1,,5,0.3,-0.5,50
+USA,ethanol,corn ethanol,corn ethanol,initial-future-year,-1,,5,0.3,-0.5,50
+USA,ethanol,sugar cane ethanol,sugar cane ethanol,final-calibration-year,-1,,5,0.2,-0.5,50
+USA,ethanol,sugar cane ethanol,sugar cane ethanol,initial-future-year,-1,,5,0.3,-0.5,50
+USA,refining,oil refining,oil refining,final-calibration-year,-1,,30,0.2,0,50
+USA,refining,coal to liquids,coal to liquids,final-calibration-year,-1,,25,0.2,0,50
+USA,refining,coal to liquids,coal to liquids CCS level 1,final-calibration-year,-1,,25,0.2,0,50
+USA,refining,coal to liquids,coal to liquids CCS level 2,final-calibration-year,-1,,25,0.2,0,50
+USA,refining,gas to liquids,gas to liquids,final-calibration-year,-1,,25,0.2,0,50
+USA,refining,biomass liquids,FT biofuels,final-calibration-year,-1,,25,0.2,-0.5,50
+USA,refining,biomass liquids,FT biofuels CCS level 1,final-calibration-year,-1,,25,0.2,-0.5,50
+USA,refining,biomass liquids,FT biofuels CCS level 2,final-calibration-year,-1,,25,0.2,-0.5,50
+USA,refining,biomass liquids,biodiesel,final-calibration-year,-1,,25,0.2,-0.5,50
+USA,refining,oil refining,oil refining,initial-future-year,-1,,30,0.3,0,50
+USA,refining,coal to liquids,coal to liquids,initial-future-year,-1,,30,0.3,0,50
+USA,refining,coal to liquids,coal to liquids CCS level 1,initial-future-year,-1,,30,0.3,0,50
+USA,refining,coal to liquids,coal to liquids CCS level 2,initial-future-year,-1,,30,0.3,0,50
+USA,refining,gas to liquids,gas to liquids,initial-future-year,-1,,30,0.3,0,50
+USA,refining,biomass liquids,FT biofuels,initial-future-year,-1,,30,0.3,-0.5,50
+USA,refining,biomass liquids,FT biofuels CCS level 1,initial-future-year,-1,,30,0.3,-0.5,50
+USA,refining,biomass liquids,FT biofuels CCS level 2,initial-future-year,-1,,30,0.3,-0.5,50
+USA,refining,biomass liquids,biodiesel,initial-future-year,-1,,30,0.3,-0.5,50

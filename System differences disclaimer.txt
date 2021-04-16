@@ -1,0 +1,13 @@
+Outputs of GCAM may vary slightly depending on the computer systems on which scenarios are run. 
+The GCAM solution process at a given timestep iterates until all markets clear within the defined 
+solution tolerance, which is set to 0.1%. Different operating systems, operating system versions, 
+C++ libraries, and C++ compilers may affect this solution process and arrive within the solution 
+tolerance in different numbers of iterations, resulting in different model outputs for the same 
+scenario configuration run on different computers. The vast majority of model outputs differ by 
+far less than the solution tolerance, though it is possible for some model outputs to differ between 
+scenarios by more than the solution tolerance. There are several reasons for this: 1) Only a subset 
+of model outputs are from solved markets – other output values are mathematically related to the 
+solved market quantities and prices, but aren’t directly solved for, and so aren’t directly governed 
+by the solution tolerance; and 2) GCAM is a recursive model, meaning each timestep depends on the 
+solution to the previous timestep, so differences in early timesteps can amplify by the final model 
+year.

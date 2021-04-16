@@ -24,7 +24,8 @@ module_energy_batch_en_transformation_xml <- function(command, ...) {
              "L222.GlobalTechProfitShutdown_en",
              "L222.StubTechProd_gasproc",
              "L222.StubTechProd_refining",
-             "L222.StubTechCoef_refining"))
+             "L222.StubTechCoef_refining",
+             "L222.AbsCostLogitBaseValue_ethanol"))
   } else if(command == driver.DECLARE_OUTPUTS) {
     return(c(XML = "en_transformation.xml"))
   } else if(command == driver.MAKE) {
@@ -47,6 +48,7 @@ module_energy_batch_en_transformation_xml <- function(command, ...) {
     L222.StubTechProd_gasproc <- get_data(all_data, "L222.StubTechProd_gasproc")
     L222.StubTechProd_refining <- get_data(all_data, "L222.StubTechProd_refining")
     L222.StubTechCoef_refining <- get_data(all_data, "L222.StubTechCoef_refining")
+    L222.AbsCostLogitBaseValue_ethanol <- get_data(all_data, "L222.AbsCostLogitBaseValue_ethanol")
 
     year.share.weight <- share.weight <- NULL # silence package checks
     # ===================================================
@@ -71,6 +73,7 @@ module_energy_batch_en_transformation_xml <- function(command, ...) {
       add_xml_data(L222.StubTechProd_gasproc, "StubTechProd") %>%
       add_xml_data(L222.StubTechProd_refining, "StubTechProd") %>%
       add_xml_data(L222.StubTechCoef_refining, "StubTechCoef") %>%
+      add_xml_data(L222.AbsCostLogitBaseValue_ethanol, "AbsCostLogitBaseValue") %>%
       add_precursors("L222.Supplysector_en",
                      "L222.SubsectorLogit_en",
                      "L222.SubsectorShrwtFllt_en",
@@ -85,7 +88,8 @@ module_energy_batch_en_transformation_xml <- function(command, ...) {
                      "L222.GlobalTechProfitShutdown_en",
                      "L222.StubTechProd_gasproc",
                      "L222.StubTechProd_refining",
-                     "L222.StubTechCoef_refining") ->
+                     "L222.StubTechCoef_refining",
+                     "L222.AbsCostLogitBaseValue_ethanol") ->
       en_transformation.xml
 
     return_data(en_transformation.xml)

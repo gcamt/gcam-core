@@ -1,0 +1,8 @@
+# File: A261.subsector_shrwt.csv
+# Title: motor gasoline subsector share-weights
+# Units: Unitless for share weight
+# Column types: ccccn 
+# ----------
+supplysector,subsector,year.fillout,year,share.weight
+refined liquids gasoline pool,refining,start-year,,1
+refined liquids gasoline pool,ethanol,start-year,,1

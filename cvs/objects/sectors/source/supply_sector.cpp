@@ -234,6 +234,16 @@ double SupplySector::getPrice( const GDP* aGDP, const int aPeriod ) const {
     return Sector::getPrice( aGDP, aPeriod );
 }
 
+/*! \brief maw may 29 2017 Return the price with subsidy and tax of the SupplySector.
+ * \details The price of a SupplySector is the weighted average subsector price.
+ * \param aPeriod Model period.
+ * \return Price.
+ * \todo Move entire calculation here once demand sectors are rewritten.
+ */
+double SupplySector::getPriceWithSubsidyOrTax( const GDP* aGDP, const int aPeriod ) const {
+    return Sector::getPriceWithSubsidyOrTax( aGDP, aPeriod );
+}
+
 /*! \brief Calculate the final supply price.
 * \details Calculates shares for the sector and price for the supply sector, and
 *          then sets the price of the good into the marketplace.
@@ -251,6 +261,19 @@ void SupplySector::calcFinalSupplyPrice( const GDP* aGDP, const int aPeriod ){
     double avgMarginalPrice = getPrice( aGDP, aPeriod );
 
     marketplace->setPrice( mName, mRegionName, avgMarginalPrice, aPeriod, true );
+    
+    //maw may 2017  get subsidized price, compute difference with regular sector
+    // price, and then store difference as a marketinfor object
+    
+    double subsidizedPrice = getPriceWithSubsidyOrTax( aGDP, aPeriod);
+    // subsidies are stored as positive price but then returned as negative cost in input get price
+    double netSectorSubsidy = avgMarginalPrice - subsidizedPrice;
+    
+    IInfo* marketInfo = marketplace->getMarketInfo( mName, mRegionName, aPeriod, true );
+    marketInfo->setDouble( "netSectorSubsidy", netSectorSubsidy );
+    
+    //end maw may 2017 changes
+    
 }
 
 /*! \brief Set supply Sector output

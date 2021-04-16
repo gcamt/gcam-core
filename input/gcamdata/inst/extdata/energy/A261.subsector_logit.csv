@@ -1,0 +1,8 @@
+# File: A261.subsector_logit.csv
+# Title: motor gasoline subsector logit exponents (no competition)
+# Units: Unitless
+# Column types: ccnc
+# ----------
+supplysector,subsector,logit.exponent,logit.type
+refined liquids gasoline pool,refining,-6,
+refined liquids gasoline pool,ethanol,-6,

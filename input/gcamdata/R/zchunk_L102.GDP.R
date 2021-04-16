@@ -101,10 +101,12 @@ join.gdp.ts <- function(past, future, grouping) {
 #'
 #' @param command API command to execute
 #' @param ... other optional parameters, depending on command
-#' @return Depends on \code{command}: either a vector of required inputs,
-#' a vector of output names, or (if \code{command} is "MAKE") all
-#' the generated outputs: \code{L102.gdp_mil90usd_Scen_R_Y}, \code{L102.pcgdp_thous90USD_Scen_R_Y}, \code{L102.gdp_mil90usd_GCAM3_R_Y}, \code{L102.gdp_mil90usd_GCAM3_ctry_Y}, \code{L102.pcgdp_thous90USD_GCAM3_R_Y}, \code{L102.pcgdp_thous90USD_GCAM3_ctry_Y}, \code{L102.PPP_MER_R}. The corresponding file in the
-#' original data system was \code{L102.GDP.R} (socioeconomics level1).
+#' @return Depends on \code{command}: either a vector of required inputs, a vector of output names, or (if
+#'   \code{command} is "MAKE") all the generated outputs: \code{L102.gdp_mil90usd_Scen_R_Y},
+#'   \code{L102.pcgdp_thous90USD_Scen_R_Y}, \code{L102.gdp_mil90usd_GCAM3_R_Y}, \code{L102.gdp_mil90usd_GCAM3_ctry_Y},
+#'   \code{L102.pcgdp_thous90USD_GCAM3_R_Y}, \code{L102.pcgdp_thous90USD_GCAM3_ctry_Y}, \code{L102.PPP_MER_R},
+#'   \code{L102.gdp_bilusd_ctry_Yfut}. The corresponding file in the original data system was \code{L102.GDP.R}
+#'   (socioeconomics level1).
 #' @importFrom assertthat assert_that
 #' @importFrom dplyr filter mutate select
 #' @importFrom tidyr gather spread
@@ -127,7 +129,8 @@ module_socioeconomics_L102.GDP <- function(command, ...) {
              "L102.gdp_mil90usd_GCAM3_R_Y",
              "L102.gdp_mil90usd_GCAM3_ctry_Y",
              "L102.pcgdp_thous90USD_GCAM3_R_Y",
-             "L102.pcgdp_thous90USD_GCAM3_ctry_Y"))
+             "L102.pcgdp_thous90USD_GCAM3_ctry_Y",
+             "L102.gdp_bilusd_ctry_Yfut"))
   } else if(command == driver.MAKE) {
 
     iso <- GCAM_region_ID <- value <- year <- gdp <- MODEL <- VARIABLE <-
@@ -167,31 +170,31 @@ module_socioeconomics_L102.GDP <- function(command, ...) {
     ## gdp_mil90usd_rgn:  GCAM_region_ID, year, gdp
 
     ## Get the future GDP in the SSP scenarios.  These are PPP values in 2005 dollars
-    gdp_bilusd_rgn_Yfut <-
+    L102.gdp_bilusd_ctry_Yfut <-
       filter(SSP_database_v9, MODEL == 'OECD Env-Growth' & VARIABLE == 'GDP|PPP') %>%
       standardize_iso('REGION') %>%
       change_iso_code('rou', 'rom') %>%
-      left_join_error_no_match(iso_region32_lookup, by = 'iso') %>%
       protect_integer_cols %>%
       select_if(function(x) {!any(is.na(x))}) %>% # apparently the SSP database has some missing in it; filter these out.
       unprotect_integer_cols %>%
-      select(-MODEL, -iso, -VARIABLE, -UNIT) %>%
       gather_years(value_col = "gdp") %>%
       mutate(gdp = as.numeric(gdp),
              scenario = substr(SCENARIO, 1, 4)) %>% # Trim the junk off the end of
       # the scenario names, leaving us with
       # just SSP1, SSP2, etc.
+      select(scenario, iso, year, gdp) %>%
+      # The steps below write out the data to all future years, starting from the final socio historical year
+      complete(nesting(scenario, iso), year = c(socioeconomics.FINAL_HIST_YEAR, FUTURE_YEARS)) %>%
+      group_by(scenario, iso) %>%
+      mutate(gdp = approx_fun(year, gdp)) %>%
+      ungroup()    ## Units are billions of 2005$
+
+    gdp_bilusd_rgn_Yfut <- L102.gdp_bilusd_ctry_Yfut %>%
+      left_join_error_no_match(iso_region32_lookup, by = 'iso') %>%
       group_by(scenario, GCAM_region_ID, year) %>%
       summarise(gdp = sum(gdp)) %>%
       select(scenario, GCAM_region_ID, year, gdp) %>%
-      ungroup() %>%
-      # The steps below write out the data to all future years, starting from the final socio historical year
-      complete(nesting(scenario, GCAM_region_ID), year = c(socioeconomics.FINAL_HIST_YEAR, FUTURE_YEARS)) %>%
-      group_by(scenario, GCAM_region_ID) %>%
-      mutate(gdp = approx_fun(year, gdp)) %>%
       ungroup()
-    ## Units are billions of 2005$
-
 
     gdp.mil90usd.SSP.rgn.yr <- join.gdp.ts(gdp_mil90usd_rgn, gdp_bilusd_rgn_Yfut, 'GCAM_region_ID')
 
@@ -499,7 +502,21 @@ module_socioeconomics_L102.GDP <- function(command, ...) {
                      "L101.Pop_thous_GCAM3_ctry_Y") ->
       L102.pcgdp_thous90USD_GCAM3_ctry_Y
 
-    return_data(L102.gdp_mil90usd_Scen_R_Y, L102.pcgdp_thous90USD_Scen_R_Y, L102.PPP_MER_R, L102.gdp_mil90usd_GCAM3_R_Y, L102.gdp_mil90usd_GCAM3_ctry_Y, L102.pcgdp_thous90USD_GCAM3_R_Y, L102.pcgdp_thous90USD_GCAM3_ctry_Y)
+    L102.gdp_bilusd_ctry_Yfut %>%
+      add_title("Total GDP by SSP scenario / country / year") %>%
+      add_units("Billion 2005 USD") %>%
+      add_comments("SSP database with some data cleaning, interpolated to all years") %>%
+      add_precursors("socioeconomics/SSP_database_v9") ->
+      L102.gdp_bilusd_ctry_Yfut
+
+    return_data(L102.gdp_mil90usd_Scen_R_Y,
+                L102.pcgdp_thous90USD_Scen_R_Y,
+                L102.PPP_MER_R,
+                L102.gdp_mil90usd_GCAM3_R_Y,
+                L102.gdp_mil90usd_GCAM3_ctry_Y,
+                L102.pcgdp_thous90USD_GCAM3_R_Y,
+                L102.pcgdp_thous90USD_GCAM3_ctry_Y,
+                L102.gdp_bilusd_ctry_Yfut)
   } else {
     stop("Unknown command")
   }

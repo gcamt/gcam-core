@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<scenario>
+   <world>
+      <region name="USA">
+         <supplysector name="refined liquids gasoline pool">
+            <subsector name="ethanol">
+               <technology name="ethanol">
+                  <period year="2010">
+                     <res-secondary-output name="Blend Wall Credit">
+                        <output-ratio>0.0687</output-ratio>
+                     </res-secondary-output>
+                  </period>
+                  <period year="2015">
+                     <res-secondary-output name="Blend Wall Credit">
+                        <output-ratio>0.0687</output-ratio>
+                     </res-secondary-output>
+                  </period>
+                  <period year="2020">
+                     <res-secondary-output name="Blend Wall Credit">
+                        <output-ratio>0.0714</output-ratio>
+                     </res-secondary-output>
+                  </period>
+                  <period year="2025">
+                     <res-secondary-output name="Blend Wall Credit">
+                        <output-ratio>0.0744</output-ratio>
+                     </res-secondary-output>
+                  </period>
+                  <period year="2030">
+                     <res-secondary-output name="Blend Wall Credit">
+                        <output-ratio>0.0773</output-ratio>
+                     </res-secondary-output>
+                  </period>
+                  <period year="2035">
+                     <res-secondary-output name="Blend Wall Credit">
+                        <output-ratio>0.0801</output-ratio>
+                     </res-secondary-output>
+                  </period>
+                  <period year="2040">
+                     <res-secondary-output name="Blend Wall Credit">
+                        <output-ratio>0.0828</output-ratio>
+                     </res-secondary-output>
+                  </period>
+                  <period year="2045">
+                     <res-secondary-output name="Blend Wall Credit">
+                        <output-ratio>0.0855</output-ratio>
+                     </res-secondary-output>
+                  </period>
+                  <period year="2050">
+                     <res-secondary-output name="Blend Wall Credit">
+                        <output-ratio>0.0881</output-ratio>
+                     </res-secondary-output>
+                  </period>
+                  <period year="2055">
+                      <res-secondary-output name="Blend Wall Credit">
+                          <output-ratio>0.0881</output-ratio>
+                      </res-secondary-output>
+                  </period>
+                  <period year="2060">
+                      <res-secondary-output name="Blend Wall Credit">
+                          <output-ratio>0.0881</output-ratio>
+                      </res-secondary-output>
+                  </period>
+                  <period year="2065">
+                      <res-secondary-output name="Blend Wall Credit">
+                          <output-ratio>0.0881</output-ratio>
+                      </res-secondary-output>
+                  </period>
+                  <period year="2070">
+                      <res-secondary-output name="Blend Wall Credit">
+                          <output-ratio>0.0881</output-ratio>
+                      </res-secondary-output>
+                  </period>
+                  <period year="2075">
+                      <res-secondary-output name="Blend Wall Credit">
+                          <output-ratio>0.0881</output-ratio>
+                      </res-secondary-output>
+                  </period>
+                  <period year="2080">
+                      <res-secondary-output name="Blend Wall Credit">
+                          <output-ratio>0.0881</output-ratio>
+                      </res-secondary-output>
+                  </period>
+                  <period year="2085">
+                      <res-secondary-output name="Blend Wall Credit">
+                          <output-ratio>0.0881</output-ratio>
+                      </res-secondary-output>
+                  </period>
+                  <period year="2090">
+                      <res-secondary-output name="Blend Wall Credit">
+                          <output-ratio>0.0881</output-ratio>
+                      </res-secondary-output>
+                  </period>
+                  <period year="2095">
+                      <res-secondary-output name="Blend Wall Credit">
+                          <output-ratio>0.0881</output-ratio>
+                      </res-secondary-output>
+                  </period>
+                  <period year="2100">
+                      <res-secondary-output name="Blend Wall Credit">
+                          <output-ratio>0.0881</output-ratio>
+                      </res-secondary-output>
+                  </period>
+               </technology>
+            </subsector>
+            <subsector name="refining">
+               <technology name="refining">
+                  <period year="2010">
+                     <res-secondary-output name="Blend Wall Credit">
+                        <output-ratio>0.0687</output-ratio>
+                     </res-secondary-output>
+                  </period>
+                  <period year="2015">
+                     <res-secondary-output name="Blend Wall Credit">
+                        <output-ratio>0.0687</output-ratio>
+                     </res-secondary-output>
+                  </period>
+                  <period year="2020">
+                     <res-secondary-output name="Blend Wall Credit">
+                        <output-ratio>0.0714</output-ratio>
+                     </res-secondary-output>
+                  </period>
+                  <period year="2025">
+                     <res-secondary-output name="Blend Wall Credit">
+                        <output-ratio>0.0744</output-ratio>
+                     </res-secondary-output>
+                  </period>
+                  <period year="2030">
+                     <res-secondary-output name="Blend Wall Credit">
+                        <output-ratio>0.0773</output-ratio>
+                     </res-secondary-output>
+                  </period>
+                  <period year="2035">
+                     <res-secondary-output name="Blend Wall Credit">
+                        <output-ratio>0.0801</output-ratio>
+                     </res-secondary-output>
+                  </period>
+                  <period year="2040">
+                     <res-secondary-output name="Blend Wall Credit">
+                        <output-ratio>0.0828</output-ratio>
+                     </res-secondary-output>
+                  </period>
+                  <period year="2045">
+                     <res-secondary-output name="Blend Wall Credit">
+                        <output-ratio>0.0855</output-ratio>
+                     </res-secondary-output>
+                  </period>
+                  <period year="2050">
+                     <res-secondary-output name="Blend Wall Credit">
+                        <output-ratio>0.0881</output-ratio>
+                     </res-secondary-output>
+                  </period>
+                  <period year="2055">
+                      <res-secondary-output name="Blend Wall Credit">
+                          <output-ratio>0.0881</output-ratio>
+                      </res-secondary-output>
+                  </period>
+                  <period year="2060">
+                      <res-secondary-output name="Blend Wall Credit">
+                          <output-ratio>0.0881</output-ratio>
+                      </res-secondary-output>
+                  </period>
+                  <period year="2065">
+                      <res-secondary-output name="Blend Wall Credit">
+                          <output-ratio>0.0881</output-ratio>
+                      </res-secondary-output>
+                  </period>
+                  <period year="2070">
+                      <res-secondary-output name="Blend Wall Credit">
+                          <output-ratio>0.0881</output-ratio>
+                      </res-secondary-output>
+                  </period>
+                  <period year="2075">
+                      <res-secondary-output name="Blend Wall Credit">
+                          <output-ratio>0.0881</output-ratio>
+                      </res-secondary-output>
+                  </period>
+                  <period year="2080">
+                      <res-secondary-output name="Blend Wall Credit">
+                          <output-ratio>0.0881</output-ratio>
+                      </res-secondary-output>
+                  </period>
+                  <period year="2085">
+                      <res-secondary-output name="Blend Wall Credit">
+                          <output-ratio>0.0881</output-ratio>
+                      </res-secondary-output>
+                  </period>
+                  <period year="2090">
+                      <res-secondary-output name="Blend Wall Credit">
+                          <output-ratio>0.0881</output-ratio>
+                      </res-secondary-output>
+                  </period>
+                  <period year="2095">
+                      <res-secondary-output name="Blend Wall Credit">
+                          <output-ratio>0.0881</output-ratio>
+                      </res-secondary-output>
+                  </period>
+                  <period year="2100">
+                      <res-secondary-output name="Blend Wall Credit">
+                          <output-ratio>0.0881</output-ratio>
+                      </res-secondary-output>
+                  </period>
+               </technology>
+            </subsector>
+         </supplysector>
+         <policy-portfolio-standard name="Blend Wall Credit">
+            <market>USA</market>
+            <policyType>RES</policyType>
+            <constraint year="2015">1</constraint>
+            <constraint year="2020">1</constraint>
+            <constraint year="2025">1</constraint>
+            <constraint year="2030">1</constraint>
+            <constraint year="2035">1</constraint>
+            <constraint year="2040">1</constraint>
+            <constraint year="2045">1</constraint>
+            <constraint year="2050">1</constraint>
+            <constraint year="2055">1</constraint>
+            <constraint year="2060">1</constraint>
+            <constraint year="2065">1</constraint>
+            <constraint year="2070">1</constraint>
+            <constraint year="2075">1</constraint>
+            <constraint year="2080">1</constraint>
+            <constraint year="2085">1</constraint>
+            <constraint year="2090">1</constraint>
+            <constraint year="2095">1</constraint>
+            <constraint year="2100">1</constraint>
+         </policy-portfolio-standard>
+      </region>
+   </world>
+</scenario>

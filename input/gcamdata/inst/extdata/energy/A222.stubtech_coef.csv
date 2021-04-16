@@ -1,0 +1,38 @@
+# File: A222.stubtech_coef.csv
+# Title: USA refining technology coefficients
+# Units: unitless in/out
+# Column types: cccccnnnnnnnnnn
+# ----------
+region,supplysector,subsector,technology,minicam.energy.input,2013,2015,2020,2025,2030,2035,2040,2045,2050,2100
+USA,regional corn for ethanol,regional corn for ethanol,regional corn for ethanol,regional corn,115.194482,115.194482,113.9513761,113.1374377,111.0513361,109.0036993,106.9938183,105.0209967,103.4894098,103.4894098
+USA,regional biomassOil,regional biomassOil,OilCrop,regional oilcrop,142.5,142.5,142.5,142.5,142.5,142.5,142.5,142.5,142.5,142.5
+USA,regional biomassOil,regional biomassOil,OilCrop,wholesale gas,0.123,0.123,0.123,0.123,0.123,0.123,0.123,0.123,0.123,0.123
+USA,regional biomassOil,regional biomassOil,OilCrop,elect_td_ind,0.024,0.024,0.024,0.024,0.024,0.024,0.024,0.024,0.024,0.024
+USA,regional biomassOil,regional biomassOil,Rapeseed,regional rapeseed,61.3,61.3,61.3,61.3,61.3,61.3,61.3,61.3,61.3,61.3
+USA,regional biomassOil,regional biomassOil,Rapeseed,wholesale gas,0.123,0.123,0.123,0.123,0.123,0.123,0.123,0.123,0.123,0.123
+USA,regional biomassOil,regional biomassOil,Rapeseed,elect_td_ind,0.024,0.024,0.024,0.024,0.024,0.024,0.024,0.024,0.024,0.024
+USA,regional biomassOil,regional biomassOil,Soybean,regional soybean,142.5,142.5,142.5,142.5,142.5,142.5,142.5,142.5,142.5,142.5
+USA,regional biomassOil,regional biomassOil,Soybean,wholesale gas,0.123,0.123,0.123,0.123,0.123,0.123,0.123,0.123,0.123,0.123
+USA,regional biomassOil,regional biomassOil,Soybean,elect_td_ind,0.024,0.024,0.024,0.024,0.024,0.024,0.024,0.024,0.024,0.024
+USA,ethanol,cellulosic ethanol,cellulosic ethanol,regional biomass,3.065,3.065,3.065,3.065,2.945,2.83,2.72,2.613,2.511,2.511
+USA,ethanol,cellulosic ethanol,cellulosic ethanol (no constraint),regional biomass,3.065,3.065,3.065,3.065,2.945,2.83,2.72,2.613,2.511,2.511
+USA,ethanol,cellulosic ethanol,cellulosic ethanol CCS level 1,regional biomass,3.3715,3.3715,3.3715,3.3715,3.3715,3.3715,3.3715,3.3715,3.3715,3.3715
+USA,ethanol,cellulosic ethanol,cellulosic ethanol CCS level 2,regional biomass,3.678,3.678,3.678,3.678,3.678,3.678,3.678,3.678,3.678,3.678
+USA,refining,biomass liquids,FT biofuels,regional biomass,1.84,1.84,1.84,1.84,1.751,1.666,1.585,1.508,1.435,1.435
+USA,refining,biomass liquids,FT biofuels CCS level 1,regional biomass,2.039,2.039,2.039,2.039,2.039,2.039,2.039,2.039,2.039,1.809
+USA,refining,biomass liquids,FT biofuels CCS level 2,regional biomass,2.157,2.157,2.157,2.157,2.157,2.157,2.157,2.157,2.157,1.913
+USA,ethanol,corn ethanol,corn ethanol,regional corn for ethanol,1,1,1,1,1,1,1,1,1,1
+USA,ethanol,corn ethanol,corn ethanol,wholesale gas,0.318,0.318,0.318,0.318,0.318,0.318,0.318,0.318,0.318,0.318
+USA,ethanol,corn ethanol,corn ethanol,elect_td_ind,0.026,0.026,0.026,0.026,0.026,0.026,0.026,0.026,0.026,0.026
+USA,ethanol,corn ethanol,corn ethanol (no constraint),regional corn for ethanol,1,1,1,1,1,1,1,1,1,1
+USA,ethanol,corn ethanol,corn ethanol (no constraint),wholesale gas,0.318,0.318,0.318,0.318,0.318,0.318,0.318,0.318,0.318,0.318
+USA,ethanol,corn ethanol,corn ethanol (no constraint),elect_td_ind,0.026,0.026,0.026,0.026,0.026,0.026,0.026,0.026,0.026,0.026
+USA,refining,biomass liquids,biodiesel,regional biomassOil,1.039,1.039,1.026,1.012,1.008,1.003,0.999,0.994,0.989,0.989
+USA,refining,biomass liquids,biodiesel,wholesale gas,0.05767,0.05767,0.05767,0.05767,0.05767,0.05767,0.05767,0.05767,0.05767,0.05767
+USA,refining,biomass liquids,biodiesel,elect_td_ind,0.008,0.008,0.008,0.008,0.008,0.008,0.008,0.008,0.008,0.008
+USA,ethanol,cellulosic ethanol,cellulosic ethanol,Blend Wall Credit,1,1,1,1,1,1,1,1,1,1
+USA,ethanol,corn ethanol,corn ethanol,Blend Wall Credit,1,1,1,1,1,1,1,1,1,1
+USA,ethanol,sugar cane ethanol,sugar cane ethanol,regional sugar for ethanol,1,1,1,1,1,1,1,1,1,1
+USA,ethanol,sugar cane ethanol,sugar cane ethanol,Blend Wall Credit,1,1,1,1,1,1,1,1,1,1
+USA,ethanol,cellulosic ethanol,cellulosic ethanol (residue bio),total biomass,3.065,3.065,3.065,3.065,2.945,2.83,2.72,2.613,2.511,2.511
+USA,ethanol,cellulosic ethanol,cellulosic ethanol (residue bio),Blend Wall Credit,1,1,1,1,1,1,1,1,1,1

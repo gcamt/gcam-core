@@ -76,6 +76,8 @@ class InputOMVar;
 class InputOMFixed;
 class InputCapital;
 class CTaxInput;
+//maw
+class InputNetSubsidy;
 
 /*! 
  * \ingroup Objects
@@ -498,11 +500,11 @@ protected:
     
     DEFINE_DATA(
         /* Declare all subclasses of IInput to allow automatic traversal of the
-         * hierarchy under introspection.
+         * hierarchy under introspection.  maw
          */
         DEFINE_SUBCLASS_FAMILY( IInput, MiniCAMInput, EnergyInput, NonEnergyInput,
                                 RenewableInput, InputSubsidy, InputTax, InputOMVar,
-                                InputOMFixed, InputCapital, CTaxInput )
+                                InputOMFixed, InputCapital, CTaxInput, InputNetSubsidy )
     )
 };
 

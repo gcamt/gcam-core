@@ -1,0 +1,8 @@
+# File: A261.globaltech_cost.csv
+# Title: motor gasoline delivery costs
+# Units: 1975$/GJ
+# Column types: ccccnnnn
+# ----------
+supplysector,subsector,technology,minicam.non.energy.input,1971,1975,2005,2100
+refined liquids gasoline pool,refining,refining,non-energy,1.1,1.1,1.1,1.1
+refined liquids gasoline pool,ethanol,ethanol,non-energy,1.1,1.1,1.1,1.1

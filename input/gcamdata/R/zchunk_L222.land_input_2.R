@@ -56,7 +56,8 @@ module_aglu_L222.land_input_2 <- function(command, ...) {
              FILE = "aglu/A_LandLeaf2",
              FILE = "aglu/A_LT_Mapping",
              "L121.CarbonContent_kgm2_R_LT_GLU",
-             "L125.LC_bm2_R_LT_Yh_GLU"))
+             "L125.LC_bm2_R_LT_Yh_GLU",
+             "L126.ProtectFrac_R_LT_GLU"))
   } else if(command == driver.DECLARE_OUTPUTS) {
     return(c("L222.LN2_Logit",
              "L222.LN2_HistUnmgdAllocation",
@@ -85,6 +86,7 @@ module_aglu_L222.land_input_2 <- function(command, ...) {
     A_LT_Mapping <- get_data(all_data, "aglu/A_LT_Mapping")
     L121.CarbonContent_kgm2_R_LT_GLU <- get_data(all_data, "L121.CarbonContent_kgm2_R_LT_GLU")
     L125.LC_bm2_R_LT_Yh_GLU <- get_data(all_data, "L125.LC_bm2_R_LT_Yh_GLU")
+    L126.ProtectFrac_R_LT_GLU <- get_data(all_data, "L126.ProtectFrac_R_LT_GLU")
 
     # silence package check notes
     GCAM_commodity <- GCAM_region_ID <- region <- value <- year <- GLU <- GLU_name <- GLU_code <-
@@ -93,7 +95,7 @@ module_aglu_L222.land_input_2 <- function(command, ...) {
       soil_c <- veg_c <- LC_bm2 <- LV_milUSD75 <- LV_USD75_bm2 <- LV_USD75_m2 <- HarvCropLand_bm2 <-
       unManagedLandValue <- LandAllocatorRoot <- hist.veg.carbon.density <- hist.soil.carbon.density <-
       veg.carbon.density <- soil.carbon.density <- allocation <- Land_Type.y <- mature.age.year.fillout <-
-      min.veg.carbon.density <- min.soil.carbon.density <- . <- NULL
+      min.veg.carbon.density <- min.soil.carbon.density <- . <- ProtectFract <- NULL
 
 
     # 1. Process inputs
@@ -110,6 +112,11 @@ module_aglu_L222.land_input_2 <- function(command, ...) {
       replace_GLU(map = basin_to_country_mapping) ->
       L125.LC_bm2_R_LT_Yh_GLU
 
+    L126.ProtectFrac_R_LT_GLU %>%
+      left_join_error_no_match(GCAM_region_names, by = "GCAM_region_ID") %>%
+      replace_GLU(map = basin_to_country_mapping) %>%
+      select(region, GLU, ProtectFract) ->
+      L126.ProtectFrac_R_LT_GLU
 
     # 2. Build tables
 
@@ -162,11 +169,21 @@ module_aglu_L222.land_input_2 <- function(command, ...) {
     # L222.LN2_HistUnmgdAllocation_noprot: historical unmanaged land cover, no protect
     # L222.LN2_UnmgdAllocation_noprot: unmanaged land cover, no protect
     L222.LN2_HistUnmgdAllocation %>%
-      mutate(allocation = (1 - aglu.PROTECT_LAND_FRACT) * allocation) ->
+      mutate(GLU = substr(LandNode1,
+                          regexpr("_", LandNode1, fixed = TRUE) + 1,
+                          nchar(LandNode1))) %>%
+      left_join_error_no_match(L126.ProtectFrac_R_LT_GLU, by = c("region", "GLU")) %>%
+      mutate(allocation = allocation * (1 - ProtectFract)) %>%
+      select(LEVEL2_DATA_NAMES[["LN2_HistUnmgdAllocation"]]) ->
       L222.LN2_HistUnmgdAllocation_noprot
 
     L222.LN2_UnmgdAllocation %>%
-      mutate(allocation = (1 - aglu.PROTECT_LAND_FRACT) * allocation) ->
+      mutate(GLU = substr(LandNode1,
+                          regexpr("_", LandNode1, fixed = TRUE) + 1,
+                          nchar(LandNode1))) %>%
+      left_join_error_no_match(L126.ProtectFrac_R_LT_GLU, by = c("region", "GLU")) %>%
+      mutate(allocation = allocation * (1 - ProtectFract)) %>%
+      select(LEVEL2_DATA_NAMES[["LN2_UnmgdAllocation"]]) ->
       L222.LN2_UnmgdAllocation_noprot
 
 
@@ -176,17 +193,25 @@ module_aglu_L222.land_input_2 <- function(command, ...) {
     # L222.LN1_HistUnmgdAllocation_prot: historical unmanaged land cover, protected
     # L222.LN1_UnmgdAllocation_prot: unmanaged land cover, protected
     L222.LN2_HistUnmgdAllocation %>%
+      mutate(GLU = substr(LandNode1,
+                          regexpr("_", LandNode1, fixed = TRUE) + 1,
+                          nchar(LandNode1))) %>%
+      left_join_error_no_match(L126.ProtectFrac_R_LT_GLU, by = c("region", "GLU")) %>%
       mutate(UnmanagedLandLeaf = paste0("Protected", UnmanagedLandLeaf),
              LandNode1 = UnmanagedLandLeaf,
-             allocation = aglu.PROTECT_LAND_FRACT * allocation) %>%
-      select(-LandNode2) ->
+             allocation = ProtectFract * allocation) %>%
+      select(LEVEL2_DATA_NAMES[["LN1_HistUnmgdAllocation"]]) ->
       L222.LN1_HistUnmgdAllocation_prot
 
     L222.LN2_UnmgdAllocation %>%
+      mutate(GLU = substr(LandNode1,
+                          regexpr("_", LandNode1, fixed = TRUE) + 1,
+                          nchar(LandNode1))) %>%
+      left_join_error_no_match(L126.ProtectFrac_R_LT_GLU, by = c("region", "GLU")) %>%
       mutate(UnmanagedLandLeaf = paste0("Protected", UnmanagedLandLeaf),
              LandNode1 = UnmanagedLandLeaf,
-             allocation = aglu.PROTECT_LAND_FRACT * allocation) %>%
-      select(-LandNode2) ->
+             allocation = ProtectFract * allocation) %>%
+      select(LEVEL2_DATA_NAMES[["LN1_UnmgdAllocation"]]) ->
       L222.LN1_UnmgdAllocation_prot
 
     # L222.LN1_Logit_prot: Logit
@@ -356,7 +381,8 @@ module_aglu_L222.land_input_2 <- function(command, ...) {
       add_precursors("common/GCAM_region_names",
                      "water/basin_to_country_mapping",
                      "aglu/A_LandLeaf_Unmgd2",
-                     "L125.LC_bm2_R_LT_Yh_GLU") ->
+                     "L125.LC_bm2_R_LT_Yh_GLU",
+                     "L126.ProtectFrac_R_LT_GLU") ->
       L222.LN2_HistUnmgdAllocation_noprot
 
     L222.LN2_UnmgdAllocation_noprot %>%
@@ -367,7 +393,8 @@ module_aglu_L222.land_input_2 <- function(command, ...) {
       add_precursors("common/GCAM_region_names",
                      "water/basin_to_country_mapping",
                      "aglu/A_LandLeaf_Unmgd2",
-                     "L125.LC_bm2_R_LT_Yh_GLU") ->
+                     "L125.LC_bm2_R_LT_Yh_GLU",
+                     "L126.ProtectFrac_R_LT_GLU") ->
       L222.LN2_UnmgdAllocation_noprot
 
     L222.LN1_Logit_prot %>%
@@ -388,9 +415,10 @@ module_aglu_L222.land_input_2 <- function(command, ...) {
       add_comments("Historical land cover for protected unmanaged land (LT_GLU) in the first nest, from L222.LN2_HistUnmgdAllocation.") %>%
       add_legacy_name("L222.LN1_HistUnmgdAllocation_prot") %>%
       add_precursors("common/GCAM_region_names",
-                      "water/basin_to_country_mapping",
-                      "aglu/A_LandLeaf_Unmgd2",
-                      "L125.LC_bm2_R_LT_Yh_GLU") ->
+                     "water/basin_to_country_mapping",
+                     "aglu/A_LandLeaf_Unmgd2",
+                     "L125.LC_bm2_R_LT_Yh_GLU",
+                     "L126.ProtectFrac_R_LT_GLU") ->
       L222.LN1_HistUnmgdAllocation_prot
 
     L222.LN1_UnmgdAllocation_prot %>%
@@ -399,9 +427,10 @@ module_aglu_L222.land_input_2 <- function(command, ...) {
       add_comments("Land cover in the model base periods for protected unmanaged land (LT_GLU)  in the first nest, from L222.LN2_UnmgdAllocation.") %>%
       add_legacy_name("L222.LN1_UnmgdAllocation_prot") %>%
       add_precursors("common/GCAM_region_names",
-                      "water/basin_to_country_mapping",
-                      "aglu/A_LandLeaf_Unmgd2",
-                      "L125.LC_bm2_R_LT_Yh_GLU") ->
+                     "water/basin_to_country_mapping",
+                     "aglu/A_LandLeaf_Unmgd2",
+                     "L125.LC_bm2_R_LT_Yh_GLU",
+                     "L126.ProtectFrac_R_LT_GLU") ->
       L222.LN1_UnmgdAllocation_prot
 
     L222.LN1_UnmgdCarbon_prot %>%

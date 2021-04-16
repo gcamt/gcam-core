@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<scenario>
+   <world>
+      <region name="USA">
+         <supplysector name="refined liquids gasoline pool">
+            <subsector name="ethanol">
+               <technology name="ethanol">
+                   <period year="2005">
+                       <input-net-subsidy name="Ethanol-Net-Subsidy">
+                           <sector-name>ethanol</sector-name>
+                        </input-net-subsidy>
+                   </period>
+                   <period year="2010">
+                       <input-net-subsidy name="Ethanol-Net-Subsidy">
+                           <sector-name>ethanol</sector-name>
+                       </input-net-subsidy>
+                   </period>
+                   <period year="2015">
+                       <input-net-subsidy name="Ethanol-Net-Subsidy">
+                           <sector-name>ethanol</sector-name>
+                       </input-net-subsidy>
+                   </period>
+                   <period year="2020">
+                       <input-net-subsidy name="Ethanol-Net-Subsidy">
+                           <sector-name>ethanol</sector-name>
+                       </input-net-subsidy>
+                   </period>
+                   <period year="2025">
+                       <input-net-subsidy name="Ethanol-Net-Subsidy">
+                           <sector-name>ethanol</sector-name>
+                       </input-net-subsidy>
+                   </period>
+                   <period year="2030">
+                       <input-net-subsidy name="Ethanol-Net-Subsidy">
+                           <sector-name>ethanol</sector-name>
+                       </input-net-subsidy>
+                   </period>
+                   <period year="2035">
+                       <input-net-subsidy name="Ethanol-Net-Subsidy">
+                           <sector-name>ethanol</sector-name>
+                       </input-net-subsidy>
+                   </period>
+                   <period year="2040">
+                       <input-net-subsidy name="Ethanol-Net-Subsidy">
+                           <sector-name>ethanol</sector-name>
+                       </input-net-subsidy>
+                   </period>
+                   <period year="2045">
+                       <input-net-subsidy name="Ethanol-Net-Subsidy">
+                           <sector-name>ethanol</sector-name>
+                       </input-net-subsidy>
+                   </period>
+                   <period year="2050">
+                       <input-net-subsidy name="Ethanol-Net-Subsidy">
+                           <sector-name>ethanol</sector-name>
+                       </input-net-subsidy>
+                   </period>
+                   <period year="2055">
+                       <input-net-subsidy name="Ethanol-Net-Subsidy">
+                           <sector-name>ethanol</sector-name>
+                       </input-net-subsidy>
+                   </period>
+                   <period year="2060">
+                       <input-net-subsidy name="Ethanol-Net-Subsidy">
+                           <sector-name>ethanol</sector-name>
+                       </input-net-subsidy>
+                   </period>
+                   <period year="2065">
+                       <input-net-subsidy name="Ethanol-Net-Subsidy">
+                           <sector-name>ethanol</sector-name>
+                       </input-net-subsidy>
+                   </period>
+                   <period year="2070">
+                       <input-net-subsidy name="Ethanol-Net-Subsidy">
+                           <sector-name>ethanol</sector-name>
+                       </input-net-subsidy>
+                   </period>
+                   <period year="2075">
+                       <input-net-subsidy name="Ethanol-Net-Subsidy">
+                           <sector-name>ethanol</sector-name>
+                       </input-net-subsidy>
+                   </period>
+                   <period year="2080">
+                       <input-net-subsidy name="Ethanol-Net-Subsidy">
+                           <sector-name>ethanol</sector-name>
+                       </input-net-subsidy>
+                   </period>
+                   <period year="2085">
+                       <input-net-subsidy name="Ethanol-Net-Subsidy">
+                           <sector-name>ethanol</sector-name>
+                       </input-net-subsidy>
+                   </period>
+                   <period year="2090">
+                       <input-net-subsidy name="Ethanol-Net-Subsidy">
+                           <sector-name>ethanol</sector-name>
+                       </input-net-subsidy>
+                   </period>
+                   <period year="2095">
+                       <input-net-subsidy name="Ethanol-Net-Subsidy">
+                           <sector-name>ethanol</sector-name>
+                       </input-net-subsidy>
+                   </period>
+                   <period year="2100">
+                       <input-net-subsidy name="Ethanol-Net-Subsidy">
+                           <sector-name>ethanol</sector-name>
+                       </input-net-subsidy>
+                   </period>
+               </technology>
+            </subsector>
+         </supplysector>
+      </region>
+   </world>
+</scenario>

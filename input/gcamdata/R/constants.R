@@ -136,7 +136,7 @@ aglu.BASE_YEAR_IFA          <- 2006      # Base year of International Fertilizer
 aglu.BIO_START_YEAR         <- 2020
 aglu.CROSIT_HISTORICAL_YEAR <- 2005      # Historical year from the CROSIT data
 aglu.DIET_YEARS             <- seq(max(aglu.AGLU_HISTORICAL_YEARS), 2050, by = 5)
-aglu.FAO_HISTORICAL_YEARS   <- 1961:2011
+aglu.FAO_HISTORICAL_YEARS   <- 1961:2012
 aglu.FAO_LDS_YEARS          <- 1998:2002  # Years for which FAO harvested area data is averaged over for use in the land data system (LDS)
 aglu.GTAP_HISTORICAL_YEAR   <- 2000      # Is the year that the GTAP data is based on.
 aglu.LAND_HISTORY_YEARS     <- c(1700, 1750, 1800, 1850, 1900, 1950, 1975)
@@ -146,7 +146,9 @@ aglu.MODEL_PRICE_YEARS      <- 2008:2011
 aglu.PREAGLU_YEARS          <- c(1700, 1750,1800, 1850, 1900, 1950)          # Cropland cover years prior to first aglu historical year to use in climate model component
 aglu.SPEC_AG_PROD_YEARS     <- seq(max(aglu.AGLU_HISTORICAL_YEARS), 2050, by = 5) # Specified ag productivity years, KD i think this might need a better comment
 aglu.SSP_DEMAND_YEARS       <- seq(2010, 2100, 5) # food demand in the SSPs is calculated at 5-yr intervals
-
+aglu.TRADE_CAL_YEARS        <- 2008:2012 # Years used for calculating base year gross trade. Should ideally include the final base year, but note that the trade data starts in 1986.
+aglu.TRADE_FINAL_BASE_YEAR  <- max(MODEL_BASE_YEARS) # The base year to which gross trade volumes are assigned. Should be within the aglu.TRADE_CAL_YEARS and equal to the final model calibration year
+aglu.TRADED_CROPS           <- c("Corn", "FiberCrop", "MiscCrop", "OilCrop", "OtherGrain", "PalmFruit", "Rapeseed", "Rice", "Root_Tuber", "Soybean", "SugarCrop", "Wheat")
 aglu.LAND_TOLERANCE    <- 0.005
 aglu.MIN_PROFIT_MARGIN <- 0.15  # Unitless and is used to ensure that Agricultural Costs (units 1975USD/kg) don't lead to profits below a minimum profit margin.
 
@@ -200,7 +202,7 @@ aglu.LOW_PROD_GROWTH_MULT <- 0.5 # Multipliers for low ag prod growth scenarios
 # AgLU cost constants
 aglu.BIO_GRASS_COST_75USD_GJ <- 0.75   # Production costs of biomass (from Patrick Luckow's work)
 aglu.BIO_TREE_COST_75USD_GJ  <- 0.67   # Production costs of biomass (from Patrick Luckow's work)
-aglu.FERT_COST               <- 363    # Cost of fertlizer, 2007$ per ton NH3
+aglu.FERT_COST               <- 596    # Cost of fertlizer, 2010$ per ton NH3
 aglu.FOR_COST_75USDM3        <- 29.59  # Forestry cost (1975$/GJ)
 
 # Price at which base year bio frac produced is used.
@@ -295,6 +297,9 @@ aglu.IRR_GHOST_SHARE_MULT <- 0.25
 # 1975$/thou km2 ??
 aglu.UNMANAGED_LAND_VALUE <- 1
 
+aglu.BIO_FUEL_INPUT_GJHA <- 1.5 # default requirement of fuel per hectare of bioenergy production. Source: Adler et al. 2007, Ecological Applications
+aglu.BIO_YIELD_THA <- 10 # default bioenergy yield (in tonnes per hectare) corresponding to above fuel amount. Same source
+
 # default protected, unmanaged land LN1 logit info
 aglu.LN1_PROTUNMGD_LOGIT_EXP  <- 0
 aglu.LN1_PROTUNMGD_LOGIT_TYPE <- NA
@@ -303,13 +308,16 @@ aglu.LN1_PROTUNMGD_LOGIT_TYPE <- NA
 aglu.MGMT_LOGIT_EXP  <- 0.5
 aglu.MGMT_LOGIT_TYPE <- "absolute-cost-logit"
 
+# ratio of energy input coefficient of "hi" technology compared with corresponding "lo" technology
+aglu.FUEL_IO_RATIO_HI_LO <- 2
+
 # XML-related constants
 aglu.CROP_DELIMITER       <- "_"  # delimiter between (some) crop names such as Root_Tuber, biomass_grass, biomass_tree
 aglu.CROP_GLU_DELIMITER   <- "_"  # delimiter between the crop name and GLU name
 aglu.GLU_NDIGITS          <- 3    # number of digits in the geographic land unit identifier codes
 aglu.IRR_DELIMITER        <- "_"  # delimiter between the appended crop x GLU and irrigation level
 aglu.LT_GLU_DELIMITER     <-      # delimiter between the land use type name and GLU name. should be the same as the crop-glu delimiter
-  aglu.MGMT_DELIMITER       <- "_"  # delimiter between appended tech name and management level
+aglu.MGMT_DELIMITER       <- "_"  # delimiter between appended tech name and management level
 
 # AgLU digits constants to control the number of digits for rounding going into XMLs.
 aglu.DIGITS_AGPRODCHANGE  <- 4 # rate of change in yield values
@@ -341,6 +349,8 @@ energy.WIND.BASE.COST.YEAR        <- 2005        # Base cost year for wind, used
 # Constant to select SSP database to use for transportation UCD
 energy.TRN_SSP <- "CORE"
 
+# Indicate whether to modify the costs as per otaq
+
 energy.MIN_WEIGHT_EJ <- 1e-08
 
 # Transportation fixed charge rate information
@@ -352,10 +362,11 @@ energy.DEFAULT_ELECTRIC_EFFICIENCY <- 0.33
 energy.ELECTRICITY_INPUT_FUELS <- c("biomass", "coal", "gas", "refined liquids")
 energy.RSRC_FUELS              <- c("coal", "gas", "refined liquids")
 
-# Assumed base year heat price, used for calculating adjustment to non-energy costs of electricity
-# technologies with secondary output of heat in units of 1975$/EJ
-energy.HEAT_PRICE <- 3.2
-energy.GAS_PRICE  <- 2
+# Assumed base year energy prices (1975$/GJ), used for calculating adjustments to...
+energy.HEAT_PRICE <- 3.2 # non-energy costs of electricity technologies with secondary output of heat
+energy.GAS_PRICE  <- 2 # non-energy costs of fertilizer manufacturing (wellhead price)
+energy.GAS_PIPELINE_COST_ADDER_75USDGJ  <- 0.1  # non-energy costs of fertilizer manufacturing (cost adder for wholesale consumers)
+energy.LIQUID_FUEL_PRICE <- 5 # non-land variable costs of crop production
 
 energy.CO2.STORAGE.MARKET <- "carbon-storage"
 
@@ -377,6 +388,9 @@ energy.MIN_IN_EJ_IND <- 1e-3
 
 # Sets maximum for electricity IO coefficient used in cement sector
 energy.MAX_IOELEC <- 4
+
+# Sets a maximum of agricultural energy use per unit cropland in any region any year, as a multiplier on the value in the USA
+energy.MAX_EN_PER_CRPLND_RATIO_USA <- 1.2
 
 # PV related constants
 energy.HOURS_PER_YEAR          <- 24 * 365

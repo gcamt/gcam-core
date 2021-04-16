@@ -99,9 +99,13 @@ bool SubRenewableResource::XMLDerivedClassParse( const string& nodeName, const D
 /*! Renewable resources should have only grades with well defined cost curves. 
 \todo The extra elements in the vector should be removed. 
 Also remove any grades with zero available by resetting the parameter nograde. */
-void SubRenewableResource::completeInit( const IInfo* aSectorInfo ) {   
+// void SubRenewableResource::completeInit( const IInfo* aSectorInfo ) {
 
-    SubResource::completeInit( aSectorInfo );
+void SubRenewableResource::completeInit( const string& aRegionName, const string& aResourceName, const IInfo* aSectorInfo ) {
+
+//    SubResource::completeInit( aSectorInfo );
+    SubResource::completeInit( aRegionName, aResourceName, aSectorInfo );
+
     
     double lastAvailable = 0;
     

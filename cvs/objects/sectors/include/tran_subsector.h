@@ -78,6 +78,8 @@ public:
                            const MoreSectorInfo* aMoreSectorInfo,
                            const int aPeriod );
     double getPrice( const GDP* aGDP, const int aPeriod ) const;
+    //maw march 2017
+    double getPureTechnologyPrice( const GDP* aGDP, const int aPeriod ) const;
 
     virtual void setOutput( const double aVariableSubsectorDemand,
                             const double aFixedOutputScaleFactor,

@@ -1,0 +1,8 @@
+# File: A261.globaltech_shrwt.csv
+# Title: motor gasoline technology share-weights
+# Units: Unitless
+# Column types: cccnnnn
+# ----------
+supplysector,subsector,technology,1971,2010,2015,2100
+refined liquids gasoline pool,refining,refining,1,1,1,1
+refined liquids gasoline pool,ethanol,ethanol,0,0,1,1

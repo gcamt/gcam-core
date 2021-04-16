@@ -1,0 +1,11 @@
+# File: A222.globaltech_coef.csv
+# Title: Technologies in the global technology database (necessary for the stub-techs to work)
+# Units: unitless in/out
+# Column types: ccccnnn
+# ----------
+supplysector,subsector,technology,minicam.energy.input,1971,2020,2100
+ethanol,cellulosic ethanol,cellulosic ethanol (no constraint),regional biomass,2.057,2.057,1.771
+ethanol,corn ethanol,corn ethanol (no constraint),regional corn for ethanol,1,1,1
+ethanol,corn ethanol,corn ethanol (no constraint),wholesale gas,0.318,0.318,0.318
+ethanol,corn ethanol,corn ethanol (no constraint),elect_td_ind,0.026,0.026,0.026
+ethanol,cellulosic ethanol,cellulosic ethanol (residue bio),total biomass,3.065,3.065,2.511

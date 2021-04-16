@@ -1,0 +1,1 @@
+# File: A261.sector.csv# Title: sector info and logit exponent for motor gasoline# Units: Unitless# Column types: ccccnc # ----------supplysector,output.unit,input.unit,price.unit,logit.exponent,logit.typerefined liquids gasoline pool,EJ,EJ,1975$/GJ,-3,

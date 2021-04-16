@@ -1,0 +1,9 @@
+# File: A222.stubtech_interp.csv
+# Title: USA refining technology share-weight interpolation
+# Units: unitless
+# Column types: cccccccc
+# ----------
+region,supplysector,subsector,technology,apply.to,from.year,to.year,interpolation.function
+USA,ethanol,cellulosic ethanol,cellulosic ethanol,share-weight,final-calibration-year,2015,fixed
+USA,refining,biomass liquids,FT biofuels,share-weight,final-calibration-year,2015,linear
+USA,ethanol,corn ethanol,corn ethanol,share-weight,final-calibration-year,end-year,linear

@@ -49,6 +49,9 @@
 
 #include "marketplace/include/marketplace.h"
 #include "containers/include/scenario.h"
+#include "technologies/include/itechnology_container.h"
+#include "technologies/include/itechnology.h"
+
 
 using namespace std;
 
@@ -122,11 +125,21 @@ void CalibrateResourceVisitor::startVisitSubResource( const SubResource* aSubRes
         double mktPrice = scenario->getMarketplace()->getPrice( mCurrentResourceName, 
                                                                 mCurrentRegionName, 
                                                                 aPeriod );
+        
+        double techCost = 0;
+        if( aSubResource->mTechnology ) {
+            ITechnology* newVintageTech = aSubResource->mTechnology->getNewVintageTechnology( aPeriod );
+            newVintageTech->calcCost( mCurrentRegionName, mCurrentResourceName, aPeriod );
+            techCost = newVintageTech->getCost( aPeriod );
+        }
+
 
         // Finally, calculate the price adder. This is the difference between the
         // effective price and the global price
-        const_cast<SubResource*>( aSubResource )->mPriceAdder[ aPeriod ] = tempEffectivePrice - mktPrice;
-    } 
+    //    const_cast<SubResource*>( aSubResource )->mPriceAdder[ aPeriod ] = tempEffectivePrice - mktPrice;
+        const_cast<SubResource*>( aSubResource )->mPriceAdder[ aPeriod ] = tempEffectivePrice - mktPrice + techCost;
+
+    }
     else {
         // If no calibration, then set price adder to zero
         if ( aSubResource->mPriceAdder[ aPeriod ].isInited() && aSubResource->mPriceAdder[ aPeriod ] != 0 ) {
@@ -195,10 +208,11 @@ void CalibrateResourceVisitor::startVisitSubRenewableResource( const SubRenewabl
         double mktPrice = scenario->getMarketplace()->getPrice( mCurrentResourceName, 
                                                                 mCurrentRegionName, 
                                                                 aPeriod );
-
+        
         // Finally, calculate the price adder. This is the difference between the
         // effective price and the global price
-        const_cast<SubRenewableResource*>( aSubResource )->mPriceAdder[ aPeriod ] = tempEffectivePrice - mktPrice;
+       const_cast<SubRenewableResource*>( aSubResource )->mPriceAdder[ aPeriod ] = tempEffectivePrice - mktPrice;
+       
     }
     else {
         // If no calibration, then set price adder to zero

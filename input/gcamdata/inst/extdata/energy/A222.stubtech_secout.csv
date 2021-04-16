@@ -1,0 +1,12 @@
+# File: A222.stubtech_secout.csv
+# Title: USA refining technology secondary output coefficients
+# Units: unitess ratio (secondary/primary output)
+# Column types: cccccnnnnnnnnnn
+# ----------
+region,supplysector,subsector,technology,secondary.output,2013,2015,2020,2025,2030,2035,2040,2045,2050,2100
+USA,ethanol,corn ethanol,corn ethanol,regional biomassOil,0.0402,0.0402,0.0422,0.0443,0.0443,0.0443,0.0453,0.0453,0.0453,0.0453
+USA,ethanol,corn ethanol,corn ethanol (no constraint),regional biomassOil,0.0402,0.0402,0.0422,0.0443,0.0443,0.0443,0.0453,0.0453,0.0453,0.0453
+USA,ethanol,cellulosic ethanol,cellulosic ethanol,electricity,0.121,0.121,0.121,0.121,0.121,0.121,0.121,0.121,0.121,0.121
+USA,ethanol,cellulosic ethanol,cellulosic ethanol (no constraint),electricity,0.121,0.121,0.121,0.121,0.121,0.121,0.121,0.121,0.121,0.121
+USA,refining,biomass liquids,FT biofuels,electricity,0.022,0.022,0.022,0.022,0.022,0.022,0.022,0.022,0.022,0.022
+USA,ethanol,cellulosic ethanol,cellulosic ethanol (residue bio),electricity,0.121,0.121,0.121,0.121,0.121,0.121,0.121,0.121,0.121,0.121

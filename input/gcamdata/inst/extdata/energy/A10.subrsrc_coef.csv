@@ -1,0 +1,12 @@
+# File: A10.subrsrc_coef.csv
+# Title: Default energy input coefficients of resource production
+# Comments: These are default values; will be over-ridden by calibration in base years
+# Units: NA
+# Column types: ccccnn
+# ----------
+depresource,subresource,technology,minicam.energy.input,1971,2100
+coal,coal,coal,elect_td_ind,0.006,0.006
+coal,coal,coal,refined liquids industrial,0.006,0.006
+crude oil,crude oil,crude oil,refined liquids industrial,0.04,0.04
+crude oil,crude oil,crude oil,wholesale gas,0.02,0.02
+natural gas,natural gas,natural gas,wholesale gas,0.05,0.05

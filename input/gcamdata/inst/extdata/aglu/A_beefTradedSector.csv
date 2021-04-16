@@ -1,0 +1,9 @@
+# File: A_beefTradedSector.csv
+# Title: Supplysector assumptions for traded beef markets (including logit exponent for subsector competition)
+# Units: Various
+# Comments: These sectors compete different regions in supplying the pool of globally traded beef
+# Source: NA
+# Column types: ccccinc
+# ----------
+supplysector,output.unit,input.unit,price.unit,traded,logit.exponent,logit.type
+traded beef,Mt,Mt,1975$/kg,1,-3,

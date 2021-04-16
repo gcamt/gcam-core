@@ -24,7 +24,9 @@ module_socio_batch_SSP_xml <- function(command, ...) {
              "L201.PPPConvert",
              "L201.BaseGDP_GCAM3",
              "L201.LaborProductivity_GCAM3",
-             "L201.Pop_GCAM3"))
+             "L201.Pop_GCAM3",
+             "L201.LaborProductivity_ADAGE",
+             "L201.Pop_ADAGE"))
   } else if(command == driver.DECLARE_OUTPUTS) {
     return(c(XML = "socioeconomics_gSSP1.xml",
              XML = "socioeconomics_gSSP2.xml",
@@ -36,7 +38,8 @@ module_socio_batch_SSP_xml <- function(command, ...) {
              XML = "socioeconomics_SSP3.xml",
              XML = "socioeconomics_SSP4.xml",
              XML = "socioeconomics_SSP5.xml",
-             XML = "socioeconomics_GCAM3.xml"))
+             XML = "socioeconomics_GCAM3.xml",
+             XML = "socioeconomics_ADAGE.xml"))
   } else if(command == driver.MAKE) {
 
     all_data <- list(...)[[1]]
@@ -44,7 +47,7 @@ module_socio_batch_SSP_xml <- function(command, ...) {
     socioeconomics_gSSP1.xml <- socioeconomics_gSSP2.xml <- socioeconomics_gSSP3.xml <-
       socioeconomics_gSSP4.xml <- socioeconomics_gSSP5.xml <- socioeconomics_SSP1.xml <-
       socioeconomics_SSP2.xml <- socioeconomics_SSP3.xml <- socioeconomics_SSP4.xml <-
-      socioeconomics_SSP5.xml <- socioeconomics_GCAM3.xml <- NULL  # silence package check notes
+      socioeconomics_SSP5.xml <- socioeconomics_GCAM3.xml <- socioeconomics_ADAGE.xml <- NULL  # silence package check notes
 
     # Load required inputs
     L201.BaseGDP_Scen <- get_data(all_data, "L201.BaseGDP_Scen")
@@ -53,6 +56,8 @@ module_socio_batch_SSP_xml <- function(command, ...) {
     L201.BaseGDP_GCAM3 <- get_data(all_data, "L201.BaseGDP_GCAM3")
     L201.LaborProductivity_GCAM3 <- get_data(all_data, "L201.LaborProductivity_GCAM3")
     L201.Pop_GCAM3 <- get_data(all_data, "L201.Pop_GCAM3")
+    L201.LaborProductivity_ADAGE <- get_data(all_data, "L201.LaborProductivity_ADAGE")
+    L201.Pop_ADAGE <- get_data(all_data, "L201.Pop_ADAGE")
 
     for(g in c("g", "")) {
       for(ssp in SSP_NUMS) {
@@ -88,13 +93,19 @@ module_socio_batch_SSP_xml <- function(command, ...) {
       add_precursors("L201.Pop_GCAM3", "L201.BaseGDP_GCAM3", "L201.LaborForceFillout", "L201.LaborProductivity_GCAM3", "L201.PPPConvert") ->
       socioeconomics_GCAM3.xml
 
+    # ADAGE xml
+    create_xml("socioeconomics_ADAGE.xml") %>%
+      add_xml_data(L201.Pop_ADAGE, "Pop") %>%
+      add_xml_data(L201.LaborProductivity_ADAGE, "LaborProductivity") %>%
+      add_precursors("L201.Pop_ADAGE", "L201.LaborProductivity_ADAGE") ->
+      socioeconomics_ADAGE.xml
 
     return_data(socioeconomics_gSSP1.xml, socioeconomics_gSSP2.xml,
                 socioeconomics_gSSP3.xml, socioeconomics_gSSP4.xml,
                 socioeconomics_gSSP5.xml, socioeconomics_SSP1.xml,
                 socioeconomics_SSP2.xml, socioeconomics_SSP3.xml,
                 socioeconomics_SSP4.xml, socioeconomics_SSP5.xml,
-                socioeconomics_GCAM3.xml)
+                socioeconomics_GCAM3.xml, socioeconomics_ADAGE.xml)
   } else {
     stop("Unknown command")
   }

@@ -206,7 +206,7 @@ find_csv_file <- function(filename, optional, quiet = FALSE) {
   assert_that(is.logical(optional))
   assert_that(is.logical(quiet))
 
-  extensions <- c("", ".csv")
+  extensions <- c("", ".csv", ".csv.gz")
   for(ex in extensions) {
     fqfn <- system.file("extdata", paste0(filename, ex), package = "gcamdata")
     if(fqfn != "") {
@@ -440,7 +440,7 @@ outputs_of <- function(chunks) {
 screen_forbidden <- function(fn) {
   forbidden <- c("(?<!error_no_)match(?!es)", "ifelse",
                  "melt", "cast",
-                 "rbind", "cbind", "merge",
+                 "rbind(?!list)", "cbind", "merge",
                  "read\\.csv", "write\\.csv",
                  "summarise_each", "mutate_each")
 

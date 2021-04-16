@@ -38,8 +38,8 @@ TBLENDGAS,For Blended Natural Gas,net_gas works,-0.00004186
 TCHARCOAL,Charcoal Production Plants,net_industry_energy transformation,-0.00004186
 TNONSPEC,Non-specified (Transformation),net_industry_energy transformation,-0.00004186
 TOTENGY,Energy Sector,,
-EMINES,Coal Mines,net_industry_energy transformation,-0.00004186
-EOILGASE0,Oil and Gas Extraction,net_industry_energy transformation,-0.00004186
+EMINES,Coal Mines,in_industry_coal,-0.00004186
+EOILGASE0,Oil and Gas Extraction,in_industry_oilgas,-0.00004186
 EBLASTFUR,Blast Furnaces,net_industry_energy transformation,-0.00004186
 EGASWKS,Gas Works,net_gas works,-0.00004186
 EBIOGAS,Gasification Plants for Biogas,net_industry_energy transformation,-0.00004186

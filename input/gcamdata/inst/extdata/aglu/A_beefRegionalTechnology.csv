@@ -1,0 +1,10 @@
+# File: A_beefRegionalTechnology.csv
+# Title: Technology-level assumptions of regional beef markets
+# Units: Various
+# Comments: pass-through subsectors; there is no technology competition
+# Source: NA
+# Column types: ccccnnnc 
+# ----------
+supplysector,subsector,technology,minicam.energy.input,coefficient,input.cost,share.weight,market.name
+regional beef,domestic beef,domestic beef,Beef,1,0,1,regional
+regional beef,imported beef,imported beef,traded beef,1,0,1,USA

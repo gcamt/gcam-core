@@ -13,7 +13,7 @@
 #' @importFrom assertthat assert_that
 #' @importFrom dplyr filter mutate select
 #' @importFrom tidyr gather spread
-#' @author HM & RH June 2017
+#' @author HM & RH June 2017. modified for OTAQ by GPK March 2019
 module_socioeconomics_L201.Pop_GDP_scenarios <- function(command, ...) {
   if(command == driver.DECLARE_INPUTS) {
     return(c(FILE = "common/GCAM_region_names",
@@ -23,7 +23,9 @@ module_socioeconomics_L201.Pop_GDP_scenarios <- function(command, ...) {
              "L102.pcgdp_thous90USD_Scen_R_Y",
              "L102.PPP_MER_R",
              "L101.Pop_thous_GCAM3_R_Y",
-             "L102.gdp_mil90usd_GCAM3_R_Y"))
+             "L102.gdp_mil90usd_GCAM3_R_Y",
+             "L110.Pop_thous_R_Y_ADAGE",
+             "L110.pcgdp_thoususd_R_Y_ADAGE"))
   } else if(command == driver.DECLARE_OUTPUTS) {
     return(c("L201.InterestRate",
              "L201.BaseGDP_Scen",
@@ -31,8 +33,10 @@ module_socioeconomics_L201.Pop_GDP_scenarios <- function(command, ...) {
              "L201.PPPConvert",
              paste0("L201.Pop_gSSP", seq(1, 5)),
              paste0("L201.Pop_SSP", seq(1, 5)),
+             "L201.Pop_ADAGE",
              paste0("L201.LaborProductivity_gSSP", seq(1, 5)),
              paste0("L201.LaborProductivity_SSP", seq(1, 5)),
+             "L201.LaborProductivity_ADAGE",
              "L201.BaseGDP_GCAM3",
              "L201.LaborProductivity_GCAM3",
              "L201.Pop_GCAM3"))
@@ -47,7 +51,7 @@ module_socioeconomics_L201.Pop_GDP_scenarios <- function(command, ...) {
       L201.Pop_SSP3 <- L201.Pop_SSP4 <- L201.Pop_SSP5 <- L201.Pop_gSSP1 <- L201.Pop_gSSP2 <-
       L201.Pop_gSSP3 <- L201.Pop_gSSP4 <- L201.Pop_gSSP5 <- PPPConvert <- PPP_MER <- baseGDP <-
       constRatio <- curr_table <- lag_pcgdp <- rate_pcgdp <- ratio_pcgdp <- region <- scenario <-
-      timesteps <- totalPop <- value <- year <- NULL  # silence package check notes
+      timesteps <- totalPop <- value <- year <- L201.Pop_ADAGE <- L201.LaborProductivity_ADAGE <- NULL  # silence package check notes
 
     # Load required inputs
     GCAM_region_names <- get_data(all_data, "common/GCAM_region_names")
@@ -58,12 +62,18 @@ module_socioeconomics_L201.Pop_GDP_scenarios <- function(command, ...) {
     L102.PPP_MER_R <- get_data(all_data, "L102.PPP_MER_R")
     L101.Pop_thous_GCAM3_R_Y <- get_data(all_data, "L101.Pop_thous_GCAM3_R_Y")
     L102.gdp_mil90usd_GCAM3_R_Y <- get_data(all_data, "L102.gdp_mil90usd_GCAM3_R_Y")
+    L110.Pop_thous_R_Y_ADAGE <- get_data(all_data, "L110.Pop_thous_R_Y_ADAGE")
+    L110.pcgdp_thoususd_R_Y_ADAGE <- get_data(all_data, "L110.pcgdp_thoususd_R_Y_ADAGE")
 
     # ===================================================
     # Set default interest rate for all regions
     L201.InterestRate <- GCAM_region_names %>%
       select(region) %>%
       mutate(interest.rate = socioeconomics.DEFAULT_INTEREST_RATE)
+
+    # Bind the ADAGE scenario data into the SSPs, specifying the "scenario" name
+    L101.Pop_thous_Scen_R_Yfut <- bind_rows(L101.Pop_thous_Scen_R_Yfut, L110.Pop_thous_R_Y_ADAGE)
+    L102.pcgdp_thous90USD_Scen_R_Y <- bind_rows(L102.pcgdp_thous90USD_Scen_R_Y, L110.pcgdp_thoususd_R_Y_ADAGE)
 
     # Stitch together history and future population
     # First, repeat hisotry for all scenarios
@@ -99,7 +109,7 @@ module_socioeconomics_L201.Pop_GDP_scenarios <- function(command, ...) {
       mutate(timesteps = year - lag(year, n = 1L, order_by = c(GCAM_region_ID)),# calculate time step
              lag_pcgdp = lag(value, n = 1L, order_by = c(GCAM_region_ID)), # last period pcgdp
              ratio_pcgdp = value / lag_pcgdp) %>% # ratio of this year to last year
-      filter(year != min(MODEL_BASE_YEARS)) %>% # drop first period with NA ratio
+      filter(year != min(year)) %>% # drop first period with NA ratio
       mutate(rate_pcgdp = round(ratio_pcgdp ^ (1 / timesteps) - 1, socioeconomics.LABOR_PRODUCTIVITY_DIGITS)) %>% # Annualize the ratios to return annual growth rates
       ungroup() %>%
       select(scenario, region, year, laborproductivity = rate_pcgdp)
@@ -121,7 +131,7 @@ module_socioeconomics_L201.Pop_GDP_scenarios <- function(command, ...) {
         select(df, -scenario) %>%
           add_units("Unitless (annual rate of growth)") %>%
           add_comments("Per capita GDP growth rate is used for labor productivity growth rate, by scenario") %>%
-          add_precursors("common/GCAM_region_names", "L102.pcgdp_thous90USD_Scen_R_Y")
+          add_precursors("common/GCAM_region_names", "L102.pcgdp_thous90USD_Scen_R_Y", "L110.pcgdp_thoususd_R_Y_ADAGE")
       })
     # Assign each tibble in list
     for(i in names(L201.pcgdpGrowth_Scen_R_Y_split)) {
@@ -138,7 +148,7 @@ module_socioeconomics_L201.Pop_GDP_scenarios <- function(command, ...) {
         select(df, region, year, totalPop) %>%
           add_units("Thousand persons)") %>%
           add_comments("Population by scenario and region") %>%
-          add_precursors("common/GCAM_region_names", "L101.Pop_thous_R_Yh", "L101.Pop_thous_Scen_R_Yfut")
+          add_precursors("common/GCAM_region_names", "L101.Pop_thous_R_Yh", "L101.Pop_thous_Scen_R_Yfut", "L110.Pop_thous_R_Y_ADAGE")
       })
     # Assign each tibble in list
     for(i in names(L101.Pop_thous_Scen_R_Y_split)) {
@@ -244,7 +254,7 @@ module_socioeconomics_L201.Pop_GDP_scenarios <- function(command, ...) {
                 L201.Pop_SSP1, L201.Pop_SSP2, L201.Pop_SSP3, L201.Pop_SSP4, L201.Pop_SSP5,
                 L201.LaborProductivity_gSSP1, L201.LaborProductivity_gSSP2, L201.LaborProductivity_gSSP3, L201.LaborProductivity_gSSP4, L201.LaborProductivity_gSSP5,
                 L201.LaborProductivity_SSP1, L201.LaborProductivity_SSP2, L201.LaborProductivity_SSP3, L201.LaborProductivity_SSP4, L201.LaborProductivity_SSP5,
-                L201.BaseGDP_GCAM3, L201.LaborProductivity_GCAM3, L201.Pop_GCAM3)
+                L201.BaseGDP_GCAM3, L201.LaborProductivity_GCAM3, L201.Pop_GCAM3, L201.Pop_ADAGE, L201.LaborProductivity_ADAGE)
   } else {
     stop("Unknown command")
   }

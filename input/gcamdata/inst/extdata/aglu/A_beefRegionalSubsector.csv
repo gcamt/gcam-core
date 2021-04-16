@@ -1,0 +1,9 @@
+# File: A_beefRegionalSubsector.csv
+# Title: Subsector assumptions for regional beef markets
+# Units: Various
+# Source: NA
+# Column types: ccncnccccc
+# ----------
+supplysector,subsector,logit.exponent,year.fillout,share.weight,apply.to,from.year,to.year,interpolation.function,logit.type
+regional beef,domestic beef,-6,start-year,1,share-weight,final-calibration-year,end-year,fixed,
+regional beef,imported beef,-6,start-year,1,share-weight,final-calibration-year,end-year,fixed,

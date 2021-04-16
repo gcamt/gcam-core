@@ -563,6 +563,7 @@ void XMLDBOutputter::startVisitResource( const AResource* aResource,
         aResource->getName(), 0, "resource" );
 
     // Store resource units
+    mCurrentSector = aResource->getName();
     mCurrentPriceUnit = aResource->mPriceUnit;
     mCurrentOutputUnit = aResource->mOutputUnit;
 
@@ -602,6 +603,7 @@ void XMLDBOutputter::endVisitResource( const AResource* aResource,
     // Write the closing resource tag.
     XMLWriteClosingTag( aResource->getXMLName(), mBuffer, mTabs.get() );
     // Clear the current resource.
+    mCurrentSector.clear();
     mCurrentPriceUnit.clear();
     mCurrentOutputUnit.clear();
 }

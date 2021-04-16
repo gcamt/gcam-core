@@ -159,6 +159,9 @@ protected:
     double getCalOutput( const int period ) const;
 
     virtual double getPrice( const GDP* aGDP, const int aPeriod ) const;
+    //maw may 29 2017
+    virtual double getPriceWithSubsidyOrTax( const GDP* aGDP, const int aPeriod ) const;
+    
 
 public:
     explicit Sector( const std::string& aRegionName );

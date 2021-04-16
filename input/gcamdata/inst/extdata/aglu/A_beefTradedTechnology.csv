@@ -1,0 +1,9 @@
+# File: A_beefTradedTechnology.csv
+# Title: Technology-level assumptions of traded beef markets
+# Units: Various
+# Comments: pass-through subsectors; there is no technology competition
+# Source: NA
+# Column types: ccccnnni 
+# ----------
+supplysector,subsector,technology,minicam.energy.input,coefficient,input.cost,share.weight,traded
+traded beef,traded beef,traded beef,Beef,1,0,1,1

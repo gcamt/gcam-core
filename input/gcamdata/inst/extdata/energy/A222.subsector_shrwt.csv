@@ -1,0 +1,46 @@
+# File: A222.subsector_shrwt.csv
+# Title: USA refining subsector share-weights
+# Units: none
+# Column types: ccccnn
+# ----------
+region,supplysector,subsector,year.fillout,year,share.weight
+USA,refined liquids gasoline pool,ethanol,,2015,0.2856
+USA,refined liquids gasoline pool,ethanol,,2020,0.2636
+USA,refined liquids gasoline pool,ethanol,,2025,0.2982
+USA,refined liquids gasoline pool,ethanol,,2030,0.343
+USA,refined liquids gasoline pool,ethanol,,2035,0.3739
+USA,refined liquids gasoline pool,ethanol,,2040,0.3388
+USA,refined liquids gasoline pool,ethanol,,2045,0.2984
+USA,refined liquids gasoline pool,ethanol,2050,,0.2793
+USA,ethanol,corn ethanol,,2015,1
+USA,ethanol,corn ethanol,,2020,1
+USA,ethanol,corn ethanol,,2025,1
+USA,ethanol,corn ethanol,,2030,1
+USA,ethanol,corn ethanol,,2035,1
+USA,ethanol,corn ethanol,,2040,1
+USA,ethanol,corn ethanol,,2045,1
+USA,ethanol,corn ethanol,2050,,1
+USA,ethanol,cellulosic ethanol,,2015,0
+USA,ethanol,cellulosic ethanol,,2020,0
+USA,ethanol,cellulosic ethanol,,2025,0
+USA,ethanol,cellulosic ethanol,,2030,0
+USA,ethanol,cellulosic ethanol,,2035,0
+USA,ethanol,cellulosic ethanol,,2040,0
+USA,ethanol,cellulosic ethanol,,2045,0
+USA,ethanol,cellulosic ethanol,2050,,0
+USA,refining,biomass liquids,,2015,0.0321
+USA,refining,biomass liquids,,2020,0.0237
+USA,refining,biomass liquids,,2025,0.0199
+USA,refining,biomass liquids,,2030,0.017
+USA,refining,biomass liquids,,2035,0.0141
+USA,refining,biomass liquids,,2040,0.0119
+USA,refining,biomass liquids,,2045,0.0099
+USA,refining,biomass liquids,2050,,0.0082
+USA,ethanol,sugar cane ethanol,,2015,0
+USA,ethanol,sugar cane ethanol,,2020,0
+USA,ethanol,sugar cane ethanol,,2025,0
+USA,ethanol,sugar cane ethanol,,2030,0
+USA,ethanol,sugar cane ethanol,,2035,0
+USA,ethanol,sugar cane ethanol,,2040,0
+USA,ethanol,sugar cane ethanol,,2045,0
+USA,ethanol,sugar cane ethanol,2050,,0

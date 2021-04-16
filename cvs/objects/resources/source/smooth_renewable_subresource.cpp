@@ -110,9 +110,12 @@ bool SmoothRenewableSubresource::XMLDerivedClassParse( const std::string& nodeNa
 }
 
 // SmoothRenewableSubresource::completeInit
-void SmoothRenewableSubresource::completeInit( const IInfo* aSectorInfo )
+// void SmoothRenewableSubresource::completeInit( const IInfo* aSectorInfo )
+void SmoothRenewableSubresource::completeInit( const std::string& aRegionName, const std::string& aResourceName, const IInfo* aSectorInfo )
 {
-   SubRenewableResource::completeInit( aSectorInfo );
+ //  SubRenewableResource::completeInit( aSectorInfo );
+   SubRenewableResource::completeInit( aRegionName, aResourceName, aSectorInfo );
+    
 
    if ( !( mCostCurve.getMidprice() > 0 && mCostCurve.getCurveExponent() > 0 ) )
    // Invalid input parameter

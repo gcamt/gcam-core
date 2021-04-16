@@ -1,0 +1,68 @@
+<scenario>
+   <world>
+      <region name="USA">
+         <supplysector name="electricity">
+            <subsector name="coal">
+               <interpolation-rule apply-to="share-weight" from-year="2014" to-year="2025">
+                  <from-value>0.01</from-value>
+                  <interpolation-function name="fixed"/>
+               </interpolation-rule>
+               <interpolation-rule apply-to="share-weight" from-year="2025" to-year="2040">
+                  <from-value>0.01</from-value>
+                  <to-value>0.5</to-value>
+                  <interpolation-function name="linear"/>
+               </interpolation-rule>
+               <interpolation-rule apply-to="share-weight" from-year="2039" to-year="2061">
+                  <from-value>0.5</from-value>
+                  <to-value>0.1</to-value>
+                  <interpolation-function name="linear"/>
+               </interpolation-rule>
+            </subsector>
+         </supplysector>
+         <pass-through-sector name="elec_coal (conv pul)">
+            <subsector name="coal (conv pul)">
+               <stub-technology name="coal (conv pul) (once through)">
+                  <period year="2010">
+                  <s-curve-shutdown-decider name="s-curve">
+                     <steepness>0.1</steepness>
+                     <half-life>15</half-life>
+                  </s-curve-shutdown-decider>
+                  </period>
+               </stub-technology>
+               <stub-technology name="coal (conv pul) (seawater)">
+                  <period year="2010">
+                  <s-curve-shutdown-decider name="s-curve">
+                     <steepness>0.1</steepness>
+                     <half-life>15</half-life>
+                  </s-curve-shutdown-decider>
+                  </period>
+               </stub-technology>
+               <stub-technology name="coal (conv pul) (recirculating)">
+                  <period year="2010">
+                  <s-curve-shutdown-decider name="s-curve">
+                     <steepness>0.1</steepness>
+                     <half-life>15</half-life>
+                  </s-curve-shutdown-decider>
+                  </period>
+               </stub-technology>
+               <stub-technology name="coal (conv pul) (cooling pond)">
+                  <period year="2010">
+                  <s-curve-shutdown-decider name="s-curve">
+                     <steepness>0.1</steepness>
+                     <half-life>15</half-life>
+                  </s-curve-shutdown-decider>
+                  </period>
+               </stub-technology>
+               <stub-technology name="coal (conv pul) (dry cooling)">
+                  <period year="2010">
+                  <s-curve-shutdown-decider name="s-curve">
+                     <steepness>0.1</steepness>
+                     <half-life>15</half-life>
+                  </s-curve-shutdown-decider>
+                  </period>
+               </stub-technology>
+            </subsector>
+         </pass-through-sector>
+      </region>
+   </world>
+</scenario>

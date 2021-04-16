@@ -61,7 +61,8 @@ module_aglu_L2231.land_input_3_irr <- function(command, ...) {
              FILE = "aglu/A_LandLeaf_Unmgd3",
              FILE = "aglu/A_LandLeaf3",
              "L121.CarbonContent_kgm2_R_LT_GLU",
-             "L125.LC_bm2_R_LT_Yh_GLU"))
+             "L125.LC_bm2_R_LT_Yh_GLU",
+             "L126.ProtectFrac_R_LT_GLU"))
   } else if(command == driver.DECLARE_OUTPUTS) {
     return(c("L2231.LN3_Logit",
              "L2231.LN3_HistUnmgdAllocation",
@@ -93,6 +94,7 @@ module_aglu_L2231.land_input_3_irr <- function(command, ...) {
     A_LandLeaf3 <- get_data(all_data, "aglu/A_LandLeaf3")
     L121.CarbonContent_kgm2_R_LT_GLU <- get_data(all_data, "L121.CarbonContent_kgm2_R_LT_GLU")
     L125.LC_bm2_R_LT_Yh_GLU <- get_data(all_data, "L125.LC_bm2_R_LT_Yh_GLU")
+    L126.ProtectFrac_R_LT_GLU <- get_data(all_data, "L126.ProtectFrac_R_LT_GLU")
 
     # silence package check notes
     GCAM_commodity <- GCAM_region_ID <- region <- value <- year <- GLU <- GLU_name <- GLU_code <-
@@ -101,7 +103,7 @@ module_aglu_L2231.land_input_3_irr <- function(command, ...) {
       soil_c <- veg_c <- LC_bm2 <- LV_milUSD75 <- LV_USD75_bm2 <- LV_USD75_m2 <- HarvCropLand_bm2 <-
       unManagedLandValue <- LandAllocatorRoot <- hist.veg.carbon.density <- hist.soil.carbon.density <-
       veg.carbon.density <- soil.carbon.density <- allocation <- Land_Type.y <- mature.age.year.fillout <-
-      min.veg.carbon.density <- min.soil.carbon.density <- no.emiss.carbon.calc <- . <- NULL
+      min.veg.carbon.density <- min.soil.carbon.density <- no.emiss.carbon.calc <- . <- ProtectFract <- NULL
 
 
     # Process inputs
@@ -117,6 +119,11 @@ module_aglu_L2231.land_input_3_irr <- function(command, ...) {
       replace_GLU(map = basin_to_country_mapping) ->
       L125.LC_bm2_R_LT_Yh_GLU
 
+    L126.ProtectFrac_R_LT_GLU %>%
+      left_join_error_no_match(GCAM_region_names, by = "GCAM_region_ID") %>%
+      replace_GLU(map = basin_to_country_mapping) %>%
+      select(region, GLU, ProtectFract) ->
+      L126.ProtectFrac_R_LT_GLU
 
     # Build tables
 
@@ -254,7 +261,12 @@ module_aglu_L2231.land_input_3_irr <- function(command, ...) {
     create_noprot_unmgd <- function(data) {
       data %>%
         filter(!grepl("OtherArable", UnmanagedLandLeaf)) %>%
-        mutate(allocation = (1 - aglu.PROTECT_LAND_FRACT) * allocation)
+        mutate(GLU = substr(LandNode1,
+                            regexpr("_", LandNode1, fixed = TRUE) + 1,
+                            nchar(LandNode1))) %>%
+        left_join_error_no_match(L126.ProtectFrac_R_LT_GLU, by = c("region", "GLU")) %>%
+        mutate(allocation = (1 - ProtectFract) * allocation) %>%
+        select(-GLU, -ProtectFract)
     } # end create_noprot
 
 
@@ -273,11 +285,16 @@ module_aglu_L2231.land_input_3_irr <- function(command, ...) {
     create_prot_unmgd <- function(data) {
       data %>%
         filter(!grepl("OtherArable", UnmanagedLandLeaf)) %>%
+        mutate(GLU = substr(LandNode1,
+                            regexpr("_", LandNode1, fixed = TRUE) + 1,
+                            nchar(LandNode1))) %>%
+        left_join_error_no_match(L126.ProtectFrac_R_LT_GLU, by = c("region", "GLU")) %>%
         mutate(UnmanagedLandLeaf = paste0("Protected", UnmanagedLandLeaf),
                LandNode1 = UnmanagedLandLeaf,
                LandNode2 = NULL,
                LandNode3 = NULL,
-               allocation = aglu.PROTECT_LAND_FRACT * allocation)
+               allocation = ProtectFract * allocation) %>%
+        select(-GLU, -ProtectFract)
     }
 
 
@@ -414,7 +431,8 @@ module_aglu_L2231.land_input_3_irr <- function(command, ...) {
       add_comments("Historical unmanaged land data from L223.LN3_HistUnmgdAllocation is multiplied by ") %>%
       add_comments("specified fraction to give unprotected land allocation in the third nest. OtherArableLands omitted.") %>%
       add_legacy_name("L223.LN3_HistUnmgdAllocation_noprot") %>%
-      same_precursors_as(L223.LN3_HistUnmgdAllocation) ->
+      same_precursors_as(L223.LN3_HistUnmgdAllocation) %>%
+      add_precursors("L126.ProtectFrac_R_LT_GLU")  ->
       L2231.LN3_HistUnmgdAllocation_noprot
 
     L223.LN3_UnmgdAllocation_noprot %>%
@@ -423,7 +441,8 @@ module_aglu_L2231.land_input_3_irr <- function(command, ...) {
       add_comments("Unmanaged land data from L223.LN3_UnmgdAllocation is multiplied by specified fraction to give ") %>%
       add_comments("unprotected land allocation in the third nest. OtherArableLands omitted.") %>%
       add_legacy_name("L223.LN3_UnmgdAllocation_noprot") %>%
-      same_precursors_as(L223.LN3_UnmgdAllocation) ->
+      same_precursors_as(L223.LN3_UnmgdAllocation) %>%
+      add_precursors("L126.ProtectFrac_R_LT_GLU")  ->
       L2231.LN3_UnmgdAllocation_noprot
 
     L223.LN1_HistUnmgdAllocation_prot %>%
@@ -432,7 +451,8 @@ module_aglu_L2231.land_input_3_irr <- function(command, ...) {
       add_comments("Historical unmanaged land data from L223.LN3_HistUnmgdAllocation is multiplied by ") %>%
       add_comments("specified fraction to give protected land allocation in the first nest. OtherArableLands omitted.") %>%
       add_legacy_name("L223.LN1_HistUnmgdAllocation_prot") %>%
-      same_precursors_as(L223.LN3_HistUnmgdAllocation) ->
+      same_precursors_as(L223.LN3_HistUnmgdAllocation) %>%
+      add_precursors("L126.ProtectFrac_R_LT_GLU") ->
       L2231.LN1_HistUnmgdAllocation_prot
 
     L223.LN1_UnmgdAllocation_prot %>%
@@ -441,7 +461,8 @@ module_aglu_L2231.land_input_3_irr <- function(command, ...) {
       add_comments("Unmanaged land data from L223.LN3_UnmgdAllocation is multiplied by specified fraction to give ") %>%
       add_comments("protected land allocation in the first nest. OtherArableLands omitted.") %>%
       add_legacy_name("L223.LN1_UnmgdAllocation_prot") %>%
-      same_precursors_as(L223.LN3_UnmgdAllocation) ->
+      same_precursors_as(L223.LN3_UnmgdAllocation) %>%
+      add_precursors("L126.ProtectFrac_R_LT_GLU") ->
       L2231.LN1_UnmgdAllocation_prot
 
     L223.LN1_UnmgdCarbon_prot %>%

@@ -47,6 +47,7 @@
 		<Value name = "residue_bio">../input/gcamdata/xml/resbio_input_IRR_MGMT.xml</Value>
 		<Value name = "animal">../input/gcamdata/xml/an_input.xml</Value>
 		<Value name = "fertilizer">../input/gcamdata/xml/ag_Fert_IRR_MGMT.xml</Value>
+		<Value name = "ag_energy">../input/gcamdata/xml/ag_energy_IRR_MGMT.xml</Value>
 		<Value name = "land1">../input/gcamdata/xml/land_input_1.xml</Value>
 		<Value name = "land2">../input/gcamdata/xml/land_input_2.xml</Value>
 		<Value name = "land3">../input/gcamdata/xml/land_input_3_IRR.xml</Value>
@@ -56,6 +57,8 @@
 		<Value name = "protected_land3">../input/gcamdata/xml/protected_land_input_3.xml</Value>
 		<Value name = "demand">../input/gcamdata/xml/demand_input.xml</Value>
 		<Value name = "bio_trade">../input/gcamdata/xml/bio_trade.xml</Value>
+		<Value name = "ag_trade">../input/gcamdata/xml/ag_trade.xml</Value>
+		<Value name = "freight_inputs">../input/gcamdata/xml/ag_en_freight_inputs.xml</Value>
 
 		<Value name = "ind_urb_proc">../input/gcamdata/xml/ind_urb_processing_sectors.xml</Value>
 		<Value name = "nonco2_energy">../input/gcamdata/xml/all_energy_emissions.xml</Value>

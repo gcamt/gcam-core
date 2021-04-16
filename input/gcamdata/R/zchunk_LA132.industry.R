@@ -6,17 +6,18 @@
 #' @param ... other optional parameters, depending on command
 #' @return Depends on \code{command}: either a vector of required inputs,
 #' a vector of output names, or (if \code{command} is "MAKE") all
-#' the generated outputs: \code{L132.in_EJ_R_indenergy_F_Yh}, \code{L132.in_EJ_R_indfeed_F_Yh}. The corresponding file in the
+#' the generated outputs: \code{L132.in_EJ_R_indenergy_F_Yh}, \code{L132.in_EJ_R_indfeed_F_Yh}, \code{L132.in_EJ_R_agenergy_F_Yh}. The corresponding file in the
 #' original data system was \code{LA132.industry.R} (energy level1).
 #' @details The chunk calculates industrial feedstock consumption directly separated from enduse energy comsuption and
 #'          industrial energy consumption by deducting net energy use by unconventional oil production, gas processing, refining, and CHP
 #' @importFrom assertthat assert_that
 #' @importFrom dplyr filter mutate select
 #' @importFrom tidyr gather spread
-#' @author LF September 2017
+#' @author LF September 2017; GPK added ag energy use and oil/gas/coal energy use in March 2019
 module_energy_LA132.industry <- function(command, ...) {
   if(command == driver.DECLARE_INPUTS) {
-    return(c(FILE = "energy/A_regions",
+    return(c(FILE = "common/GCAM_region_names",
+             FILE = "energy/A_regions",
              FILE = "energy/enduse_fuel_aggregation",
              FILE = "energy/enduse_sector_aggregation",
              "L121.in_EJ_R_unoil_F_Yh",
@@ -26,15 +27,19 @@ module_energy_LA132.industry <- function(command, ...) {
              "L123.in_EJ_R_indchp_F_Yh",
              "L124.in_EJ_R_heat_F_Yh",
              "L131.in_EJ_R_Senduse_F_Yh",
-             "L131.share_R_Senduse_heat_Yh"))
+             "L131.share_R_Senduse_heat_Yh",
+             "L125.LC_bm2_R_LT_Yh_GLU"))
   } else if(command == driver.DECLARE_OUTPUTS) {
     return(c("L132.in_EJ_R_indenergy_F_Yh",
-             "L132.in_EJ_R_indfeed_F_Yh"))
+             "L132.in_EJ_R_indfeed_F_Yh",
+             "L132.in_EJ_R_agenergy_F_Yh",
+             "L132.in_EJ_R_rsrcenergy_F_Yh"))
   } else if(command == driver.MAKE) {
 
     all_data <- list(...)[[1]]
 
     # Load required inputs
+    GCAM_region_names <- get_data(all_data, "common/GCAM_region_names")
     A_regions <- get_data(all_data, "energy/A_regions")
     enduse_fuel_aggregation <- get_data(all_data, "energy/enduse_fuel_aggregation")
     enduse_sector_aggregation <- get_data(all_data, "energy/enduse_sector_aggregation")
@@ -46,21 +51,35 @@ module_energy_LA132.industry <- function(command, ...) {
     L124.in_EJ_R_heat_F_Yh <- get_data(all_data, "L124.in_EJ_R_heat_F_Yh")
     L131.in_EJ_R_Senduse_F_Yh <- get_data(all_data, "L131.in_EJ_R_Senduse_F_Yh")
     L131.share_R_Senduse_heat_Yh <- get_data(all_data, "L131.share_R_Senduse_heat_Yh")
+    L125.LC_bm2_R_LT_Yh_GLU <- get_data(all_data, "L125.LC_bm2_R_LT_Yh_GLU")
 
     # ===================================================
     # 0. Give binding for variable names used in pipeline
     sector <- sector_agg <- electricity <- heat <- bld <-
       trn <- fuel <- industry <- GCAM_region_ID <- year <-
-      value <- value.x <- value.y <- has_district_heat <- fuel.y <- fuel.x <- NULL
+      value <- value.x <- value.y <- has_district_heat <- fuel.y <- fuel.x <-
+      Land_Type <- energy_EJ <- cropland_bm2 <- coef_GJm2 <- coef_revised <-
+      ag_energy_revised <- NULL
 
     # 1. Perform computations
 
     # Calculation of industrial energy consumption
+    # 3/6/2019 modification for ag energy use - in "no-aglu" regions, re-map any assigned agricultural energy use
+    # back to the generic industrial energy use category
+    industry_energy_name <- enduse_sector_aggregation$sector_agg[enduse_sector_aggregation$sector == "in_industry_general"]
+    industry_feedstocks_name <- enduse_sector_aggregation$sector_agg[grepl("feedstock", enduse_sector_aggregation$sector)]
+    industry_ag_name <- enduse_sector_aggregation$sector_agg[grepl("agricult", enduse_sector_aggregation$sector)]
+    industry_rsrc_names <- enduse_sector_aggregation$sector_agg[grepl("oilgas", enduse_sector_aggregation$sector) |
+                                                                  grepl("coal", enduse_sector_aggregation$sector)]
+
+    no_ag_regID <- GCAM_region_names$GCAM_region_ID[GCAM_region_names$region %in% aglu.NO_AGLU_REGIONS]
+
     L131.in_EJ_R_Senduse_F_Yh %>%
       filter(grepl("industry", sector)) %>%
       left_join_error_no_match(enduse_sector_aggregation, by = "sector") %>%
       select(-sector) %>%
       rename(sector = sector_agg) %>%
+      mutate(sector = if_else(GCAM_region_ID %in% no_ag_regID & sector == industry_ag_name, industry_energy_name, sector)) %>%
       left_join(enduse_fuel_aggregation, by = "fuel") %>% # left_join_error_no_match caused error so left_join was used
       select(-electricity, -heat, -bld, -trn, -fuel) %>%
       rename(fuel = industry) %>%
@@ -70,15 +89,62 @@ module_energy_LA132.industry <- function(command, ...) {
       L132.in_EJ_R_ind_F_Yh
 
     # Split dataframe into energy and feedstocks for adjustments (feedstocks do not get adjusted)
+    # 3/6/2019 - agricultural energy use is also split out here. it gets adjusted manually below, but not thereafter.
+    # 3/27/2019 - energy for resource production (oil, gas, coal) is also split out here.
     L132.in_EJ_R_ind_F_Yh %>%
-      filter(grepl("feedstocks", sector)) %>%
+      filter(sector == industry_feedstocks_name) %>%
       mutate(sector = sub("in_", "", sector)) ->
       L132.in_EJ_R_indfeed_F_Yh
 
     L132.in_EJ_R_ind_F_Yh %>%
-      filter(grepl("energy", sector)) %>%
+      filter(sector == industry_energy_name) %>%
       mutate(sector = sub("in_", "", sector)) ->
       L132.in_EJ_R_indenergy_F_Yh
+
+    L132.in_EJ_R_ind_F_Yh %>%
+      filter(sector == industry_ag_name) %>%
+      mutate(sector = sub("in_", "", sector)) ->
+      L132.in_EJ_R_agenergy_F_Yh
+
+    L132.in_EJ_R_ind_F_Yh %>%
+      filter(sector %in% industry_rsrc_names) %>%
+      mutate(sector = sub("in_", "", sector)) ->
+      L132.in_EJ_R_rsrcenergy_F_Yh
+
+    # 3/6/2019: agricultural energy use per unit cropland is very high in some regions; South Korea, Japan, Northern
+    # Africa and Colombia all have more than 2x as much energy per unit cropland as the USA. This is likely not actually
+    # correct, and would cause issues later on if not addressed up front. Specifically, fuel costs would be very high,
+    # potentially causing negative values for other production costs, profit rates, or both. The method below assigns
+    # a maximum of the USA's energy per unit cropland times an exogenous multiplier.
+    L132.coef_GJm2_R_Y <- filter(L125.LC_bm2_R_LT_Yh_GLU, Land_Type == "HarvCropLand",
+                                 year %in% HISTORICAL_YEARS) %>%
+      group_by(GCAM_region_ID, year) %>%
+      summarise(cropland_bm2 = sum(value)) %>%
+      ungroup() %>%
+      left_join_error_no_match(L132.in_EJ_R_agenergy_F_Yh, by = c("GCAM_region_ID", "year")) %>%
+      rename(energy_EJ = value) %>%
+      mutate(coef_GJm2 = energy_EJ / cropland_bm2) %>%
+      group_by(year) %>%
+      mutate(coef_revised = if_else(coef_GJm2 > coef_GJm2[ GCAM_region_ID == gcam.USA_CODE] * energy.MAX_EN_PER_CRPLND_RATIO_USA,
+                                    coef_GJm2[ GCAM_region_ID == gcam.USA_CODE] * energy.MAX_EN_PER_CRPLND_RATIO_USA,
+                                    coef_GJm2)) %>%
+      ungroup() %>%
+      mutate(ag_energy_revised = coef_revised * cropland_bm2,
+             ind_energy_add = round(energy_EJ - ag_energy_revised, 9)) # need to round to avoid 1e-15 values here
+
+    # Split this into two data tables: one of energy to add, another of revised agricultural energy use
+    L132.in_EJ_R_agenergy_F_Yh <- select(L132.coef_GJm2_R_Y,
+                                         GCAM_region_ID, sector, fuel, year, value = "ag_energy_revised")
+
+    L132.in_EJ_R_ind_energy_add_F_Yh <- select(L132.coef_GJm2_R_Y,
+                                               GCAM_region_ID, sector, fuel, year, value = "ind_energy_add") %>%
+      mutate(sector = unique(L132.in_EJ_R_indenergy_F_Yh$sector))
+
+    # Revised industrial energy = original estimate plus energy re-assigned back from the ag sector
+    L132.in_EJ_R_indenergy_F_Yh <- bind_rows(L132.in_EJ_R_indenergy_F_Yh, L132.in_EJ_R_ind_energy_add_F_Yh) %>%
+      group_by(GCAM_region_ID, sector, fuel, year) %>%
+      summarise(value = sum(value)) %>%
+      ungroup()
 
     # Compile the net energy use by unconventional oil production, gas processing, refining, and CHP that were derived elsewhere
     # This energy will need to be deducted from industrial energy use
@@ -206,7 +272,22 @@ module_energy_LA132.industry <- function(command, ...) {
       add_precursors("L131.in_EJ_R_Senduse_F_Yh", "energy/enduse_sector_aggregation", "energy/enduse_fuel_aggregation") ->
       L132.in_EJ_R_indfeed_F_Yh
 
-    return_data(L132.in_EJ_R_indenergy_F_Yh, L132.in_EJ_R_indfeed_F_Yh)
+    L132.in_EJ_R_agenergy_F_Yh %>%
+      add_title("Agricultural sector energy consumption by GCAM region / fuel / historical year") %>%
+      add_units("EJ") %>%
+      add_comments("Disaggregated from general industrial energy use for assignment to the agricultural sector") %>%
+      same_precursors_as("L132.in_EJ_R_indenergy_F_Yh") %>%
+      add_precursors("common/GCAM_region_names", "L125.LC_bm2_R_LT_Yh_GLU") ->
+      L132.in_EJ_R_agenergy_F_Yh
+
+    L132.in_EJ_R_rsrcenergy_F_Yh %>%
+      add_title("Resource (oil, gas, coal) production energy consumption by GCAM region / resource / fuel / historical year") %>%
+      add_units("EJ") %>%
+      add_comments("Disaggregated from general industrial energy use for assignment to resource production") %>%
+      same_precursors_as("L132.in_EJ_R_indenergy_F_Yh") ->
+      L132.in_EJ_R_rsrcenergy_F_Yh
+
+    return_data(L132.in_EJ_R_indenergy_F_Yh, L132.in_EJ_R_indfeed_F_Yh, L132.in_EJ_R_agenergy_F_Yh, L132.in_EJ_R_rsrcenergy_F_Yh)
   } else {
     stop("Unknown command")
   }

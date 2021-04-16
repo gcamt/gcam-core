@@ -426,10 +426,17 @@ void Technology::completeInit( const string& aRegionName,
         mOutputs[ i ]->completeInit( aSectorName, aRegionName, localInfo, !hasNoInputOrOutput( 0 ) );
     }
     
+/*    for( CGHGIterator it = mGHG.begin(); it != mGHG.end(); ++it ) {
+        (*it)->completeInit( aRegionName, aSectorName, localInfo );
+    } */
+
+    bool hasCO2Object = false;
     for( CGHGIterator it = mGHG.begin(); it != mGHG.end(); ++it ) {
         (*it)->completeInit( aRegionName, aSectorName, localInfo );
+        hasCO2Object |= (*it)->getName() == "CO2";
     }
 
+    
     // Initialize the production function. Uses a virtual method so that
     // subclasses can override the production function used.
     mProductionFunction = getProductionFunction();
@@ -1357,6 +1364,42 @@ double Technology::getCost( const int aPeriod ) const
     // iteration.
     assert( mCosts[ aPeriod ] != -1 );
     return mCosts[ aPeriod ];
+}
+
+/*! maw march 2017
+ * \brief Get the pure technology cost of the technology for a period.
+ * \details Returns the previously calculated cost for a period, but nets
+ *          out any subsidies (which are negative costs) or taxes
+ *          so that only technology and fuel costs are considered
+ * \pre calcCost has been called for the iteration.
+ * \param aPeriod Model period.
+ * \author Marshall Wise
+ * \return The total Pure Technology cost.
+ */
+double Technology::getPureTechnologyCost(const string& aRegionName,
+                                         const string& aSectorName,
+                                         const int aPeriod ) const
+{
+    // Check that the cost has been calculated for the period. This could still
+    // be a stale cost however if the cost has not been calculated for the
+    // iteration.
+    //assert( mCosts[ aPeriod ] != -1 );
+    
+    //double cost = mCosts[ aPeriod ];
+    
+    double cost = getCost( aPeriod );
+    
+    // Deduct subsidy and tax costs.
+    for( unsigned int i = 0; i < mInputs.size(); ++i ) {
+        if( mInputs[ i ]->hasTypeFlag( IInput::SUBSIDY ) || mInputs[ i ]->hasTypeFlag( IInput::TAX ) ) {
+            // TODO: Leontief assumption.
+            cost -= mInputs[ i ]->getPrice( aRegionName, aPeriod )
+            * mInputs[ i ]->getCoefficient( aPeriod )
+            / mAlphaZero;
+        }
+    }
+    
+    return cost;
 }
 
 /*!

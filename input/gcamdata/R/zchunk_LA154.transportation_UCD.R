@@ -17,17 +17,14 @@
 #' @author RH May 2017
 module_energy_LA154.transportation_UCD <- function(command, ...) {
 
-  UCD_trn_data_name <- paste0("UCD_trn_data_", energy.TRN_SSP)
-
   if(command == driver.DECLARE_INPUTS) {
     return(c(FILE = "common/iso_GCAM_regID",
              FILE = "energy/mappings/calibrated_techs_trn_agg",
              FILE = "energy/enduse_fuel_aggregation",
              FILE = "energy/mappings/UCD_ctry",
              FILE = "energy/mappings/UCD_techs",
-             # This file is currently using a constant to select the correct SSP database
-             # All SSP databases will be included in the input files
-             UCD_trn_data_name,
+             FILE = "energy/UCD_trn_data_OTAQ",
+             FILE = "energy/A54.OTAQ_trn_data",
              "L101.in_EJ_ctry_trn_Fi_Yh",
              "L1011.in_EJ_ctry_intlship_TOT_Yh",
              "L131.in_EJ_R_Senduse_F_Yh",
@@ -59,13 +56,21 @@ module_energy_LA154.transportation_UCD <- function(command, ...) {
     enduse_fuel_aggregation <- get_data(all_data, "energy/enduse_fuel_aggregation")
     UCD_ctry <- get_data(all_data, "energy/mappings/UCD_ctry")
     UCD_techs <- get_data(all_data, "energy/mappings/UCD_techs")
-    UCD_trn_data <- get_data(all_data, UCD_trn_data_name) %>%
+    A54.OTAQ_trn_data <- get_data(all_data, "energy/A54.OTAQ_trn_data") %>%
+      gather_years
+    UCD_trn_data <- get_data(all_data, "energy/UCD_trn_data_OTAQ") %>%
       gather_years
     L101.in_EJ_ctry_trn_Fi_Yh <- get_data(all_data, "L101.in_EJ_ctry_trn_Fi_Yh")
     L1011.in_EJ_ctry_intlship_TOT_Yh <- get_data(all_data, "L1011.in_EJ_ctry_intlship_TOT_Yh")
     L131.in_EJ_R_Senduse_F_Yh <- get_data(all_data, "L131.in_EJ_R_Senduse_F_Yh")
     L100.Pop_thous_ctry_Yh <- get_data(all_data, "L100.Pop_thous_ctry_Yh")
     # ===================================================
+    # 8/20/2019 modification - replace assumptions in UCD_trn_data with the ones specified in A54.OTAQ_trn_data
+    UCD_trn_data <- anti_join(UCD_trn_data, A54.OTAQ_trn_data,
+                              by = c("UCD_region", "UCD_sector", "mode", "size.class",
+                                     "UCD_technology", "UCD_fuel", "variable", "unit", "year")) %>%
+      bind_rows(A54.OTAQ_trn_data)
+
     # Part 1: downscaling country-level transportation energy data to UCD transportation technologies, then scaling to transportation
     # enduse data.
 
@@ -354,8 +359,8 @@ module_energy_LA154.transportation_UCD <- function(command, ...) {
       add_precursors("common/iso_GCAM_regID", "L101.in_EJ_ctry_trn_Fi_Yh",
                      "L1011.in_EJ_ctry_intlship_TOT_Yh", "L131.in_EJ_R_Senduse_F_Yh",
                      "energy/mappings/calibrated_techs_trn_agg", "energy/enduse_fuel_aggregation",
-                     "energy/mappings/UCD_ctry", "energy/mappings/UCD_techs",
-                     UCD_trn_data_name) ->
+                     "energy/mappings/UCD_ctry", "energy/mappings/UCD_techs", "energy/A54.OTAQ_trn_data",
+                     "energy/UCD_trn_data_OTAQ") ->
       L154.in_EJ_R_trn_m_sz_tech_F_Yh
 
     IEA_hist_data_times_UCD_shares %>%
@@ -364,7 +369,7 @@ module_energy_LA154.transportation_UCD <- function(command, ...) {
       add_comments("Aggregated country-level transportation energy data to UCD transportation technologies") %>%
       add_legacy_name("L154.in_EJ_ctry_trn_m_sz_tech_F") %>%
       add_precursors("common/iso_GCAM_regID", "L101.in_EJ_ctry_trn_Fi_Yh",
-                     UCD_trn_data_name, "energy/mappings/calibrated_techs_trn_agg",
+                     "energy/UCD_trn_data_OTAQ", "energy/mappings/calibrated_techs_trn_agg",
                      "energy/mappings/UCD_ctry", "energy/mappings/UCD_techs",
                      "L1011.in_EJ_ctry_intlship_TOT_Yh") ->
       L154.in_EJ_ctry_trn_m_sz_tech_F
@@ -374,7 +379,7 @@ module_energy_LA154.transportation_UCD <- function(command, ...) {
       add_units("MJ/vkm") %>%
       add_comments("UCD transportation database data aggregated to GCAM region") %>%
       add_legacy_name("L154.intensity_MJvkm_R_trn_m_sz_tech_F_Y") %>%
-      add_precursors(UCD_trn_data_name, "energy/mappings/UCD_ctry",
+      add_precursors("energy/UCD_trn_data_OTAQ", "energy/mappings/UCD_ctry",
                      "common/iso_GCAM_regID", "energy/mappings/calibrated_techs_trn_agg", "energy/enduse_fuel_aggregation",
                      "energy/mappings/UCD_techs",
                      "L131.in_EJ_R_Senduse_F_Yh", "common/iso_GCAM_regID", "energy/mappings/calibrated_techs_trn_agg",
@@ -388,7 +393,7 @@ module_energy_LA154.transportation_UCD <- function(command, ...) {
       add_units("pers/veh or tonnes/veh") %>%
       add_comments("UCD transportation database data aggregated to GCAM region") %>%
       add_legacy_name("L154.loadfactor_R_trn_m_sz_tech_F_Y") %>%
-      add_precursors(UCD_trn_data_name, "energy/mappings/UCD_ctry",
+      add_precursors("energy/UCD_trn_data_OTAQ", "energy/mappings/UCD_ctry",
                      "common/iso_GCAM_regID", "energy/mappings/calibrated_techs_trn_agg", "energy/enduse_fuel_aggregation",
                      "energy/mappings/UCD_techs",
                      "L131.in_EJ_R_Senduse_F_Yh", "common/iso_GCAM_regID", "energy/mappings/calibrated_techs_trn_agg",
@@ -402,7 +407,7 @@ module_energy_LA154.transportation_UCD <- function(command, ...) {
       add_units("2005USD/vkm") %>%
       add_comments("UCD transportation database data aggregated to GCAM region") %>%
       add_legacy_name("L154.cost_usdvkm_R_trn_m_sz_tech_F_Y") %>%
-      add_precursors(UCD_trn_data_name, "energy/mappings/UCD_ctry",
+      add_precursors("energy/UCD_trn_data_OTAQ", "energy/mappings/UCD_ctry",
                      "common/iso_GCAM_regID", "energy/mappings/calibrated_techs_trn_agg", "energy/enduse_fuel_aggregation",
                      "energy/mappings/UCD_techs",
                      "L131.in_EJ_R_Senduse_F_Yh", "common/iso_GCAM_regID", "energy/mappings/calibrated_techs_trn_agg",
@@ -416,7 +421,7 @@ module_energy_LA154.transportation_UCD <- function(command, ...) {
       add_units("km/hr") %>%
       add_comments("UCD transportation database data aggregated to GCAM region") %>%
       add_legacy_name("L154.speed_kmhr_R_trn_m_sz_tech_F_Y") %>%
-      add_precursors(UCD_trn_data_name, "energy/mappings/UCD_ctry",
+      add_precursors("energy/UCD_trn_data_OTAQ", "energy/mappings/UCD_ctry",
                      "common/iso_GCAM_regID", "energy/mappings/calibrated_techs_trn_agg", "energy/enduse_fuel_aggregation",
                      "energy/mappings/UCD_techs",
                      "L131.in_EJ_R_Senduse_F_Yh", "common/iso_GCAM_regID", "energy/mappings/calibrated_techs_trn_agg",
@@ -431,7 +436,7 @@ module_energy_LA154.transportation_UCD <- function(command, ...) {
       add_comments("UCD transportation data combined with population data") %>%
       add_legacy_name("L154.out_mpkm_R_trn_nonmotor_Yh") %>%
       add_precursors("common/iso_GCAM_regID", "energy/mappings/UCD_ctry",
-                     UCD_trn_data_name,
+                     "energy/UCD_trn_data_OTAQ",
                      "L100.Pop_thous_ctry_Yh") ->
       L154.out_mpkm_R_trn_nonmotor_Yh
 

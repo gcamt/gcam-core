@@ -54,6 +54,9 @@
 #include "functions/include/input_subsidy.h"
 #include "functions/include/input_tax.h"
 #include "functions/include/ctax_input.h"
+#include "functions/include/input_net_subsidy.h"
+#include "functions/include/dummy_input.h"
+//maw
 
 using namespace std;
 
@@ -85,10 +88,17 @@ bool InputFactory::isOfType( const std::string& aType ) {
     if( aType == InputSubsidy::getXMLNameStatic() ) {
         return true;
     }
+    // maw may 2017
+    if( aType == InputNetSubsidy::getXMLNameStatic() ) {
+        return true;
+    }
     if( aType == InputTax::getXMLNameStatic() ) {
         return true;
     }
     if( aType == CTaxInput::getXMLNameStatic() ) {
+        return true;
+    }
+    if( aType == DummyInput::getXMLNameStatic() ) {
         return true;
     }
     return false;
@@ -122,11 +132,18 @@ auto_ptr<IInput> InputFactory::create( const std::string& aType ) {
     if( aType == InputSubsidy::getXMLNameStatic() ){
         return auto_ptr<IInput>( new InputSubsidy );
     }
+    // maw may 2017
+    if( aType == InputNetSubsidy::getXMLNameStatic() ){
+        return auto_ptr<IInput>( new InputNetSubsidy );
+    }
     if( aType == InputTax::getXMLNameStatic() ){
         return auto_ptr<IInput>( new InputTax );
     }
     if( aType == CTaxInput::getXMLNameStatic() ){
         return auto_ptr<IInput>( new CTaxInput );
+    }
+    if( aType == DummyInput::getXMLNameStatic() ){
+        return auto_ptr<IInput>( new DummyInput );
     }
 
     // Check for consistency.

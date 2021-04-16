@@ -82,6 +82,8 @@ protected:
     virtual double getEnergyInput( const int aPeriod ) const;
     virtual double getOutput( const int aPeriod ) const;
     virtual double getPrice( const GDP* aGDP, const int aPeriod ) const;
+    //maw may 29 2017
+    virtual double getPriceWithSubsidyOrTax( const GDP* aGDP, const int aPeriod ) const;
     virtual void setMarket();
     virtual bool XMLDerivedClassParse( const std::string& nodeName, const xercesc::DOMNode* curr ); 
 

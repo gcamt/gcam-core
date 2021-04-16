@@ -38,6 +38,7 @@ module_energy_L222.en_transformation <- function(command, ...) {
              FILE = "energy/A22.globaltech_interp",
              FILE = "energy/A22.globaltech_co2capture",
              FILE = "energy/A22.globaltech_retirement",
+             "L121.share_R_TPES_biofuel_tech",
              "L122.out_EJ_R_gasproc_F_Yh",
              "L122.out_EJ_R_refining_F_Yh",
              "L122.IO_R_oilrefining_F_Yh"))
@@ -61,7 +62,8 @@ module_energy_L222.en_transformation <- function(command, ...) {
              "L222.StubTechProd_gasproc",
              "L222.StubTechProd_refining",
              "L222.StubTechCoef_refining",
-             "L222.GlobalTechCost_low_en"))
+             "L222.GlobalTechCost_low_en",
+             "L222.AbsCostLogitBaseValue_ethanol"))
   } else if(command == driver.MAKE) {
 
     all_data <- list(...)[[1]]
@@ -71,7 +73,8 @@ module_energy_L222.en_transformation <- function(command, ...) {
     median.shutdown.point <- minicam.energy.input <- minicam.non.energy.input <- object <-
     profit.shutdown.steepness <- region <- remove.fraction <- sector <- sector.name <- share.weight <-
     shutdown.rate <- steepness <- stub.technology <- subsector <- subsector.name <- supplysector <-
-    technology <- to.value <- value <- year <- year.fillout <- year.share.weight <- year.x <- year.y <- NULL
+    technology <- to.value <- value <- year <- year.fillout <- year.share.weight <- year.x <- year.y <-
+    logit.type <- ethanol <- region_ethanol <- Biofuel <- biodiesel <- region_biodiesel <- NULL
 
     # Load required inputs
     GCAM_region_names <- get_data(all_data, "common/GCAM_region_names")
@@ -88,6 +91,7 @@ module_energy_L222.en_transformation <- function(command, ...) {
     A22.globaltech_interp <- get_data(all_data, "energy/A22.globaltech_interp")
     A22.globaltech_co2capture <- get_data(all_data, "energy/A22.globaltech_co2capture")
     A22.globaltech_retirement <- get_data(all_data, "energy/A22.globaltech_retirement")
+    L121.share_R_TPES_biofuel_tech <- get_data(all_data, "L121.share_R_TPES_biofuel_tech")
     L122.out_EJ_R_gasproc_F_Yh <- get_data(all_data, "L122.out_EJ_R_gasproc_F_Yh")
     L122.out_EJ_R_refining_F_Yh <- get_data(all_data, "L122.out_EJ_R_refining_F_Yh")
     L122.IO_R_oilrefining_F_Yh <- get_data(all_data, "L122.IO_R_oilrefining_F_Yh")
@@ -104,21 +108,48 @@ module_energy_L222.en_transformation <- function(command, ...) {
     # 2b. Subsector information
     # L222.SubsectorLogit_en: Subsector logit exponents of energy transformation sectors
 
+    # The first-gen ethanol techs are subsectors in the revised structure for OTAQ. The steps below
+    # filter out the region x subsector combinations that are not applicable.
+    firstgen_ethanol_subsectors <- c("corn ethanol", "sugar cane ethanol")
+    region_ethanol_tech <- distinct(filter(L122.out_EJ_R_refining_F_Yh,
+                                           grepl("ethanol", sector))) %>%
+      left_join_error_no_match(GCAM_region_names, by = "GCAM_region_ID") %>%
+      select(region, ethanol = sector) %>%
+      bind_rows(select(A_regions, region, ethanol)) %>%
+      distinct() %>%
+      mutate(region_ethanol = paste(region, ethanol)) %>%
+      pull(region_ethanol)
+
+    region_biodiesel_tech <- L121.share_R_TPES_biofuel_tech %>%
+      filter(Biofuel == "biodiesel") %>%
+      left_join_error_no_match(GCAM_region_names, by = "GCAM_region_ID") %>%
+      select(region, biodiesel = Biofuel) %>%
+      bind_rows(select(A_regions, region, biodiesel)) %>%
+      distinct() %>%
+      mutate(region_biodiesel = paste(region, biodiesel)) %>%
+      pull(region_biodiesel)
+
     A22.subsector_logit %>%
-      write_to_all_regions(c(LEVEL2_DATA_NAMES[["SubsectorLogit"]], LOGIT_TYPE_COLNAME), GCAM_region_names) ->
+      write_to_all_regions(c(LEVEL2_DATA_NAMES[["SubsectorLogit"]], LOGIT_TYPE_COLNAME), GCAM_region_names) %>%
+      filter(!(subsector %in% firstgen_ethanol_subsectors) |
+               paste(region, subsector) %in% region_ethanol_tech) ->
       L222.SubsectorLogit_en
 
     if(any(!is.na(A22.subsector_shrwt$year))) {
       A22.subsector_shrwt %>%
         filter(!is.na(year)) %>%
-        write_to_all_regions(c(LEVEL2_DATA_NAMES[["SubsectorShrwt"]]), GCAM_region_names) ->
+        write_to_all_regions(c(LEVEL2_DATA_NAMES[["SubsectorShrwt"]]), GCAM_region_names) %>%
+        filter(!(subsector %in% firstgen_ethanol_subsectors) |
+                 paste(region, subsector) %in% region_ethanol_tech) ->
         L222.SubsectorShrwt_en
     }
 
     if(any(!is.na(A22.subsector_shrwt$year.fillout))) {
       A22.subsector_shrwt %>%
         filter(!is.na(year.fillout)) %>%
-        write_to_all_regions(c(LEVEL2_DATA_NAMES[["SubsectorShrwtFllt"]]), GCAM_region_names) ->
+        write_to_all_regions(c(LEVEL2_DATA_NAMES[["SubsectorShrwtFllt"]]), GCAM_region_names) %>%
+        filter(!(subsector %in% firstgen_ethanol_subsectors) |
+                 paste(region, subsector) %in% region_ethanol_tech) ->
         L222.SubsectorShrwtFllt_en
       }
 
@@ -127,14 +158,18 @@ module_energy_L222.en_transformation <- function(command, ...) {
     if(any(is.na(A22.subsector_interp$to.value))) {
     A22.subsector_interp %>%
       filter(is.na(to.value)) %>%
-      write_to_all_regions(c(LEVEL2_DATA_NAMES[["SubsectorInterp"]]), GCAM_region_names) ->
+      write_to_all_regions(c(LEVEL2_DATA_NAMES[["SubsectorInterp"]]), GCAM_region_names) %>%
+        filter(!(subsector %in% firstgen_ethanol_subsectors) |
+                 paste(region, subsector) %in% region_ethanol_tech) ->
       L222.SubsectorInterp_en
     }
 
     if(any(!is.na(A22.subsector_interp$to.value))) {
     A22.subsector_interp %>%
       filter(!is.na(to.value)) %>%
-      write_to_all_regions(c(LEVEL2_DATA_NAMES[["SubsectorInterpTo"]]), GCAM_region_names) ->
+      write_to_all_regions(c(LEVEL2_DATA_NAMES[["SubsectorInterpTo"]]), GCAM_region_names) %>%
+        filter(!(subsector %in% firstgen_ethanol_subsectors) |
+                 paste(region, subsector) %in% region_ethanol_tech) ->
       L222.SubsectorInterpTo_en
     }
 
@@ -150,7 +185,7 @@ module_energy_L222.en_transformation <- function(command, ...) {
       rename(stub.technology = technology) %>%
       # Drops region x technology combinations that are not applicable, i.e. any first gen bio techs not listed for a region in A_regions
       filter(!(stub.technology %in% firstgenbio_techs) | paste(region, stub.technology) %in%
-               c(paste(A_regions$region, A_regions$ethanol), paste(A_regions$region, A_regions$biodiesel))) ->
+               c(region_ethanol_tech, region_biodiesel_tech)) ->
       L222.StubTech_en
 
     # L222.GlobalTechInterp_en: Technology shareweight interpolation of energy transformation sectors
@@ -386,6 +421,18 @@ module_energy_L222.en_transformation <- function(command, ...) {
     # reorders columns to match expected model interface input
     L222.StubTechCoef_refining <- L222.StubTechCoef_refining[c(LEVEL2_DATA_NAMES[["StubTechYr"]], "minicam.energy.input", "coefficient", "market.name")]
 
+    # 3/10/2018 modification - gpk - not all regions have ethanol, and using an absolute-cost-logit on a zero-output sector
+    # with multiple subsectors returns a default value of -1 for the "base-value" (i.e., the base cost for the competition).
+    # The steps below simply set the base-value to an exogenous level that won't get over-written.
+
+    EthanolBaseValue_75USDGJ <- 6.5 # taken from the model output for the USA in the 2015 time period in a typical run
+
+    L222.AbsCostLogitBaseValue_ethanol <- write_to_all_regions(subset(A22.sector,
+                                                                       supplysector == 'ethanol' & logit.type == "absolute-cost-logit"),
+                                                                c("region", "supplysector"),
+                                                                GCAM_region_names) %>%
+      mutate(base.value = EthanolBaseValue_75USDGJ)
+
     # ===================================================
 
     # Produce outputs
@@ -471,7 +518,7 @@ module_energy_L222.en_transformation <- function(command, ...) {
       add_comments("Writes out subset of stub technologies to all regions where those technologies exist") %>%
       add_comments("removes some first gen bio techs from regions where they do not exist") %>%
       add_legacy_name("L222.StubTech_en") %>%
-      add_precursors("energy/A22.globaltech_shrwt", "energy/A_regions") ->
+      add_precursors("energy/A22.globaltech_shrwt", "energy/A_regions", "L121.share_R_TPES_biofuel_tech") ->
       L222.StubTech_en
 
     L222.GlobalTechInterp_en %>%
@@ -602,13 +649,20 @@ module_energy_L222.en_transformation <- function(command, ...) {
       add_precursors("energy/A22.globaltech_cost_low") ->
       L222.GlobalTechCost_low_en
 
+    L222.AbsCostLogitBaseValue_ethanol %>%
+      add_title("Exogenous base-value for absolute cost logit in ethanol sectors") %>%
+      add_units("1975 USD/GJ") %>%
+      add_comments("This is used in regions with zero ethanol production in the base year") %>%
+      add_precursors("energy/A22.sector") ->
+      L222.AbsCostLogitBaseValue_ethanol
+
     return_data(L222.Supplysector_en, L222.SubsectorLogit_en, L222.SubsectorShrwt_en,
                 L222.SubsectorShrwtFllt_en, L222.SubsectorInterp_en, L222.SubsectorInterpTo_en,
                 L222.StubTech_en, L222.GlobalTechInterp_en, L222.GlobalTechCoef_en, L222.GlobalTechCost_en,
                 L222.GlobalTechShrwt_en, L222.GlobalTechCapture_en, L222.GlobalTechShutdown_en,
                 L222.GlobalTechSCurve_en, L222.GlobalTechLifetime_en, L222.GlobalTechProfitShutdown_en,
                 L222.StubTechProd_gasproc, L222.StubTechProd_refining, L222.StubTechCoef_refining,
-                L222.GlobalTechCost_low_en)
+                L222.GlobalTechCost_low_en, L222.AbsCostLogitBaseValue_ethanol)
   } else {
     stop("Unknown command")
   }

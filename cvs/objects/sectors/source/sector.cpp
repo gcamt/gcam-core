@@ -421,6 +421,34 @@ double Sector::getPrice( const GDP* aGDP, const int aPeriod ) const {
         // is constant so skipping it will not avoid any side effects. What?
         if( subsecShares[ i ] > util::getSmallNumber() ){
             sumSubsecShares += subsecShares[ i ];
+            // maw march 2017
+            //double currPrice = mSubsectors[ i ]->getPrice( aGDP, aPeriod );
+            double currPrice = mSubsectors[ i ]->getPureTechnologyPrice( aGDP, aPeriod );
+            sectorPrice += subsecShares[ i ] * currPrice;
+        }
+    }
+    
+    return sectorPrice;
+}
+
+/*! \brief Calculate and return weighted average price of subsectors including subsidies/taxes.
+ * \details maw may 29 207
+ * \param period Model period
+ * \return The weighted sector price.
+ * \author Sonny Kim, Josh Lurz, James Blackwood, Marshall Wise
+ * \param period Model period
+ * \return Weighted sector price.
+ */
+double Sector::getPriceWithSubsidyOrTax( const GDP* aGDP, const int aPeriod ) const {
+    const vector<double> subsecShares = calcSubsectorShares( aGDP, aPeriod );
+    double sectorPrice = 0;
+    double sumSubsecShares = 0;
+    for ( unsigned int i = 0; i < mSubsectors.size(); ++i ){
+        // Subsectors with no share cannot affect price. The getPrice function
+        // is constant so skipping it will not avoid any side effects. What?
+        if( subsecShares[ i ] > util::getSmallNumber() ){
+            sumSubsecShares += subsecShares[ i ];
+            // this price is how the core has computed it in past (subsidy or tax was included)
             double currPrice = mSubsectors[ i ]->getPrice( aGDP, aPeriod );
             sectorPrice += subsecShares[ i ] * currPrice;
         }

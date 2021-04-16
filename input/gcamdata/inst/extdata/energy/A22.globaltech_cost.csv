@@ -1,25 +1,25 @@
 # File: A22.globaltech_cost.csv
 # Title: Primary energy transformation technologies default cost assumptions
 # Units: 1975$/GJ
-# Column types: ccccnnnnnc 
+# Column types: ccccnnnnnnnnnnnnnc
 # ----------
-supplysector,subsector,technology,minicam.non.energy.input,1971,2010,2100,improvement.max,improvement.rate,improvement.shadow.technology
-gas processing,natural gas,natural gas,non-energy,0.2,0.2,0.2,,,
-gas processing,biomass gasification,biomass gasification,non-energy,7.0300865,7.0300865,,0.7,0.03,
-gas processing,coal gasification,coal gasification,non-energy,5.285779323,5.285779323,,0.7,0.03,
-nuclearFuelGenII,enrichedUranium,enrichedUranium,non-energy,0.124464,0.124464,0.124464,,,
-nuclearFuelGenIII,enrichedUranium,enrichedUranium,non-energy,0.124464,0.124464,0.124464,,,
-refining,oil refining,oil refining,non-energy,0.84,0.84,0.84,,,
-refining,coal to liquids,coal to liquids,non-energy,5.294117647,5.294117647,,0.7,0.03,
-refining,coal to liquids,coal to liquids CCS level 1,non-energy,5.980615385,5.980615385,,0.6,0.05,coal to liquids
-refining,coal to liquids,coal to liquids CCS level 2,non-energy,6.467671233,6.467671233,,0.6,0.05,coal to liquids
-refining,gas to liquids,gas to liquids,non-energy,3.970588235,3.970588235,,0.7,0.03,
-refining,biomass liquids,cellulosic ethanol,non-energy,4.74,4.74,,0.7,0.03,
-refining,biomass liquids,cellulosic ethanol CCS level 1,non-energy,4.991818182,4.991818182,,0.6,0.05,cellulosic ethanol
-refining,biomass liquids,cellulosic ethanol CCS level 2,non-energy,6.850561798,6.850561798,,0.6,0.05,cellulosic ethanol
-refining,biomass liquids,FT biofuels,non-energy,7.802307692,7.802307692,,0.7,0.03,
-refining,biomass liquids,FT biofuels CCS level 1,non-energy,8.516923077,8.516923077,,0.6,0.05,FT biofuels
-refining,biomass liquids,FT biofuels CCS level 2,non-energy,8.97527027,8.97527027,,0.6,0.05,FT biofuels
-refining,biomass liquids,corn ethanol,non-energy,2.38,2.38,2.38,,,
-refining,biomass liquids,sugar cane ethanol,non-energy,0,0,0,,,
-refining,biomass liquids,biodiesel,non-energy,1.88,1.88,1.88,,,
+supplysector,subsector,technology,minicam.non.energy.input,1971,2010,2015,2020,2025,2030,2035,2040,2045,2050,2100,improvement.max,improvement.rate,improvement.shadow.technology
+gas processing,natural gas,natural gas,non-energy,0.2,0.2,0.2,0.2,0.2,0.2,0.2,0.2,0.2,0.2,0.2,,,
+gas processing,biomass gasification,biomass gasification,non-energy,7.0300865,7.0300865,6.7322,6.4763,6.2566,6.0679,5.9059,5.7668,5.6473,5.5447,,0.7,0.03,
+gas processing,coal gasification,coal gasification,non-energy,5.285779323,5.285779323,5.0618,4.8694,4.7042,4.5624,4.4405,4.3359,4.2461,4.169,,0.7,0.03,
+nuclearFuelGenII,enrichedUranium,enrichedUranium,non-energy,0.124464,0.124464,0.124464,0.124464,0.124464,0.124464,0.124464,0.124464,0.124464,0.124464,0.124464,,,
+nuclearFuelGenIII,enrichedUranium,enrichedUranium,non-energy,0.124464,0.124464,0.124464,0.124464,0.124464,0.124464,0.124464,0.124464,0.124464,0.124464,0.124464,,,
+refining,oil refining,oil refining,non-energy,0.84,0.84,0.84,0.84,0.84,0.84,0.84,0.84,0.84,0.84,0.84,,,
+refining,coal to liquids,coal to liquids,non-energy,5.294117647,5.294117647,6.6,6.1,5.6,5.2,5,4.7,4.6,4.4,,0.7,0.03,
+refining,coal to liquids,coal to liquids CCS level 1,non-energy,5.980615385,5.980615385,7.455833847,6.890997949,6.326162052,5.874293334,5.648358975,5.309457436,5.196490257,4.970555898,,0.6,0.05,coal to liquids
+refining,coal to liquids,coal to liquids CCS level 2,non-energy,6.467671233,6.467671233,8.063030137,7.452194521,6.841358904,6.352690411,6.108356165,5.741854795,5.619687671,5.375353425,,0.6,0.05,coal to liquids
+refining,gas to liquids,gas to liquids,non-energy,3.970588235,3.970588235,5.3,4.8,4.5,4.2,4,3.8,3.7,3.5,,0.7,0.03,
+ethanol,cellulosic ethanol,cellulosic ethanol,non-energy,4.74,4.74,4.5391,4.3666,4.2185,4.0913,3.982,3.8882,3.8077,3.7385,,0.7,0.03,
+ethanol,cellulosic ethanol,cellulosic ethanol CCS level 1,non-energy,4.991818182,4.991818182,4.7682,4.578,4.4162,4.2785,4.1611,4.0609,3.9755,3.9025,,0.6,0.05,cellulosic ethanol
+ethanol,cellulosic ethanol,cellulosic ethanol CCS level 2,non-energy,6.850561798,6.850561798,6.4587,6.1384,5.8759,5.6603,5.4826,5.3358,5.2142,5.1133,,0.6,0.05,cellulosic ethanol
+refining,biomass liquids,FT biofuels,non-energy,7.802307692,7.802307692,7.7,7.1,6.6,6.1,5.8,5.5,5.4,5.2,,0.7,0.03,
+refining,biomass liquids,FT biofuels CCS level 1,non-energy,8.516923077,8.516923077,8.405244997,7.750290841,7.204495712,6.658700582,6.331223504,6.003746426,5.8945874,5.676269349,,0.6,0.05,FT biofuels
+refining,biomass liquids,FT biofuels CCS level 2,non-energy,8.97527027,8.97527027,8.857582116,8.167380912,7.592213243,7.017045573,6.671944971,6.326844369,6.211810835,5.981743767,,0.6,0.05,FT biofuels
+ethanol,corn ethanol,corn ethanol,non-energy,2.38,2.38,2.38,2.38,2.38,2.38,2.38,2.38,2.38,2.38,2.38,,,
+ethanol,sugar cane ethanol,sugar cane ethanol,non-energy,0,0,0,0,0,0,0,0,0,0,0,,,
+refining,biomass liquids,biodiesel,non-energy,1.88,1.88,1.88,1.88,1.88,1.88,1.88,1.88,1.88,1.88,1.88,,,

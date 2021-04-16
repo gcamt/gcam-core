@@ -1,4 +1,4 @@
-library(devtools)
+library(usethis)
 library(gcamdata)
 LOGIT_TYPE_COLNAME <- gcamdata:::LOGIT_TYPE_COLNAME
 
@@ -71,6 +71,8 @@ generate_level2_data_names <- function() {
   level2_data_names[["SmthRenewRsrcTechChange"]] <- c(level2_data_names[["SmthRenewRsrc"]], "year.fillout", "techChange")
   level2_data_names[["DepRsrcEnvironCost"]] <- c("region", "depresource", "subresource", "year.fillout", "environCost")
   level2_data_names[["SmthRenewRsrcCurvesGdpElast"]] <- c("region", "renewresource", "smooth.renewable.subresource", "year.fillout", "maxSubResource", "mid.price", "curve.exponent", "gdpSupplyElast")
+  level2_data_names[["SubDepRsrcCoef"]] <- c(level2_data_names[["SubDepRsrc"]], "technology", "year", "minicam.energy.input", "coefficient", "market.name")
+  level2_data_names[["SubDepRsrcDummyInfo"]] <- c(level2_data_names[["SubDepRsrc"]], "technology", "year", "dummy.input", "share.weight", "hack")
 
   # Supplysectors
   level2_data_names[["Supplysector"]] <- c("region", "supplysector", "output.unit", "input.unit", "price.unit", "logit.year.fillout", "logit.exponent")
@@ -83,6 +85,7 @@ generate_level2_data_names <- function() {
   level2_data_names[["ElecReserve"]] <- c("region", "supplysector", "electricity.reserve.margin", "average.grid.capacity.factor")
   level2_data_names[["SectorUseTrialMarket"]] <- c("region", "supplysector", "use.trial.market")
   level2_data_names[["DeleteSupplysector"]] <- c("region", "supplysector")
+  level2_data_names[["AbsCostLogitBaseValue"]] <- c("region", "supplysector", "base.value")
 
   # Subsectors
   level2_data_names[["Subsector"]] <- c("region", "supplysector", "subsector")
@@ -119,6 +122,7 @@ generate_level2_data_names <- function() {
   # Market name is specified for efficiencies or coefficients
   level2_data_names[["TechCoef"]] <- c(level2_data_names[["TechYr"]], "minicam.energy.input", "coefficient", "market.name")
   level2_data_names[["TechEff"]] <- c(level2_data_names[["TechYr"]], "minicam.energy.input", "efficiency", "market.name")
+  level2_data_names[["TechPMult"]] <- c(level2_data_names[["TechYr"]], "minicam.energy.input", "price.unit.conversion")
   level2_data_names[["TechCost"]] <- c(level2_data_names[["TechYr"]], "minicam.non.energy.input", "input.cost")
   level2_data_names[["CarbonCapture"]] <- c(level2_data_names[["TechYr"]], "storage.market", "remove.fraction")
   level2_data_names[["ImportTech"]] <- c(level2_data_names[["TechYr"]]) #indicates a renewable input; nothing is specified in the table however
@@ -209,6 +213,7 @@ generate_level2_data_names <- function() {
   level2_data_names[["StubTechElecMarket"]] <- c(level2_data_names[["StubTechYr"]], "electric.sector.market")
   level2_data_names[["StubTechFractSecOut"]] <- c(level2_data_names[["StubTechYr"]], "fractional.secondary.output", "output.ratio")
   level2_data_names[["StubTechFractProd"]] <- c("region", "supplysector", "subsector", "stub.technology", "year", "fractional.secondary.output", "price", "fraction.produced")
+  level2_data_names[["StubTechFractCalPrice"]] <- c("region", "supplysector", "subsector", "stub.technology", "year", "fractional.secondary.output", "calPrice")
   level2_data_names[["StubTechIntGainOutputRatio"]] <- c("region", "supplysector", "subsector", "technology", "year", "internal.gains.output.ratio", "internal.gains.market.name")
   level2_data_names[["StubTechSecOut"]] <- c("region", "supplysector", "subsector", "stub.technology", "year", "secondary.output.name", "secondary.output")
   level2_data_names[["StubTechSecMarket"]] <- c(level2_data_names[["StubTechYr"]], "secondary.output", "market.name")
@@ -219,7 +224,10 @@ generate_level2_data_names <- function() {
   level2_data_names[["StubTranTechCost"]] <- c("region", "supplysector", "tranSubsector", "stub.technology", "year", "minicam.non.energy.input", "input.cost")
   level2_data_names[["StubTranTechLoadFactor"]] <- c("region", "supplysector", "tranSubsector", "stub.technology", "year", "loadFactor")
   level2_data_names[["StubTranTechProd"]] <- c("region", "supplysector", "tranSubsector", "stub.technology", "year", "calOutputValue")
+  level2_data_names[["StubTranTechRES"]] <- c("region", "supplysector", "tranSubsector", "stub.technology", "year", "res.secondary.output", "output.ratio", "pMultiplier")
   level2_data_names[["DeleteStubTech"]] <- level2_data_names[["StubTech"]]
+  level2_data_names[["StubTechSCurve"]] <- c(level2_data_names[["StubTechYr"]], "lifetime", "steepness", "half.life")
+  level2_data_names[["StubTechProfitShutdown"]] <- c(level2_data_names[["StubTechYr"]], "median.shutdown.point", "profit.shutdown.steepness")
 
   # Agricultural sectors, subsectors, and technologies
   level2_data_names[["AgSupplySector"]] <- c("region", "AgSupplySector", "output.unit", "input.unit", "price.unit", "calPrice", "market", "logit.year.fillout", "logit.exponent")
@@ -239,7 +247,7 @@ generate_level2_data_names <- function() {
   level2_data_names[["AgProduction"]] <- c(level2_data_names[["AgTechYr"]], "calOutputValue", "share.weight.year", "subs.share.weight", "tech.share.weight")
   level2_data_names[["AgHAtoCL"]] <- c(level2_data_names[["AgTechYr"]], "harvests.per.year")
   level2_data_names[["AgYield"]] <- c(level2_data_names[["AgTechYr"]], "yield")
-  level2_data_names[["AgCoef"]] <- c(level2_data_names[["AgTechYr"]], "minicam.energy.input", "coefficient", "market.name")
+  level2_data_names[["AgNonEnergyCost"]] <- c(level2_data_names[["AgTechYr"]], "minicam.non.energy.input", "input.cost")
   level2_data_names[["AgProdChange"]] <- c(level2_data_names[["AgTechYr"]], "AgProdChange")
   level2_data_names[["AgCost"]] <- c(level2_data_names[["AgTechYr"]], "nonLandVariableCost")
   level2_data_names[["AgCoef"]] <- c(level2_data_names[["AgTechYr"]], "minicam.energy.input", "coefficient")
@@ -444,11 +452,12 @@ PREBUILT_DATA <- driver(write_outputs = FALSE,
                           # output of module_energy_LA118.hydro
                           "L118.out_EJ_R_elec_hydro_Yfut",
 
-                          # outputs of module_energy_LA121.oil
+                          # outputs of module_energy_LA121.liquids
                           "L121.in_EJ_R_unoil_F_Yh",
                           "L121.in_EJ_R_TPES_crude_Yh",
-                          "L121.in_EJ_R_TPES_unoil_Yh"
+                          "L121.in_EJ_R_TPES_unoil_Yh",
+                          "L121.share_R_TPES_biofuel_tech"
                         ))
 
 # Save these objects for use as internal package data
-devtools::use_data(GCAM_DATA_MAP, LEVEL2_DATA_NAMES, PREBUILT_DATA, overwrite = TRUE, internal = TRUE)
+usethis::use_data(GCAM_DATA_MAP, LEVEL2_DATA_NAMES, PREBUILT_DATA, overwrite = TRUE, internal = TRUE)

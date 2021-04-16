@@ -68,12 +68,12 @@ test_that("set_years", {
   d <- tibble(x = c("start-year", "final-calibration-year", "final-historical-year",
                     "initial-future-year", "initial-nonhistorical-year", "end-year"))
   d1 <- set_years(d)
-  expect_identical(d1$x, as.character(c(min(MODEL_BASE_YEARS),
-                                        max(MODEL_BASE_YEARS),
-                                        max(HISTORICAL_YEARS),
-                                        min(MODEL_FUTURE_YEARS),
-                                        min(MODEL_YEARS[MODEL_YEARS > max(HISTORICAL_YEARS)]),
-                                        max(MODEL_FUTURE_YEARS))))
+  expect_identical(d1$x, c(min(MODEL_BASE_YEARS),
+                           max(MODEL_BASE_YEARS),
+                           max(HISTORICAL_YEARS),
+                           min(MODEL_FUTURE_YEARS),
+                           min(MODEL_YEARS[MODEL_YEARS > max(HISTORICAL_YEARS)]),
+                           max(MODEL_FUTURE_YEARS)))
 
   # Handles an empty tibble
   expect_silent(set_years(tibble()))
@@ -355,8 +355,8 @@ test_that("write_to_all_states", {
               price.exp.year.fillout = "price.exp.year.fillout")
   dout <- write_to_all_states(d, names = c("region", "logit.year.fillout", "price.exp.year.fillout"))
   expect_equal(dim(dout), c(length(gcamusa.STATES), ncol(d)))
-  expect_identical(dout$logit.year.fillout, as.character(rep(min(MODEL_BASE_YEARS), nrow(dout))))
-  expect_identical(dout$price.exp.year.fillout, as.character(rep(min(MODEL_BASE_YEARS), nrow(dout))))
+  expect_identical(dout$logit.year.fillout, rep(min(MODEL_BASE_YEARS), nrow(dout)))
+  expect_identical(dout$price.exp.year.fillout, rep(min(MODEL_BASE_YEARS), nrow(dout)))
 
   # ungrouped return
   expect_null(groups(dout))
@@ -369,12 +369,17 @@ test_that("set_subsector_shrwt", {
   # needs to have region, supplysector, subsector, year
   expect_error(set_subsector_shrwt(tibble()))
 
-  # should produce subs.share.weight - no data
+  # needs to have a value column for aggregation (usually `calOutputValue`)
   d <- tibble(region = 1, supplysector = 1, subsector = 1, year = 1)
+  expect_error(set_subsector_shrwt(d))
+
+  # should produce subs.share.weight of 0 where calOutputValue = 0
+  d <- tibble(region = 1, supplysector = 1, subsector = 1, year = 1, calOutputValue = 0)
   dout <- set_subsector_shrwt(d)
   expect_identical(names(dout), c(names(d), "subs.share.weight"))
   expect_equal(dout$subs.share.weight, 0)
 
+  # should produce subs.share.weight of 1 where calOutputValue = 1
   d <- tibble(region = 1, supplysector = 1, subsector = 1, year = 1, calOutputValue = 1)
   dout <- set_subsector_shrwt(d)
   expect_equal(dout$subs.share.weight, 1)

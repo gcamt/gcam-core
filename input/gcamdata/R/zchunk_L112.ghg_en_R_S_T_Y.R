@@ -21,6 +21,7 @@ module_emissions_L112.ghg_en_R_S_T_Y <- function(command, ...) {
              FILE = "emissions/mappings/GCAM_sector_tech",
              "L101.in_EJ_R_en_Si_F_Yh",
              "L102.ghg_tgej_USA_en_Sepa_F_2005",
+             "L102.CO2_Mt_R_F_Yh",
              FILE = "emissions/EDGAR/EDGAR_CH4",
              FILE = "emissions/EDGAR/EDGAR_N2O"))
   } else if(command == driver.DECLARE_OUTPUTS) {
@@ -32,7 +33,7 @@ module_emissions_L112.ghg_en_R_S_T_Y <- function(command, ...) {
       EPA_agg_sector <- GCAM_region_ID <- IPCC <- ch4_em_factor <- n2o_em_factor <-
       emiss_factor <- emissions <- energy <- epa_emissions <- fuel <- input_emissions <-
       scaler <- sector <- stub.technology <- subsector <- supplysector <- technology <-
-      value <- year <- variable <- CH4 <- N2O <- Non.CO2 <- agg_sector <- NULL
+      value <- year <- variable <- CH4 <- N2O <- Non.CO2 <- agg_sector <- co2 <- NULL
     all_data <- list(...)[[1]]
 
     # Load required inputs
@@ -45,6 +46,7 @@ module_emissions_L112.ghg_en_R_S_T_Y <- function(command, ...) {
     L102.ghg_tgej_USA_en_Sepa_F_2005 <- get_data(all_data, "L102.ghg_tgej_USA_en_Sepa_F_2005") %>%
       rename(CH4 = ch4_em_factor, N2O = n2o_em_factor) %>%
       gather(variable, emiss_factor, CH4, N2O)
+    L102.CO2_Mt_R_F_Yh <- get_data(all_data, "L102.CO2_Mt_R_F_Yh")
     EDGAR_CH4 <- get_data(all_data, "emissions/EDGAR/EDGAR_CH4") %>%
       mutate(Non.CO2 = "CH4")
     EDGAR_N2O <- get_data(all_data, "emissions/EDGAR/EDGAR_N2O") %>%
@@ -127,6 +129,26 @@ module_emissions_L112.ghg_en_R_S_T_Y <- function(command, ...) {
       replace_na(list(emfact = 0)) %>%
       select(GCAM_region_ID, Non.CO2, supplysector, subsector, stub.technology, year, value = emfact)
 
+    # 3/7/2019 addendum to include CO2 from gas flaring (for oil production)
+    L112.co2_flaring_em <- filter(L102.CO2_Mt_R_F_Yh,
+                                  fuel == "gas flaring",
+                                  year %in% emissions.EDGAR_HISTORICAL) %>%
+      select(-fuel) %>%
+      rename(co2 = value)
+
+    L112.co2_flaring_EF <- filter(L101.in_EJ_R_en_Si_F_Yh,
+                                  sector == "out_resources",
+                                  fuel == "crude oil",
+                                  year %in% emissions.EDGAR_HISTORICAL) %>%
+      left_join_error_no_match(select(GCAM_sector_tech, sector, fuel, supplysector, subsector, stub.technology),
+                               by = c("sector", "fuel")) %>%
+      left_join_error_no_match(L112.co2_flaring_em, by = c("GCAM_region_ID", "year")) %>%
+      mutate(value = if_else(energy == 0, 0, co2 / energy),
+             Non.CO2 = "CO2") %>%
+      select(names(L112.ghg_tgej_R_en_S_F_Yh))
+
+    L112.ghg_tgej_R_en_S_F_Yh <- bind_rows(L112.ghg_tgej_R_en_S_F_Yh, L112.co2_flaring_EF)
+
     # ===================================================
     # Produce outputs
     L112.ghg_tg_R_en_S_F_Yh %>%
@@ -146,7 +168,7 @@ module_emissions_L112.ghg_en_R_S_T_Y <- function(command, ...) {
       add_comments("Then, emissions factors computed by dividing calculated emissions by energy data") %>%
       add_legacy_name("L112.ghg_tgej_R_en_S_F_Yh") %>%
       add_precursors("common/iso_GCAM_regID", "emissions/EDGAR/EDGAR_sector", "emissions/mappings/EPA_ghg_tech",
-                     "emissions/mappings/GCAM_sector_tech", "L101.in_EJ_R_en_Si_F_Yh",
+                     "emissions/mappings/GCAM_sector_tech", "L101.in_EJ_R_en_Si_F_Yh", "L102.CO2_Mt_R_F_Yh",
                      "L102.ghg_tgej_USA_en_Sepa_F_2005", "emissions/EDGAR/EDGAR_CH4", "emissions/EDGAR/EDGAR_N2O") ->
       L112.ghg_tgej_R_en_S_F_Yh
 

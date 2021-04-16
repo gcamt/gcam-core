@@ -302,6 +302,7 @@ void Subsector::toDebugXML( const int period, ostream& out, Tabs* tabs ) const {
     XMLWriteElement( mInvestments[ period ], "investment", out, tabs );
     XMLWriteElement( mFixedInvestments[ period ], "FixedInvestment", out, tabs );
     XMLWriteElement( getCalibrationStatus( period ), "calibration-status", out, tabs );
+    XMLWriteElement(containsOnlyFixedOutputTechnologies(period), "fixed-output-only", out, tabs);
 
     toDebugXMLDerived( period, out, tabs );
     // write out the Technology objects.
@@ -516,6 +517,40 @@ double Subsector::getPrice( const GDP* aGDP, const int aPeriod ) const {
         sharesum += techShares[i];
     }
 
+    if( sharesum < util::getSmallNumber() ) {
+        // None of the technologies have a valid share.  Set the price
+        // to NaN.  This gets tested in calcShare(), and any subsector
+        // with a NaN price gets a share of zero.  Therefore, as long
+        // as you use only subsectors with positive shares, you will
+        // never see the NaN price.
+        return numeric_limits<double>::signaling_NaN();
+    }
+    else {
+        return subsectorPrice;
+    }
+}
+
+/*! \brief Returns the subsector pure technology price that doesn't include subsidies and taxes.
+ * \details Calculates and returns share-weighted total price (subsectorprice)
+ *          and cost of fuel (fuelprice).
+ * \author Marshall Wise  maw march 2017
+ * \param aGDP Regional GDP object.
+ * \param aPeriod Model period
+ */
+double Subsector::getPureTechnologyPrice( const GDP* aGDP, const int aPeriod ) const {
+    double subsectorPrice = 0.0; // initialize to 0 for summing
+    double sharesum = 0.0;
+    const vector<double> techShares = calcTechShares( aGDP, aPeriod );
+    for ( unsigned int i = 0; i < mTechContainers.size(); ++i ) {
+        double currCost = mTechContainers[i]->getNewVintageTechnology(aPeriod)->getPureTechnologyCost( mRegionName, mSectorName, aPeriod );
+        // calculate weighted average price for Subsector.
+        /*!
+         * \note Negative prices may be produced and are valid.
+         */
+        subsectorPrice += techShares[ i ] * currCost;
+        sharesum += techShares[i];
+    }
+    
     if( sharesum < util::getSmallNumber() ) {
         // None of the technologies have a valid share.  Set the price
         // to NaN.  This gets tested in calcShare(), and any subsector

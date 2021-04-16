@@ -16,8 +16,10 @@ AgroForestLand,AgroForest_NonPasture,CropLand,MiscCrop
 AgroForestLand,AgroForest_NonPasture,CropLand,OilCrop
 AgroForestLand,AgroForest_NonPasture,CropLand,OtherGrain
 AgroForestLand,AgroForest_NonPasture,CropLand,PalmFruit
+AgroForestLand,AgroForest_NonPasture,CropLand,Rapeseed
 AgroForestLand,AgroForest_NonPasture,CropLand,Rice
 AgroForestLand,AgroForest_NonPasture,CropLand,Root_Tuber
+AgroForestLand,AgroForest_NonPasture,CropLand,Soybean
 AgroForestLand,AgroForest_NonPasture,CropLand,SugarCrop
 AgroForestLand,AgroForest_NonPasture,CropLand,Wheat
 AgroForestLand,AgroForest_NonPasture,CropLand,biomass_grass

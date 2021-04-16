@@ -111,6 +111,12 @@ public:
     
     virtual double getCost( const int aPeriod ) const;
     
+    //! maw march017
+    double getPureTechnologyCost( const std::string& aRegionName,
+                                 const std::string& aSectorName,
+                                 const int aPeriod ) const;
+    
+    
     virtual double getEnergyCost( const std::string& aRegionName,
                                  const std::string& aSectorName,
                                  const int aPeriod ) const;

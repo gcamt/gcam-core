@@ -66,14 +66,14 @@ process heat cement,coal,coal,,,,,,
 process heat cement,gas,gas,,,,,,
 process heat cement,refined liquids,refined liquids,,,,,,
 refining,biomass liquids,biodiesel,0.0075,0.0054,0.002,0,0,0
-refining,biomass liquids,cellulosic ethanol,0.0075,0.0054,0.002,0,0,0
-refining,biomass liquids,cellulosic ethanol CCS level 1,0.0075,0.0054,0.002,0,0,0
-refining,biomass liquids,cellulosic ethanol CCS level 2,0.0075,0.0054,0.002,0,0,0
-refining,biomass liquids,corn ethanol,0.0075,0.0054,0.002,0,0,0
+ethanol,cellulosic ethanol,cellulosic ethanol,0.0075,0.0054,0.002,0,0,0
+ethanol,cellulosic ethanol,cellulosic ethanol CCS level 1,0.0075,0.0054,0.002,0,0,0
+ethanol,cellulosic ethanol,cellulosic ethanol CCS level 2,0.0075,0.0054,0.002,0,0,0
+ethanol,corn ethanol,corn ethanol,0.0075,0.0054,0.002,0,0,0
 refining,biomass liquids,FT biofuels,0.0075,0.0054,0.002,0,0,0
 refining,biomass liquids,FT biofuels CCS level 1,0.0075,0.0054,0.002,0,0,0
 refining,biomass liquids,FT biofuels CCS level 2,0.0075,0.0054,0.002,0,0,0
-refining,biomass liquids,sugar cane ethanol,0.0075,0.0054,0.002,0,0,0
+ethanol,sugar cane ethanol,sugar cane ethanol,0.0075,0.0054,0.002,0,0,0
 refining,coal to liquids,coal to liquids,0.0075,0.0054,0.002,0,0,0
 refining,coal to liquids,coal to liquids CCS level 1,0.0075,0.0054,0.002,0,0,0
 refining,coal to liquids,coal to liquids CCS level 2,0.0075,0.0054,0.002,0,0,0

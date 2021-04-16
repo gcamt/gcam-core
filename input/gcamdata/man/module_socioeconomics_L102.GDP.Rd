@@ -12,10 +12,12 @@ module_socioeconomics_L102.GDP(command, ...)
 \item{...}{other optional parameters, depending on command}
 }
 \value{
-Depends on \code{command}: either a vector of required inputs,
-a vector of output names, or (if \code{command} is "MAKE") all
-the generated outputs: \code{L102.gdp_mil90usd_Scen_R_Y}, \code{L102.pcgdp_thous90USD_Scen_R_Y}, \code{L102.gdp_mil90usd_GCAM3_R_Y}, \code{L102.gdp_mil90usd_GCAM3_ctry_Y}, \code{L102.pcgdp_thous90USD_GCAM3_R_Y}, \code{L102.pcgdp_thous90USD_GCAM3_ctry_Y}, \code{L102.PPP_MER_R}. The corresponding file in the
-original data system was \code{L102.GDP.R} (socioeconomics level1).
+Depends on \code{command}: either a vector of required inputs, a vector of output names, or (if
+  \code{command} is "MAKE") all the generated outputs: \code{L102.gdp_mil90usd_Scen_R_Y},
+  \code{L102.pcgdp_thous90USD_Scen_R_Y}, \code{L102.gdp_mil90usd_GCAM3_R_Y}, \code{L102.gdp_mil90usd_GCAM3_ctry_Y},
+  \code{L102.pcgdp_thous90USD_GCAM3_R_Y}, \code{L102.pcgdp_thous90USD_GCAM3_ctry_Y}, \code{L102.PPP_MER_R},
+  \code{L102.gdp_bilusd_ctry_Yfut}. The corresponding file in the original data system was \code{L102.GDP.R}
+  (socioeconomics level1).
 }
 \description{
 Prepare historical and future GDP time series.  On the historical side, this

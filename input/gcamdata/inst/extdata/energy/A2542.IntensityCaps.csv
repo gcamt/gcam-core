@@ -1,0 +1,8 @@
+# File: A2542.IntensityCaps.csv
+# Title: Intensity limits on USA vehicles by size class
+# Units: MJ per vkm
+# Column types: cccnnnnnnnnnnc
+# ----------
+region,supplysector,tranSubsector,2013,2015,2020,2025,2030,2035,2040,2045,2050,2100,Unit
+USA,trn_pass_road_LDV_4W,Midsize Car,2.512417099,2.512417099,2.037094945,1.63853289,1.63853289,1.63853289,1.63853289,1.63853289,1.63853289,1.63853289,MJ/vkm
+USA,trn_pass_road_LDV_4W,Large Car,2.791574554,2.791574554,2.216838616,1.713011658,1.713011658,1.713011658,1.713011658,1.713011658,1.713011658,1.713011658,MJ/vkm

@@ -24,7 +24,7 @@ PH_year_value_historical <- function(d) {
 # Ensures that number of rows of data doesn't change, and everything has matched data.
 #' @export
 left_join_error_no_match <- function(d, ..., ignore_columns = NULL) {
-  assertthat::assert_that(tibble::is.tibble(d))
+  assertthat::assert_that(tibble::is_tibble(d))
   dnames <- names(d)
   drows <- nrow(d)
   d <- left_join(d, ...)
@@ -157,7 +157,7 @@ approx_fun <- function(year, value, rule = 1) {
   assert_that(is.numeric(value))
 
   if(rule == 1 | rule == 2) {
-    tryCatch(stats::approx(as.vector(year), value, rule = rule, xout = year)$y,
+    tryCatch(stats::approx(as.vector(year), value, rule = rule, xout = year, ties = mean)$y,
              error = function(e) NA)
 
   } else {

@@ -66,6 +66,7 @@
 #include "emissions/include/co2_emissions.h"
 #include "technologies/include/ioutput.h"
 #include "technologies/include/primary_output.h"
+#include "technologies/include/generic_output.h"
 #include "functions/include/iinput.h"
 #include "sectors/include/sector_utils.h"
 
@@ -85,7 +86,8 @@ mObjectMetaInfo(),
 mResourcePrice( Value( 0.0 ) ),
 mAvailable( Value( 0.0 ) ),
 mAnnualProd( Value( 0.0 ) ),
-mCumulProd( Value( 0.0 ) )
+mCumulProd( Value( 0.0 ) ),
+mHack(false)
 {
 }
 
@@ -188,6 +190,9 @@ void Resource::XMLParse( const DOMNode* node ){
         else if( nodeName == SubRenewableResource::getXMLNameStatic() ) {
             parseContainerNode( curr, mSubResource, new SubRenewableResource() );
         }
+        else if( nodeName == "hack" ) {
+            mHack = XMLHelper<bool>::getValue( curr );
+        }
         else if( XMLDerivedClassParse( nodeName, curr ) ){
             // no-op
         }
@@ -281,14 +286,16 @@ void Resource::completeInit( const string& aRegionName, const IInfo* aRegionInfo
     }
 
     for( vector<SubResource*>::iterator subResIter = mSubResource.begin(); subResIter != mSubResource.end(); subResIter++ ) {
-        ( *subResIter )->completeInit( mResourceInfo.get() );
+      //  ( *subResIter )->completeInit( mResourceInfo.get() );
+        ( *subResIter )->completeInit(aRegionName, mName, mResourceInfo.get() );
     }
 
     // Set markets for this sector
     setMarket( aRegionName );
 
     // Create a single primary output for the resource output.
-    mOutputs.insert( mOutputs.begin(), new PrimaryOutput( mName ) );
+  //  mOutputs.insert( mOutputs.begin(), new PrimaryOutput( mName ) );
+    mOutputs.insert( mOutputs.begin(), mHack ? new GenericOutput(mName) : new PrimaryOutput( mName ) );
     
     initTechVintageVector();
     

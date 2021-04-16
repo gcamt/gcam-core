@@ -1,0 +1,21 @@
+# File: A222.stubtech_cost.csv
+# Title: USA refining technology cost info
+# Units: 1975$/GJ
+# Column types: cccccnnnnnnnnnnnnc
+# ----------
+region,supplysector,subsector,technology,minicam.non.energy.input,2013,2015,2020,2025,2030,2035,2040,2045,2050,2100,improvement.max,improvement.rate,improvement.shadow.technology
+USA,ethanol,cellulosic ethanol,cellulosic ethanol,non-energy,4.5391,4.5391,4.3666,4.2185,4.0913,3.982,3.8882,3.8077,3.7385,,0.7,0.03,
+USA,ethanol,cellulosic ethanol,cellulosic ethanol (no constraint),non-energy,4.5391,4.5391,4.3666,4.2185,4.0913,3.982,3.8882,3.8077,3.7385,,0.7,0.03,
+USA,ethanol,cellulosic ethanol,cellulosic ethanol CCS level 1,non-energy,4.7682,4.7682,4.578,4.4162,4.2785,4.1611,4.0609,3.9755,3.9025,,0.6,0.05,cellulosic ethanol
+USA,ethanol,cellulosic ethanol,cellulosic ethanol CCS level 2,non-energy,6.4587,6.4587,6.1384,5.8759,5.6603,5.4826,5.3358,5.2142,5.1133,,0.6,0.05,cellulosic ethanol
+USA,refining,biomass liquids,FT biofuels,non-energy,7.7,7.7,7.1,6.6,6.1,5.8,5.5,5.4,5.2,,0.7,0.03,
+USA,refining,biomass liquids,FT biofuels CCS level 1,non-energy,8.405244997,8.405244997,7.750290841,7.204495712,6.658700582,6.331223504,6.003746426,5.8945874,5.676269349,,0.6,0.05,FT biofuels
+USA,refining,biomass liquids,FT biofuels CCS level 2,non-energy,8.857582116,8.857582116,8.167380912,7.592213243,7.017045573,6.671944971,6.326844369,6.211810835,5.981743767,,0.6,0.05,FT biofuels
+USA,ethanol,corn ethanol,corn ethanol,non-energy,2.327,2.327,2.288,2.209,2.194,2.179,2.164,2.149,2.135,2.135,,,
+USA,ethanol,corn ethanol,corn ethanol (no constraint),non-energy,2.327,2.327,2.288,2.209,2.194,2.179,2.164,2.149,2.135,2.135,,,
+USA,refining,biomass liquids,biodiesel,non-energy,1.651,1.651,1.575,1.524,1.521,1.518,1.515,1.512,1.509,1.524,,,
+USA,ethanol,cellulosic ethanol,cellulosic ethanol (no constraint),exceed blend wall,3.6,3.6,3.6,3.6,3.6,3.6,3.6,3.6,3.6,3.6,,,
+USA,ethanol,corn ethanol,corn ethanol (no constraint),exceed blend wall,3.6,3.6,3.6,3.6,3.6,3.6,3.6,3.6,3.6,3.6,,,
+USA,ethanol,sugar cane ethanol,sugar cane ethanol,non-energy,1.5,1.5,1.5,1.5,1.5,1.5,1.5,1.5,1.5,1.5,,,
+USA,ethanol,sugar cane ethanol,sugar cane ethanol,import cost,0.57,0.57,0.57,0.57,0.57,0.57,0.57,0.57,0.57,0.57,,,
+USA,ethanol,cellulosic ethanol,cellulosic ethanol (residue bio),non-energy,4.5391,4.5391,4.3666,4.3666,4.152593152,3.949074769,3.755530811,3.571472434,3.396434748,,0.7,0.03,

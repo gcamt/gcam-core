@@ -60,6 +60,8 @@ class GDP;
 class IInfo;
 class IVisitor;
 class Tabs;
+class ITechnologyContainer;
+
 
 // Need to forward declare the subclasses as well.
 class SubRenewableResource;
@@ -81,7 +83,8 @@ public:
     virtual ~SubResource();
     const std::string& getName() const;
     void XMLParse( const xercesc::DOMNode* tempnode );
-    virtual void completeInit( const IInfo* aResourceInfo );
+   // virtual void completeInit( const IInfo* aResourceInfo );
+    virtual void completeInit( const std::string& aRegionName, const std::string& aResourceName, const IInfo* aResourceInfo );
     void toDebugXML( const int period, std::ostream& out, Tabs* tabs ) const;
     static const std::string& getXMLNameStatic();
     virtual void cumulsupply( double aPrice, int aPeriod );
@@ -141,11 +144,19 @@ protected:
         DEFINE_VARIABLE( ARRAY | STATE, "price-adder", mPriceAdder, objects::PeriodVector<Value> ),
     
         //! amount of SubResource for each grade
-        DEFINE_VARIABLE( CONTAINER, "grade", mGrade, std::vector<Grade*> )
+        DEFINE_VARIABLE( CONTAINER, "grade", mGrade, std::vector<Grade*> ),
+    
+        //! The technology to add additional inputs and perform emissions calculations
+        DEFINE_VARIABLE( CONTAINER, "technology", mTechnology, ITechnologyContainer* )
     )
     
     //!< The subsector's information store.
     std::auto_ptr<IInfo> mSubresourceInfo;
+    
+    //maw 6_17_18 new stuff for resource technology but may need to be changed to fusion format
+    std::string mRegionName;
+    std::string mResourceName;
+
 };
 
 

@@ -1,0 +1,26 @@
+# File: A222.stubtech_shrwt.csv
+# Title: USA refining technology share-weights
+# Units: none
+# Column types: ccccnnnnnnnnnn
+# ----------
+region,supplysector,subsector,technology,2013,2015,2020,2025,2030,2035,2040,2045,2050,2100
+USA,regional biomassOil,regional biomassOil,OilCrop,0,0,0,0,0,0,0,0,0,0
+USA,regional biomassOil,regional biomassOil,Rapeseed,0,0,0,0,0,0,0,0,0,0
+USA,regional biomassOil,regional biomassOil,Soybean,1,1,1,1,1,1,1,1,1,1
+USA,refining,oil refining,oil refining,1,1,1,1,1,1,1,1,1,1
+USA,refining,coal to liquids,coal to liquids,0,0,1,1,1,1,1,1,1,1
+USA,refining,coal to liquids,coal to liquids CCS level 1,0,0,0,0,0,0,0,0,0,0
+USA,refining,coal to liquids,coal to liquids CCS level 2,0,0,0,0,0,0,0,0,0,0
+USA,refining,gas to liquids,gas to liquids,0,0,1,1,1,1,1,1,1,1
+USA,ethanol,cellulosic ethanol,cellulosic ethanol,0,0,0,0,0,0,0,0,0,0
+USA,ethanol,cellulosic ethanol,cellulosic ethanol (no constraint),0,0,0,0,0,0,0,0,0,0
+USA,ethanol,cellulosic ethanol,cellulosic ethanol CCS level 1,0,0,0,0,0,0,0,0,0,0
+USA,ethanol,cellulosic ethanol,cellulosic ethanol CCS level 2,0,0,0,0,0,0,0,0,0,0
+USA,refining,biomass liquids,FT biofuels,0,0,0,0,0,0,0,0,0,0
+USA,refining,biomass liquids,FT biofuels CCS level 1,0,0,0,0,0,0,0,0,0,0
+USA,refining,biomass liquids,FT biofuels CCS level 2,0,0,0,0,0,0,0,0,0,0
+USA,ethanol,corn ethanol,corn ethanol,1,1,1,1,1,1,1,1,1,1
+USA,ethanol,corn ethanol,corn ethanol (no constraint),1,1,1,1,1,1,1,1,1,1
+USA,refining,biomass liquids,biodiesel,1,1,1,1,1,1,1,1,1,1
+USA,ethanol,sugar cane ethanol,sugar cane ethanol,0,0,0,0,0,0,0,0,0,0
+USA,ethanol,cellulosic ethanol,cellulosic ethanol (residue bio),0,0,0,0,0,0,0,0,0,0

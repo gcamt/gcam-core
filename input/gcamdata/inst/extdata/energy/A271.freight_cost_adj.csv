@@ -1,0 +1,139 @@
+# File: A271.freight_cost_adj.csv
+# Title: revisions to non-energy costs to counter-balance transport costs explicitly included in LCA_inputs
+# Units: 1975$/GJ
+# Column types: cccccnn
+# ----------
+region,supplysector,subsector,technology,minicam.non.energy.input,1971,2100
+USA,regional biomass,regional biomass,regional biomass,non-energy,0.4,0.4
+USA,refined liquids enduse,refined liquids enduse,refined liquids enduse,non-energy,0.9,0.9
+USA,refined liquids industrial,refined liquids industrial,refined liquids industrial,non-energy,-0.2,-0.2
+USA,refined liquids gasoline pool,refining,refining,non-energy,0.9,0.9
+USA,refined liquids gasoline pool,ethanol,ethanol,non-energy,0.9,0.9
+USA,regional corn for ethanol,regional corn for ethanol,regional corn for ethanol,non-energy,-1,-1
+USA,regional biomassOil,regional biomassOil,OilCrop,non-energy,-1,-1
+USA,regional biomassOil,regional biomassOil,Rapeseed,non-energy,-1,-1
+USA,regional biomassOil,regional biomassOil,Soybean,non-energy,-1,-1
+Africa_Eastern,refined liquids enduse,refined liquids enduse,refined liquids enduse,non-energy,0.9,0.9
+Africa_Eastern,refined liquids industrial,refined liquids industrial,refined liquids industrial,non-energy,-0.2,-0.2
+Africa_Eastern,refined liquids gasoline pool,refining,refining,non-energy,0.9,0.9
+Africa_Eastern,refined liquids gasoline pool,ethanol,ethanol,non-energy,0.9,0.9
+Africa_Northern,refined liquids enduse,refined liquids enduse,refined liquids enduse,non-energy,0.9,0.9
+Africa_Northern,refined liquids industrial,refined liquids industrial,refined liquids industrial,non-energy,-0.2,-0.2
+Africa_Northern,refined liquids gasoline pool,refining,refining,non-energy,0.9,0.9
+Africa_Northern,refined liquids gasoline pool,ethanol,ethanol,non-energy,0.9,0.9
+Africa_Southern,refined liquids enduse,refined liquids enduse,refined liquids enduse,non-energy,0.9,0.9
+Africa_Southern,refined liquids industrial,refined liquids industrial,refined liquids industrial,non-energy,-0.2,-0.2
+Africa_Southern,refined liquids gasoline pool,refining,refining,non-energy,0.9,0.9
+Africa_Southern,refined liquids gasoline pool,ethanol,ethanol,non-energy,0.9,0.9
+Africa_Western,refined liquids enduse,refined liquids enduse,refined liquids enduse,non-energy,0.9,0.9
+Africa_Western,refined liquids industrial,refined liquids industrial,refined liquids industrial,non-energy,-0.2,-0.2
+Africa_Western,refined liquids gasoline pool,refining,refining,non-energy,0.9,0.9
+Africa_Western,refined liquids gasoline pool,ethanol,ethanol,non-energy,0.9,0.9
+Australia_NZ,refined liquids enduse,refined liquids enduse,refined liquids enduse,non-energy,0.9,0.9
+Australia_NZ,refined liquids industrial,refined liquids industrial,refined liquids industrial,non-energy,-0.2,-0.2
+Australia_NZ,refined liquids gasoline pool,refining,refining,non-energy,0.9,0.9
+Australia_NZ,refined liquids gasoline pool,ethanol,ethanol,non-energy,0.9,0.9
+Brazil,refined liquids enduse,refined liquids enduse,refined liquids enduse,non-energy,0.9,0.9
+Brazil,refined liquids industrial,refined liquids industrial,refined liquids industrial,non-energy,-0.2,-0.2
+Brazil,refined liquids gasoline pool,refining,refining,non-energy,0.9,0.9
+Brazil,refined liquids gasoline pool,ethanol,ethanol,non-energy,0.9,0.9
+Canada,refined liquids enduse,refined liquids enduse,refined liquids enduse,non-energy,0.9,0.9
+Canada,refined liquids industrial,refined liquids industrial,refined liquids industrial,non-energy,-0.2,-0.2
+Canada,refined liquids gasoline pool,refining,refining,non-energy,0.9,0.9
+Canada,refined liquids gasoline pool,ethanol,ethanol,non-energy,0.9,0.9
+Central America and Caribbean,refined liquids enduse,refined liquids enduse,refined liquids enduse,non-energy,0.9,0.9
+Central America and Caribbean,refined liquids industrial,refined liquids industrial,refined liquids industrial,non-energy,-0.2,-0.2
+Central America and Caribbean,refined liquids gasoline pool,refining,refining,non-energy,0.9,0.9
+Central America and Caribbean,refined liquids gasoline pool,ethanol,ethanol,non-energy,0.9,0.9
+Central Asia,refined liquids enduse,refined liquids enduse,refined liquids enduse,non-energy,0.9,0.9
+Central Asia,refined liquids industrial,refined liquids industrial,refined liquids industrial,non-energy,-0.2,-0.2
+Central Asia,refined liquids gasoline pool,refining,refining,non-energy,0.9,0.9
+Central Asia,refined liquids gasoline pool,ethanol,ethanol,non-energy,0.9,0.9
+China,refined liquids enduse,refined liquids enduse,refined liquids enduse,non-energy,0.9,0.9
+China,refined liquids industrial,refined liquids industrial,refined liquids industrial,non-energy,-0.2,-0.2
+China,refined liquids gasoline pool,refining,refining,non-energy,0.9,0.9
+China,refined liquids gasoline pool,ethanol,ethanol,non-energy,0.9,0.9
+EU-12,refined liquids enduse,refined liquids enduse,refined liquids enduse,non-energy,0.9,0.9
+EU-12,refined liquids industrial,refined liquids industrial,refined liquids industrial,non-energy,-0.2,-0.2
+EU-12,refined liquids gasoline pool,refining,refining,non-energy,0.9,0.9
+EU-12,refined liquids gasoline pool,ethanol,ethanol,non-energy,0.9,0.9
+EU-15,refined liquids enduse,refined liquids enduse,refined liquids enduse,non-energy,0.9,0.9
+EU-15,refined liquids industrial,refined liquids industrial,refined liquids industrial,non-energy,-0.2,-0.2
+EU-15,refined liquids gasoline pool,refining,refining,non-energy,0.9,0.9
+EU-15,refined liquids gasoline pool,ethanol,ethanol,non-energy,0.9,0.9
+Europe_Eastern,refined liquids enduse,refined liquids enduse,refined liquids enduse,non-energy,0.9,0.9
+Europe_Eastern,refined liquids industrial,refined liquids industrial,refined liquids industrial,non-energy,-0.2,-0.2
+Europe_Eastern,refined liquids gasoline pool,refining,refining,non-energy,0.9,0.9
+Europe_Eastern,refined liquids gasoline pool,ethanol,ethanol,non-energy,0.9,0.9
+Europe_Non_EU,refined liquids enduse,refined liquids enduse,refined liquids enduse,non-energy,0.9,0.9
+Europe_Non_EU,refined liquids industrial,refined liquids industrial,refined liquids industrial,non-energy,-0.2,-0.2
+Europe_Non_EU,refined liquids gasoline pool,refining,refining,non-energy,0.9,0.9
+Europe_Non_EU,refined liquids gasoline pool,ethanol,ethanol,non-energy,0.9,0.9
+European Free Trade Association,refined liquids enduse,refined liquids enduse,refined liquids enduse,non-energy,0.9,0.9
+European Free Trade Association,refined liquids industrial,refined liquids industrial,refined liquids industrial,non-energy,-0.2,-0.2
+European Free Trade Association,refined liquids gasoline pool,refining,refining,non-energy,0.9,0.9
+European Free Trade Association,refined liquids gasoline pool,ethanol,ethanol,non-energy,0.9,0.9
+India,refined liquids enduse,refined liquids enduse,refined liquids enduse,non-energy,0.9,0.9
+India,refined liquids industrial,refined liquids industrial,refined liquids industrial,non-energy,-0.2,-0.2
+India,refined liquids gasoline pool,refining,refining,non-energy,0.9,0.9
+India,refined liquids gasoline pool,ethanol,ethanol,non-energy,0.9,0.9
+Indonesia,refined liquids enduse,refined liquids enduse,refined liquids enduse,non-energy,0.9,0.9
+Indonesia,refined liquids industrial,refined liquids industrial,refined liquids industrial,non-energy,-0.2,-0.2
+Indonesia,refined liquids gasoline pool,refining,refining,non-energy,0.9,0.9
+Indonesia,refined liquids gasoline pool,ethanol,ethanol,non-energy,0.9,0.9
+Japan,refined liquids enduse,refined liquids enduse,refined liquids enduse,non-energy,0.9,0.9
+Japan,refined liquids industrial,refined liquids industrial,refined liquids industrial,non-energy,-0.2,-0.2
+Japan,refined liquids gasoline pool,refining,refining,non-energy,0.9,0.9
+Japan,refined liquids gasoline pool,ethanol,ethanol,non-energy,0.9,0.9
+Mexico,refined liquids enduse,refined liquids enduse,refined liquids enduse,non-energy,0.9,0.9
+Mexico,refined liquids industrial,refined liquids industrial,refined liquids industrial,non-energy,-0.2,-0.2
+Mexico,refined liquids gasoline pool,refining,refining,non-energy,0.9,0.9
+Mexico,refined liquids gasoline pool,ethanol,ethanol,non-energy,0.9,0.9
+Middle East,refined liquids enduse,refined liquids enduse,refined liquids enduse,non-energy,0.9,0.9
+Middle East,refined liquids industrial,refined liquids industrial,refined liquids industrial,non-energy,-0.2,-0.2
+Middle East,refined liquids gasoline pool,refining,refining,non-energy,0.9,0.9
+Middle East,refined liquids gasoline pool,ethanol,ethanol,non-energy,0.9,0.9
+Pakistan,refined liquids enduse,refined liquids enduse,refined liquids enduse,non-energy,0.9,0.9
+Pakistan,refined liquids industrial,refined liquids industrial,refined liquids industrial,non-energy,-0.2,-0.2
+Pakistan,refined liquids gasoline pool,refining,refining,non-energy,0.9,0.9
+Pakistan,refined liquids gasoline pool,ethanol,ethanol,non-energy,0.9,0.9
+Russia,refined liquids enduse,refined liquids enduse,refined liquids enduse,non-energy,0.9,0.9
+Russia,refined liquids industrial,refined liquids industrial,refined liquids industrial,non-energy,-0.2,-0.2
+Russia,refined liquids gasoline pool,refining,refining,non-energy,0.9,0.9
+Russia,refined liquids gasoline pool,ethanol,ethanol,non-energy,0.9,0.9
+South Africa,refined liquids enduse,refined liquids enduse,refined liquids enduse,non-energy,0.9,0.9
+South Africa,refined liquids industrial,refined liquids industrial,refined liquids industrial,non-energy,-0.2,-0.2
+South Africa,refined liquids gasoline pool,refining,refining,non-energy,0.9,0.9
+South Africa,refined liquids gasoline pool,ethanol,ethanol,non-energy,0.9,0.9
+South America_Northern,refined liquids enduse,refined liquids enduse,refined liquids enduse,non-energy,0.9,0.9
+South America_Northern,refined liquids industrial,refined liquids industrial,refined liquids industrial,non-energy,-0.2,-0.2
+South America_Northern,refined liquids gasoline pool,refining,refining,non-energy,0.9,0.9
+South America_Northern,refined liquids gasoline pool,ethanol,ethanol,non-energy,0.9,0.9
+South America_Southern,refined liquids enduse,refined liquids enduse,refined liquids enduse,non-energy,0.9,0.9
+South America_Southern,refined liquids industrial,refined liquids industrial,refined liquids industrial,non-energy,-0.2,-0.2
+South America_Southern,refined liquids gasoline pool,refining,refining,non-energy,0.9,0.9
+South America_Southern,refined liquids gasoline pool,ethanol,ethanol,non-energy,0.9,0.9
+South Asia,refined liquids enduse,refined liquids enduse,refined liquids enduse,non-energy,0.9,0.9
+South Asia,refined liquids industrial,refined liquids industrial,refined liquids industrial,non-energy,-0.2,-0.2
+South Asia,refined liquids gasoline pool,refining,refining,non-energy,0.9,0.9
+South Asia,refined liquids gasoline pool,ethanol,ethanol,non-energy,0.9,0.9
+South Korea,refined liquids enduse,refined liquids enduse,refined liquids enduse,non-energy,0.9,0.9
+South Korea,refined liquids industrial,refined liquids industrial,refined liquids industrial,non-energy,-0.2,-0.2
+South Korea,refined liquids gasoline pool,refining,refining,non-energy,0.9,0.9
+South Korea,refined liquids gasoline pool,ethanol,ethanol,non-energy,0.9,0.9
+Southeast Asia,refined liquids enduse,refined liquids enduse,refined liquids enduse,non-energy,0.9,0.9
+Southeast Asia,refined liquids industrial,refined liquids industrial,refined liquids industrial,non-energy,-0.2,-0.2
+Southeast Asia,refined liquids gasoline pool,refining,refining,non-energy,0.9,0.9
+Southeast Asia,refined liquids gasoline pool,ethanol,ethanol,non-energy,0.9,0.9
+Taiwan,refined liquids enduse,refined liquids enduse,refined liquids enduse,non-energy,0.9,0.9
+Taiwan,refined liquids industrial,refined liquids industrial,refined liquids industrial,non-energy,-0.2,-0.2
+Taiwan,refined liquids gasoline pool,refining,refining,non-energy,0.9,0.9
+Taiwan,refined liquids gasoline pool,ethanol,ethanol,non-energy,0.9,0.9
+Argentina,refined liquids enduse,refined liquids enduse,refined liquids enduse,non-energy,0.9,0.9
+Argentina,refined liquids industrial,refined liquids industrial,refined liquids industrial,non-energy,-0.2,-0.2
+Argentina,refined liquids gasoline pool,refining,refining,non-energy,0.9,0.9
+Argentina,refined liquids gasoline pool,ethanol,ethanol,non-energy,0.9,0.9
+Colombia,refined liquids enduse,refined liquids enduse,refined liquids enduse,non-energy,0.9,0.9
+Colombia,refined liquids industrial,refined liquids industrial,refined liquids industrial,non-energy,-0.2,-0.2
+Colombia,refined liquids gasoline pool,refining,refining,non-energy,0.9,0.9
+Colombia,refined liquids gasoline pool,ethanol,ethanol,non-energy,0.9,0.9

@@ -33,8 +33,8 @@
 #' Solar and wind capacity factor assumptions are scaled using data on irradiance and available wind resource. It also determines future fixed outputs of hydropower.
 #' This also prepares alternate low- and high-tech capital costs, which are then saved to their own xmls and can be used to overwrite default capital costs.
 #' @importFrom assertthat assert_that
-#' @importFrom dplyr filter mutate select
-#' @importFrom tidyr gather spread
+#' @importFrom dplyr anti_join arrange bind_rows filter if_else group_by left_join mutate select semi_join summarise rename
+#' @importFrom tidyr complete nesting replace_na
 #' @author CWR October 2017/BBL July 2017
 module_energy_L223.electricity <- function(command, ...) {
   if(command == driver.DECLARE_INPUTS) {
@@ -238,6 +238,7 @@ module_energy_L223.electricity <- function(command, ...) {
 
       # Interpolate to model time periods, and add columns specifying the final format
       complete(GCAM_region_ID, year = MODEL_FUTURE_YEARS[MODEL_FUTURE_YEARS >= min(year) & MODEL_FUTURE_YEARS <= max(year)]) %>%
+      filter(year %in% MODEL_FUTURE_YEARS[MODEL_FUTURE_YEARS >= min(year) & MODEL_FUTURE_YEARS <= max(year)]) %>%
       arrange(GCAM_region_ID, year) %>%
       mutate(share.weight = approx_fun(year, value, rule = 1)) %>%
       # applies consistent supplysector and subsector names (electricity, nuclear)
@@ -279,7 +280,10 @@ module_energy_L223.electricity <- function(command, ...) {
     # First write global interpolation rules to all regions, then any global interp rules that match by region + sector + subsector name will be
     # replaced by a regionally specific interpolation rule by first removing those rules from L223.SubsectorInterp_elec and then replacing them
     if(any(is.na(A23.subsector_interp$to.value))) {
-      L223.SubsectorInterp_elec <- write_to_all_regions(A23.subsector_interp[is.na(A23.subsector_interp$to.value),], LEVEL2_DATA_NAMES[["SubsectorInterp"]], GCAM_region_names)
+      L223.SubsectorInterp_elec <- write_to_all_regions(A23.subsector_interp[is.na(A23.subsector_interp$to.value),], LEVEL2_DATA_NAMES[["SubsectorInterp"]], GCAM_region_names) %>%
+        # convert back to char for now as we will need to merge assumptions files on which will have it as char still
+        mutate(from.year = as.character(from.year),
+               to.year = as.character(to.year))
 
       L223.SubsectorInterp_elec %>%
         anti_join(A23.subsector_interp_R, by = c("region", "supplysector", "subsector")) %>%
@@ -290,7 +294,10 @@ module_energy_L223.electricity <- function(command, ...) {
 
     # Same process for interpolation rules using a to.value
     if(any(!is.na(A23.subsector_interp$to.value))) {
-      L223.SubsectorInterpTo_elec <- write_to_all_regions(A23.subsector_interp[!is.na(A23.subsector_interp$to.value),], LEVEL2_DATA_NAMES[["SubsectorInterpTo"]], GCAM_region_names)
+      L223.SubsectorInterpTo_elec <- write_to_all_regions(A23.subsector_interp[!is.na(A23.subsector_interp$to.value),], LEVEL2_DATA_NAMES[["SubsectorInterpTo"]], GCAM_region_names) %>%
+        # convert back to char for now as we will need to merge assumptions files on which will have it as char still
+        mutate(from.year = as.character(from.year),
+               to.year = as.character(to.year))
 
       L223.SubsectorInterpTo_elec %>%
         anti_join(A23.subsector_interp_R, by = c("region", "supplysector", "subsector")) %>%

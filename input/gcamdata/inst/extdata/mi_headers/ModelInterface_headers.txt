@@ -110,6 +110,10 @@ DeleteUnlimitRsrc, world/+{name}region, region/+{name; delete=1}unlimited-resour
 
 DepRsrcEnvironCost, world/+{name}region, region/+{name}depresource, depresource/+{name}subresource, subresource/+{year;fillout=1}environCost, subresource/+environCost, scenario, scenario/world
 
+SubDepRsrcCoef, world/+{name}region, region/+{name}depresource, depresource/+{name}subresource, subresource/+{name}technology, technology/+{year}period, period/+{name}minicam-energy-input,minicam-energy-input/+coefficient, minicam-energy-input/+market-name, scenario, scenario/world
+
+SubDepRsrcDummyInfo, world/+{name}region, region/+{name}depresource, depresource/+{name}subresource, subresource/+{name}technology, technology/+{year}period, period/+{name}dummy-input, period/+share-weight, depresource/+hack, scenario, scenario/world
+
 #####, SUPPLYSECTOR
 DeleteSupplysector, world/+{name}region, region/+{name; delete=1}supplysector, scenario, scenario/world
 
@@ -127,6 +131,7 @@ ElecReserve,world/+{name}region,region/+{name}supplysector,{name=electricity-res
 
 PassThroughSector, world/+{name}region, region/+{name}pass-through-sector, pass-through-sector/+marginal-revenue-sector, pass-through-sector/+marginal-revenue-market, scenario, scenario/world
 
+AbsCostLogitBaseValue, world/+{name}region, region/+{name}supplysector, absolute-cost-logit/+base-value, supplysector/absolute-cost-logit, scenario/world, scenario
 
 #####, SUBSECTOR
 
@@ -197,6 +202,8 @@ TechCoef, world/+{name}region, region/+{name}supplysector, supplysector/+{name}s
 
 TechEff, world/+{name}region, region/+{name}supplysector, supplysector/+{name}subsector, subsector/+{name}technology, technology/+{year}period, period/+{name}minicam-energy-input, minicam-energy-input/+efficiency, minicam-energy-input/+market-name, scenario, scenario/world, period/{name=CO2}CO2
 
+TechPMult, world/+{name}region, region/+{name}supplysector, supplysector/+{name}subsector, subsector/+{name}technology, technology/+{year}period, period/+{name}minicam-energy-input, minicam-energy-input/+price-unit-conversion, scenario, scenario/world
+
 TechCost, world/+{name}region, region/+{name}supplysector, supplysector/+{name}subsector, subsector/+{name}technology, technology/+{year}period, period/+{name}minicam-non-energy-input, minicam-non-energy-input/+input-cost, scenario, scenario/world, period/{name=CO2}CO2
 
 TechCapital, world/+{name}region, region/+{name}supplysector, supplysector/+{name}subsector, subsector/+{name}technology, technology/+{year}period, period/+{name}input-capital, input-capital/+capital-overnight, input-capital/+fixed-charge-rate, input-capital/+capacity-factor, scenario, scenario/world, period/{name=CO2}CO2
@@ -229,7 +236,7 @@ TechInterp, world/+{name}region, region/+{name}supplysector, supplysector/+{name
 
 TechInterpTo, world/+{name}region, region/+{name}supplysector, supplysector/+{name}subsector, subsector/+{name}technology, technology/+{apply-to}interpolation-rule, technology/+{from-year}interpolation-rule, technology/+{to-year}interpolation-rule, interpolation-rule/+to-value, interpolation-rule/+{name}interpolation-function, scenario, scenario/world
 
-TechSCurve, world/+{name}region, region/+{name}supplysector, supplysector/+{name}subsector, subsector/+{name}technology, technology/+{year}period, period/+lifetime, s-curve-shutdown-decider/+steepness, s-curve-shutdown-decider/+half-life, scenario, scenario/world, period/s-curve-shutdown-decider
+TechSCurve, world/+{name}region, region/+{name}supplysector, supplysector/+{name}subsector, subsector/+{name}technology, technology/+{year}period, period/+lifetime, s-curve-shutdown-decider/+steepness, s-curve-shutdown-decider/+half-life, scenario, scenario/world, period/{name=s-curve}s-curve-shutdown-decider
 
 #####, GLOBAL TECHNOLOGY
 
@@ -371,6 +378,12 @@ StubTechFractSecOut, world/+{name}region, region/+{name}supplysector, supplysect
 
 StubTechFractProd, world/+{name}region, region/+{name}supplysector, supplysector/+{name}subsector, subsector/+{name}stub-technology, stub-technology/+{year}period, period/+{name}fractional-secondary-output, fractional-secondary-output/+{price}fraction-produced, fractional-secondary-output/+fraction-produced, scenario, scenario/world
 
+StubTechSCurve, world/+{name}region, region/+{name}supplysector, supplysector/+{name}subsector, subsector/+{name}stub-technology, stub-technology/+{year}period, period/+lifetime, s-curve-shutdown-decider/+steepness, s-curve-shutdown-decider/+half-life, scenario, scenario/world, period/{name=s-curve}s-curve-shutdown-decider
+
+StubTechProfitShutdown, world/+{name}region, region/+{name}supplysector, supplysector/+{name}subsector, subsector/+{name}stub-technology, stub-technology/+{year}period, profit-shutdown-decider/+median-shutdown-point, profit-shutdown-decider/+steepness, scenario, scenario/world, period/{name=profit}profit-shutdown-decider
+
+StubTechFractCalPrice,world/+{name}region, region/+{name}supplysector, supplysector/+{name}subsector, subsector/+{name}stub-technology, stub-technology/+{year}period, period/+{name}fractional-secondary-output, fractional-secondary-output/+calPrice, scenario, scenario/world
+
 #####, STUB TRANSPORTATION TECHNOLOGY
 
 
@@ -385,6 +398,8 @@ StubTranTechLoadFactor, world/+{name}region, region/+{name}supplysector, supplys
 StubTranTechCost, world/+{name}region, region/+{name}supplysector, supplysector/+{name}tranSubsector, tranSubsector/+{name}stub-technology, stub-technology/+{year}period, period/+{name}minicam-non-energy-input, minicam-non-energy-input/+input-cost, scenario, scenario/world
 
 StubTranTechProd, world/+{name}region, region/+{name}supplysector, supplysector/+{name}tranSubsector, tranSubsector/+{name}stub-technology, stub-technology/+{year}period, CalDataOutput/+calOutputValue, period/CalDataOutput, scenario, scenario/world
+
+StubTranTechRES, world/+{name}region, region/+{name}supplysector, supplysector/+{name}tranSubsector, tranSubsector/+{name}stub-technology, stub-technology/+{year}period, period/+{name}res-secondary-output, res-secondary-output/+output-ratio, res-secondary-output/+pMultiplier, scenario, scenario/world
 
 
 #####, FINAL DEMAND
@@ -477,6 +492,8 @@ AgHAtoCL, world/+{name}region, region/+{name}AgSupplySector, AgSupplySector/+{na
 AgYield, world/+{name}region, region/+{name}AgSupplySector, AgSupplySector/+{name}AgSupplySubsector, AgSupplySubsector/+{name}AgProductionTechnology, AgProductionTechnology/+{year}period, period/+yield, scenario, scenario/world
 
 AgCoef, world/+{name}region, region/+{name}AgSupplySector, AgSupplySector/+{name}AgSupplySubsector, AgSupplySubsector/+{name}AgProductionTechnology, AgProductionTechnology/+{year}period, period/+{name}minicam-energy-input, minicam-energy-input/+coefficient, scenario, scenario/world, period/{name=CO2}CO2
+
+AgNonEnergyCost, world/+{name}region, region/+{name}AgSupplySector, AgSupplySector/+{name}AgSupplySubsector, AgSupplySubsector/+{name}AgProductionTechnology, AgProductionTechnology/+{year}period, period/+{name}minicam-non-energy-input, minicam-non-energy-input/+input-cost, scenario, scenario/world
 
 AgResBio, world/+{name}region, region/+{name}AgSupplySector, AgSupplySector/+{name}AgSupplySubsector, AgSupplySubsector/+{name}AgProductionTechnology, AgProductionTechnology/+{year}period, period/+{name}residue-biomass-production, residue-biomass-production/+mass-conversion, residue-biomass-production/+harvest-index, residue-biomass-production/+eros-ctrl, residue-biomass-production/+mass-to-energy, residue-biomass-production/+water-content, scenario, scenario/world
 
@@ -686,3 +703,6 @@ ReadInControl, world/+{name}region, region/+{name;nocreate=1}supplysector, suppl
 StubTechEmissUnits, world/+{name}region, region/+{name;nocreate=1}supplysector, supplysector/+{name;nocreate=1}subsector, subsector/+{name;nocreate=1}stub-technology, stub-technology/+{year}period, period/+{name}Non-CO2, Non-CO2/+emissions-unit, scenario, scenario/world
 
 EQUIV_TABLE,NODE_EQUIVALENCE
+
+#####, POLICY
+ConstraintPolicy, world/+{name}region, region/+{name}policy-portfolio-standard, policy-portfolio-standard/+market, policy-portfolio-standard/+policyType, policy-portfolio-standard/+{year}constraint, policy-portfolio-standard/+constraint, scenario, scenario/world

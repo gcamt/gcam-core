@@ -56,6 +56,10 @@
 #include "containers/include/iinfo.h"
 #include "util/base/include/ivisitor.h"
 #include "sectors/include/sector_utils.h"
+#include "technologies/include/itechnology_container.h"
+#include "technologies/include/technology_container.h"
+#include "technologies/include/itechnology.h"
+
 
 using namespace std;
 using namespace xercesc;
@@ -69,7 +73,8 @@ mAnnualProd( Value( 0.0 ) ),
 mCumulProd( Value( 0.0 ) ),
 mCumulativeTechChange( 1.0 ),
 mEffectivePrice( Value( -1.0 ) ),
-mCalProduction( -1.0 )
+mCalProduction( -1.0 ),
+mTechnology( 0 )
 {
 }
 
@@ -78,6 +83,8 @@ SubResource::~SubResource() {
     for ( vector<Grade*>::iterator outerIter = mGrade.begin(); outerIter != mGrade.end(); outerIter++ ) {
         delete *outerIter;
     }
+    
+    delete mTechnology;
 }
 
 //! Initialize member variables from xml data
@@ -121,6 +128,9 @@ void SubResource::XMLParse( const DOMNode* node ){
         else if( nodeName == "price-adder" ){
             XMLHelper<Value>::insertValueIntoVector( curr, mPriceAdder, modeltime );
         }
+        else if( TechnologyContainer::hasTechnologyType( nodeName ) ) {
+            parseSingleNode( curr, mTechnology, new TechnologyContainer );
+        }
         else if( !XMLDerivedClassParse( nodeName, curr ) ){
             ILogger& mainLog = ILogger::getLogger( "main_log" );
             mainLog.setLevel( ILogger::WARNING );
@@ -138,7 +148,11 @@ void SubResource::XMLParse( const DOMNode* node ){
 * \author Josh Lurz, Sonny Kim
 * \warning markets are not necessarily set when completeInit is called
 */
-void SubResource::completeInit( const IInfo* aResourceInfo ) {
+// void SubResource::completeInit( const IInfo* aResourceInfo ) {
+void SubResource::completeInit( const string& aRegionName, const string& aResourceName, const IInfo* aResourceInfo ) {
+    mRegionName = aRegionName;
+    mResourceName = aResourceName;
+
     mSubresourceInfo.reset( InfoFactory::constructInfo( aResourceInfo, mName ) ); 
     // update the available resource for period 0
     // this function must be called after all the grades have been parsed and nograde set
@@ -182,6 +196,11 @@ void SubResource::completeInit( const IInfo* aResourceInfo ) {
 
     SectorUtils::fillMissingPeriodVectorInterpolated( mEnvironCost );
     SectorUtils::fillMissingPeriodVectorInterpolated( mSeveranceTax );
+    
+    if( mTechnology ) {
+        mTechnology->completeInit( mRegionName, mResourceName, mName, mSubresourceInfo.get(), 0 );
+    }
+
 }
 
 /*! \brief Perform any initializations needed for each period.
@@ -226,6 +245,11 @@ void SubResource::initCalc( const string& aRegionName, const string& aResourceNa
         marketInfo->setBoolean( "fully-calibrated", true );
     }
     
+    if( mTechnology ) {
+        mTechnology->initCalc( mRegionName, mResourceName, mSubresourceInfo.get(), 0, aPeriod );
+    }
+
+    
 }
 
 /*! \brief Perform any initializations needed after each period.
@@ -252,6 +276,11 @@ void SubResource::postCalc( const string& aRegionName, const string& aResourceNa
     for( unsigned int i = 0; i < mGrade.size(); i++ ) {
         mGrade[i]->postCalc( aRegionName, aResourceName, aPeriod );
     }
+    
+    if( mTechnology ) {
+        mTechnology->postCalc( mRegionName, aPeriod );
+    }
+
 }
 
 void SubResource::toDebugXML( const int period, ostream& out, Tabs* tabs ) const {
@@ -318,8 +347,18 @@ void SubResource::cumulsupply( double aPrice, int aPeriod )
         mPriceAdder[ aPeriod ] = 0.0;
     }
 
+    double techCost = 0;
+    if( mTechnology ) {
+        ITechnology* newVintageTech = mTechnology->getNewVintageTechnology( aPeriod );
+        newVintageTech->calcCost( mRegionName, mResourceName, aPeriod );
+        techCost = newVintageTech->getCost( aPeriod );
+    }
+
+    
     // Always calculate the effective price
-    mEffectivePrice[ aPeriod ] = aPrice + mPriceAdder[ aPeriod ];
+//    mEffectivePrice[ aPeriod ] = aPrice + mPriceAdder[ aPeriod ];
+    mEffectivePrice[ aPeriod ] = aPrice + mPriceAdder[ aPeriod ] - techCost;
+
 
     if ( aPeriod > 0 ) {
         // Case 1
@@ -404,6 +443,15 @@ void SubResource::annualsupply( int aPeriod, const GDP* aGdp, double aPrice, dou
         // mAvailable is the total resource (stock) remaining
         mAvailable[ aPeriod ] = mAvailable[ aPeriod - 1 ] - ( mAnnualProd[ aPeriod ] * modeltime->gettimestep( aPeriod ) );
         mAvailable[ aPeriod ] = max( mAvailable[ aPeriod ].get(), 0.0 );
+        
+        if( mTechnology ) {
+            mTechnology->getNewVintageTechnology( aPeriod )->production( mRegionName,
+                                                                        mResourceName,
+                                                                        mAnnualProd[ aPeriod ],
+                                                                        1,
+                                                                        aGdp,
+                                                                        aPeriod );
+        }
     }
 }
 
@@ -423,6 +471,11 @@ void SubResource::accept( IVisitor* aVisitor, const int aPeriod ) const {
     for( unsigned int i = 0; i < mGrade.size(); ++i ){
         mGrade[ i ]->accept( aVisitor, aPeriod );
     }
+    
+    if( mTechnology ) {
+        mTechnology->accept( aVisitor, aPeriod );
+    }
+
     aVisitor->endVisitSubResource( this, aPeriod );
 }
 

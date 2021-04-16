@@ -1,0 +1,7 @@
+# File: A222.subsector_logit.csv
+# Title: USA refining subsector logit exponents
+# Units: none
+# Column types: cccnic
+# ----------
+region,supplysector,subsector,logit.exponent,traded,logit.type
+USA,ethanol,sugar cane ethanol,-6,0,absolute-cost-logit

@@ -14,7 +14,7 @@ module_energy_LA132.industry(command, ...)
 \value{
 Depends on \code{command}: either a vector of required inputs,
 a vector of output names, or (if \code{command} is "MAKE") all
-the generated outputs: \code{L132.in_EJ_R_indenergy_F_Yh}, \code{L132.in_EJ_R_indfeed_F_Yh}. The corresponding file in the
+the generated outputs: \code{L132.in_EJ_R_indenergy_F_Yh}, \code{L132.in_EJ_R_indfeed_F_Yh}, \code{L132.in_EJ_R_agenergy_F_Yh}. The corresponding file in the
 original data system was \code{LA132.industry.R} (energy level1).
 }
 \description{
@@ -25,5 +25,5 @@ The chunk calculates industrial feedstock consumption directly separated from en
          industrial energy consumption by deducting net energy use by unconventional oil production, gas processing, refining, and CHP
 }
 \author{
-LF September 2017
+LF September 2017; GPK added ag energy use and oil/gas/coal energy use in March 2019
 }

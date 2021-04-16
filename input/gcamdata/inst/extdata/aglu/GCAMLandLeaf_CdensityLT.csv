@@ -23,8 +23,10 @@ MiscCrop,Cropland
 OilCrop,Cropland
 OtherGrain,Cropland
 PalmFruit,Cropland
+Rapeseed,Cropland
 Rice,Cropland
 Root_Tuber,Cropland
+Soybean,Cropland
 SugarCrop,Cropland
 Wheat,Cropland
 biomass_grass,Pasture

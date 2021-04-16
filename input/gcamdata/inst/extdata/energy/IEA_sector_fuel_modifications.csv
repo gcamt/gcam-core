@@ -7,6 +7,22 @@ sector_initial,fuel_initial,sector,fuel,conversion
 in_electricity generation,electricity,,,
 in_electricity generation,heat,,,
 in_heat,heat,,,
+in_industry_agriculture,biomass,in_industry_general,biomass,0.00004186
+in_industry_agriculture,coal,in_industry_general,coal,0.00004186
+in_industry_agriculture,electricity,in_industry_general,electricity,0.00004186
+in_industry_agriculture,gas,in_industry_general,gas,0.00004186
+in_industry_agriculture,gasified biomass,in_industry_general,gasified biomass,0.00004186
+in_industry_agriculture,heat,in_industry_general,heat,0.00004186
+in_industry_coal,biomass,in_industry_general,biomass,-0.00004186
+in_industry_coal,coal,in_industry_general,coal,-0.00004186
+in_industry_coal,gas,in_industry_general,gas,-0.00004186
+in_industry_coal,gasified biomass,in_industry_general,gasified biomass,-0.00004186
+in_industry_coal,heat,in_industry_general,heat,-0.00004186
+in_industry_oilgas,biomass,in_industry_general,biomass,-0.00004186
+in_industry_oilgas,coal,in_industry_general,coal,-0.00004186
+in_industry_oilgas,electricity,in_industry_general,electricity,-0.00004186
+in_industry_oilgas,gasified biomass,in_industry_general,gasified biomass,-0.00004186
+in_industry_oilgas,heat,in_industry_general,heat,-0.00004186
 in_industry_chp,electricity,,,
 in_industry_chp,heat,,,
 in_industry_ctl,refined liquids,out_ctl,coal,0.00004186

@@ -123,7 +123,7 @@ module_energy_L254.transportation_UCD <- function(command, ...) {
       year <- year.fillout <- to.value <- value <- speed.source <- tranSubsector.x <- addTimeValue <- time.value.multiplier <-
       fuelprefElasticity <- tranSubsector <- share.weight <- calibrated.value <- subs.share.weight <- loadFactor <-
       coefficient <- stub.technology <- output <- output_agg <- output_cum <- share.weight.year <- tech.share.weight <-
-      calOutputValue <- energy.final.demand <- base.service <- object <- r_ss <- NULL
+      calOutputValue <- energy.final.demand <- base.service <- object <- r_ss <- rev_input <- NULL
 
     # PART A: BUILDING TRANSPORTATION SECTORS FROM THE TECHNOLOGY LEVEL UP
     # L254.StubTranTech: Transportation stub technologies (built from technologies with coefficients in the UCD database)
@@ -404,6 +404,8 @@ module_energy_L254.transportation_UCD <- function(command, ...) {
       left_join_error_no_match(GCAM_region_names, by = "GCAM_region_ID") %>%
       left_join_error_no_match(UCD_techs, by = c("UCD_sector", "mode", "size.class",
                                                  "UCD_technology", "UCD_fuel")) %>%
+      # 3/12/2019 OTAQ: use the revised input in place of the default minicam.energy.input
+      mutate(minicam.energy.input = rev_input) %>%
       select(region, supplysector, tranSubsector, stub.technology = tranTechnology,
              year, minicam.energy.input, calibrated.value) ->
       L254.StubTranTechCalInput_basetable
@@ -457,7 +459,9 @@ module_energy_L254.transportation_UCD <- function(command, ...) {
       left_join_error_no_match(UCD_techs, by = c("UCD_sector", "mode", "size.class", "UCD_technology", "UCD_fuel")) %>%
       rename(stub.technology = tranTechnology) %>%
       # Currently, the market names for the fuels will be the same as the region
-      mutate(market.name = region) %>%
+      mutate(market.name = region,
+             # 3/12/2019 OTAQ: use the revised input in place of the default minicam.energy.input
+             minicam.energy.input = rev_input) %>%
       select(LEVEL2_DATA_NAMES[["StubTranTechCoef"]]) ->
       L254.StubTranTechCoef # OUTPUT
 

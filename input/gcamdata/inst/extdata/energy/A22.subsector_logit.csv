@@ -14,3 +14,6 @@ refining,oil refining,-6,absolute-cost-logit
 refining,biomass liquids,-6,absolute-cost-logit
 refining,coal to liquids,-6,absolute-cost-logit
 refining,gas to liquids,-6,absolute-cost-logit
+ethanol,corn ethanol,-6,absolute-cost-logit
+ethanol,cellulosic ethanol,-6,absolute-cost-logit
+ethanol,sugar cane ethanol,-6,absolute-cost-logit
