@@ -1,3 +1,6 @@
+[![DOI](https://zenodo.org/badge/354883882.svg)](https://zenodo.org/badge/latestdoi/354883882)
+
+
 # GCAM-T 2020.0
 This documentation describes GCAM-T 2020.0 (hereafter “GCAM-T”), a version of the Global Change Analysis Model (GCAM)
  developed through modifications to GCAM v5.1.2 (Calvin, Patel et al. 2019). GCAM-T was developed as a collaboration
